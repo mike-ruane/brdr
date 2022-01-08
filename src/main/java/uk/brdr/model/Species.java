@@ -1,6 +1,8 @@
 package uk.brdr.model;
 
-public class Bird {
+import java.util.Objects;
+
+public class Species {
 
   public int id;
   public String scientificName;
@@ -82,5 +84,45 @@ public class Bird {
 
   public void setWinterVisitorPopulation(String winterVisitorPopulation) {
     this.winterVisitorPopulation = winterVisitorPopulation;
+  }
+
+  @Override
+  public String toString() {
+    return "Species{" +
+        "id=" + id +
+        ", scientificName='" + scientificName + '\'' +
+        ", preferredCommonName='" + preferredCommonName + '\'' +
+        ", habitat='" + habitat + '\'' +
+        ", genus='" + genus + '\'' +
+        ", family='" + family + '\'' +
+        ", familyOrder='" + familyOrder + '\'' +
+        ", breedingPopulation='" + breedingPopulation + '\'' +
+        ", winterVisitorPopulation='" + winterVisitorPopulation + '\'' +
+        '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Species species = (Species) o;
+    return id == species.id && Objects.equals(scientificName, species.scientificName)
+        && Objects.equals(preferredCommonName, species.preferredCommonName)
+        && Objects.equals(habitat, species.habitat) && Objects.equals(genus,
+        species.genus) && Objects.equals(family, species.family)
+        && Objects.equals(familyOrder, species.familyOrder) && Objects.equals(
+        breedingPopulation, species.breedingPopulation) && Objects.equals(
+        winterVisitorPopulation, species.winterVisitorPopulation);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, scientificName, preferredCommonName, habitat, genus, family,
+        familyOrder,
+        breedingPopulation, winterVisitorPopulation);
   }
 }
