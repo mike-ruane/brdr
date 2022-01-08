@@ -1,13 +1,11 @@
 package uk.brdr;
 
+import com.typesafe.config.ConfigFactory;
 import io.javalin.Javalin;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Properties;
 import org.flywaydb.core.Flyway;
-import uk.brdr.data.SpeciesRepository;
-import uk.brdr.data.SpeciesRepositoryImpl;
+import uk.brdr.data.DatabaseConfiguration;
+import uk.brdr.data.SpeciesDaoImpl;
+import uk.brdr.properties.ApiProperties;
 
 public class Application {
 
@@ -15,21 +13,14 @@ public class Application {
 
 
   public static void main(String[] args) {
-    Flyway flyway = Flyway.configure().dataSource("jdbc:postgresql://localhost:5432/brdr", "mruane", "").load();
+    var conf = ConfigFactory.load();
+    var properties = ApiProperties.fromConfig(conf);
+    var databaseConfiguration = new DatabaseConfiguration(properties.getDatabaseProperties());
+    var datasource = databaseConfiguration.getDatasource();
+    Flyway flyway = Flyway.configure().dataSource(datasource).load();
     flyway.migrate();
-    String url = "jdbc:postgresql://localhost/brdr";
-    Properties props = new Properties();
-    props.setProperty("user","mruane");
-    props.setProperty("password","");
-    try {
-      Connection conn = DriverManager.getConnection(url, props);
-      SpeciesRepository repository = new SpeciesRepositoryImpl(conn);
-      Javalin app = Javalin.create().start(port);
-      app.get("/", ctx -> ctx.result("Hi Jo!"));
-      app.get("/species", ctx -> ctx.json(repository.getSpecies()));
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
+    var speciesDaoImpl = new SpeciesDaoImpl(datasource);
+    Javalin app = Javalin.create().start(port);
+    app.get("/species", ctx -> ctx.json(speciesDaoImpl.getAll()));
   }
 }
