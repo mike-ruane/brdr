@@ -10,7 +10,6 @@ import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import uk.brdr.data.SpeciesDaoImpl;
 
 public class SpeciesDaoImplTest {
 
@@ -32,7 +31,6 @@ public class SpeciesDaoImplTest {
   void getAll() {
     var datasource = getH2DataSource();
     var speciesDaoImpl = new SpeciesDaoImpl(datasource);
-
     var species = speciesDaoImpl.getAll();
     assert(!species.isEmpty());
   }
