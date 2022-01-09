@@ -41,6 +41,7 @@ public class SpeciesDaoImpl implements SpeciesDao {
     } catch (SQLException throwables) {
       logger.error("failed to fetch species from db: {}", throwables.getMessage());
       throwables.printStackTrace();
+      throw new RuntimeException("error fetching species from db");
     }
     return speciesList;
   }
