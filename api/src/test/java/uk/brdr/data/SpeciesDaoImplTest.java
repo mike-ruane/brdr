@@ -1,5 +1,7 @@
 package uk.brdr.data;
 
+import static uk.brdr.utils.DatabaseUtils.getH2DataSource;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,35 +15,26 @@ import org.junit.jupiter.api.Test;
 
 public class SpeciesDaoImplTest {
 
+  static DataSource datasource = getH2DataSource();
+
   @BeforeAll
   static void setup() throws SQLException, IOException {
-    var datasource = getH2DataSource();
     var flyway = Flyway.configure().dataSource(datasource).load();
+    flyway.clean();
     flyway.migrate();
     loadSpecies(datasource);
   }
 
   @AfterAll
   static void tearDown() throws SQLException {
-    var datasource = getH2DataSource();
     datasource.getConnection().close();
   }
 
   @Test
   void getAll() {
-    var datasource = getH2DataSource();
     var speciesDaoImpl = new SpeciesDaoImpl(datasource);
     var species = speciesDaoImpl.getAll();
     assert(!species.isEmpty());
-  }
-
-  static DataSource getH2DataSource() {
-    var jdbcDataSource = new JdbcDataSource();
-    jdbcDataSource.setUrl("jdbc:h2:~/brdr");
-    jdbcDataSource.setUser("sa");
-    jdbcDataSource.setPassword("");
-
-    return jdbcDataSource;
   }
 
   private static void loadSpecies(DataSource dataSource) throws SQLException, IOException {
