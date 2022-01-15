@@ -1,6 +1,7 @@
 package uk.brdr.data;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -22,11 +23,11 @@ public class SightingsDaoImpl implements SightingsDao {
   public void addSighting(Sighting sighting) {
     try {
       Connection conn = dataSource.getConnection();
-      var query = "INSERT INTO sightings (user_id, species_id, city) values (?, ? ,?)";
+      var query = "INSERT INTO sightings (species_id, location_id, date) values (?, ?, ?)";
       var preparedStmt = conn.prepareStatement(query);
-      preparedStmt.setInt(1, sighting.getUserId());
-      preparedStmt.setInt(2, sighting.getSpeciesId());
-      preparedStmt.setString(3, sighting.getCity());
+      preparedStmt.setInt(1, sighting.getSpeciesId());
+      preparedStmt.setInt(2, sighting.getLocationId());
+      preparedStmt.setDate(3, Date.valueOf(sighting.getDate()));
 
       preparedStmt.execute();
       conn.close();

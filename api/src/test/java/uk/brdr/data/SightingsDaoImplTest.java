@@ -30,7 +30,7 @@ public class SightingsDaoImplTest {
   @Test
   void insertSighting() throws SQLException {
     var sightingsDao = new SightingsDaoImpl(datasource);
-    var sighting = new Sighting(0, 123, 456, "London");
+    var sighting = new Sighting(0, 456, 1, "2022-01-29");
     sightingsDao.addSighting(sighting);
     var conn = datasource.getConnection();
     var statement = conn.prepareStatement("SELECT * FROM sightings");
@@ -39,7 +39,7 @@ public class SightingsDaoImplTest {
       assertEquals(resultSet.getInt("id"), 1);
       assertEquals(resultSet.getInt("user_id"), 123);
       assertEquals(resultSet.getInt("species_id"), 456);
-      assertEquals(resultSet.getString("city"), "London");
+      assertEquals(resultSet.getInt("location"), 1);
     }
   }
 }
