@@ -1,8 +1,10 @@
 import com.typesafe.config.ConfigFactory;
 import org.flywaydb.core.Flyway;
 import uk.brdr.Application;
+import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
 import uk.brdr.data.DatabaseConfiguration;
+import uk.brdr.data.SightingsDaoImpl;
 import uk.brdr.data.SpeciesDaoImpl;
 import uk.brdr.properties.ApiProperties;
 
@@ -19,8 +21,10 @@ public class Main {
     flyway.migrate();
 
     var speciesDaoImpl = new SpeciesDaoImpl(datasource);
+    var sightingsDaoImpl = new SightingsDaoImpl(datasource);
     var speciesController = new SpeciesController(speciesDaoImpl);
-    var app = new Application(speciesController);
+    var sightingsController = new SightingController(sightingsDaoImpl);
+    var app = new Application(speciesController, sightingsController);
     app.javalinApp().start(port);
   }
 
