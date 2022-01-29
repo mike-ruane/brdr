@@ -18,6 +18,7 @@ import uk.brdr.controllers.SpeciesController;
 import uk.brdr.data.daoimpl.LocationsDaoImpl;
 import uk.brdr.data.daoimpl.SightingsDaoImpl;
 import uk.brdr.data.daoimpl.SpeciesDaoImpl;
+import uk.brdr.data.repositories.SightingsOverviewImpl;
 import uk.brdr.model.Sighting;
 import uk.brdr.model.Species;
 
@@ -25,9 +26,10 @@ public class ApplicationTest {
 
   SpeciesDaoImpl speciesDao = mock(SpeciesDaoImpl.class);
   SightingsDaoImpl sightingsDao = mock(SightingsDaoImpl.class);
+  SightingsOverviewImpl sightingsOverview = mock(SightingsOverviewImpl.class);
   LocationsDaoImpl locationsDao = mock(LocationsDaoImpl.class);
   SpeciesController speciesController = new SpeciesController(speciesDao);
-  SightingController sightingController = new SightingController(sightingsDao);
+  SightingController sightingController = new SightingController(sightingsDao, sightingsOverview);
   LocationsController locationsController = new LocationsController(locationsDao);
   Javalin app = new Application(speciesController, sightingController, locationsController).javalinApp();
 

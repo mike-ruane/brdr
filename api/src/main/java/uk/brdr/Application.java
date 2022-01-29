@@ -22,8 +22,11 @@ public class Application {
         .routes(() -> {
           path("v1/species", () ->
               get(speciesController::getAll));
-          path("v1/sightings", () ->
-              post(sightingController::addSighting));
+          path("v1/sightings", () -> {
+              post(sightingController::addSighting);
+              path("{userId}", () ->
+                  get(sightingController::getSightingsOverview));
+              });
           path("v1/locations", () ->
               get(locationsController::getLocations));
         });

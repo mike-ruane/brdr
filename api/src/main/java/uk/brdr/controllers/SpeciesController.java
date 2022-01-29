@@ -18,7 +18,6 @@ public class SpeciesController {
 
   public void getAll(Context ctx) {
     try {
-      logger.info("yep I'm here");
       var species = speciesDao.getAll();
       ctx.json(species);
     } catch (RuntimeException e) {

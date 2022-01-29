@@ -6,12 +6,15 @@ import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.brdr.data.dao.SightingsDao;
+import uk.brdr.data.mappers.SightingsOverviewRowMapper;
 import uk.brdr.model.Sighting;
+import uk.brdr.model.SightingOverview;
 
 public class SightingsDaoImpl implements SightingsDao {
 
   private final Jdbi jdbi;
 
+  private static SightingsOverviewRowMapper sightingsOverviewRowMapper = new SightingsOverviewRowMapper();
   Logger logger = LoggerFactory.getLogger(SightingsDaoImpl.class);
 
   public SightingsDaoImpl(DataSource dataSource) {
@@ -37,7 +40,25 @@ public class SightingsDaoImpl implements SightingsDao {
   }
 
   @Override
-  public List<Sighting> getSightings() {
-    return null;
+  public List<SightingOverview> getSightings(int userId) {
+    try {
+      return jdbi.withHandle(handle ->
+          handle.createQuery(
+              "SELECT l.location AS location, l.county AS county, sp.id AS species_id, "
+                  + "sp.preferred_common_name AS species, sp.genus AS genus, "
+                  + "si.date AS date FROM sightings si "
+                  + "INNER JOIN users u "
+                  + "ON si.user_id = u.id "
+                  + "INNER JOIN species sp "
+                  + "ON si.species_id = sp.id "
+                  + "INNER JOIN locations l "
+                  + "ON si.location_id = l.id "
+                  + "WHERE u.id = :id")
+              .bind("id", userId)
+              .map(sightingsOverviewRowMapper)
+              .list());
+    } catch (Exception e) {
+      throw new RuntimeException("failed to get sighting overview", e);
+    }
   }
 }
