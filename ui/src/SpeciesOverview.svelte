@@ -7,9 +7,7 @@
     await fetch(`http://localhost:8000/v1/species`)
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       rows = data;
-      console.log("Mounted IntegrationsOverview ", rows);
     }).catch((error) => {
       console.error('Error:', error);
     });
@@ -28,6 +26,7 @@
     <th>order</th>
     <th>Breeding Population</th>
     <th>Winter Visiting Population</th>
+    <th>ID</th>
     <th>Image</th>
   </tr>
   </thead>
@@ -65,9 +64,10 @@
         { /if }
       </td>
       <td>
-        { #if row.id == 1 }
-          <img src="images/{row.id}.png" alt="birdy" />
-        { /if }
+        { row.id }
+      </td>
+      <td>
+        <img src="images/{row.id}.jpg" alt="" />
       </td>
     </tr>
   {/each}

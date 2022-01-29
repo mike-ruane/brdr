@@ -11,8 +11,10 @@ import io.javalin.testtools.TestUtil;
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import uk.brdr.controllers.LocationsController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
+import uk.brdr.data.LocationsDaoImpl;
 import uk.brdr.data.SightingsDaoImpl;
 import uk.brdr.data.SpeciesDaoImpl;
 import uk.brdr.model.Sighting;
@@ -22,9 +24,11 @@ public class ApplicationTest {
 
   SpeciesDaoImpl speciesDao = mock(SpeciesDaoImpl.class);
   SightingsDaoImpl sightingsDao = mock(SightingsDaoImpl.class);
+  LocationsDaoImpl locationsDao = mock(LocationsDaoImpl.class);
   SpeciesController speciesController = new SpeciesController(speciesDao);
   SightingController sightingController = new SightingController(sightingsDao);
-  Javalin app = new Application(speciesController, sightingController).javalinApp();
+  LocationsController locationsController = new LocationsController(locationsDao);
+  Javalin app = new Application(speciesController, sightingController, locationsController).javalinApp();
 
   @Test
   public void getAllSpecies() throws IOException {
@@ -49,7 +53,7 @@ public class ApplicationTest {
 
   @Test
   public void addSighting() {
-    var sighting = new Sighting(0, 123, 123, "London");
+    var sighting = new Sighting(0, 123, 1, "2022-01-29");
     var body = "{\"userId\": 123, \"speciesId\": 123, \"city\": \"London\"}";
     doNothing().when(sightingsDao).addSighting(sighting);
     TestUtil.test(app, (server, client) -> 

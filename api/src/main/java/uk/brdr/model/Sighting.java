@@ -5,15 +5,15 @@ import java.util.Objects;
 public class Sighting {
 
   public int id;
-  public int userId;
   public int speciesId;
-  public String city;
+  public int locationId;
+  public String date;
 
-  public Sighting(int id, int userId, int speciesId, String city) {
+  public Sighting(int id, int speciesId, int locationId, String date) {
     this.id = id;
-    this.userId = userId;
     this.speciesId = speciesId;
-    this.city = city;
+    this.locationId = locationId;
+    this.date = date;
   }
 
   public Sighting() {}
@@ -22,32 +22,32 @@ public class Sighting {
     return id;
   }
 
-  public int getUserId() {
-    return userId;
-  }
-
   public int getSpeciesId() {
     return speciesId;
   }
 
-  public String getCity() {
-    return city;
+  public int getLocationId() {
+    return locationId;
+  }
+
+  public String getDate() {
+    return date;
   }
 
   public void setId(int id) {
     this.id = id;
   }
 
-  public void setUserId(int userId) {
-    this.userId = userId;
-  }
-
   public void setSpeciesId(int speciesId) {
     this.speciesId = speciesId;
   }
 
-  public void setCity(String city) {
-    this.city = city;
+  public void setLocationId(int locationId) {
+    this.locationId = locationId;
+  }
+
+  public void setDate(String date) {
+    this.date = date;
   }
 
   @Override
@@ -59,22 +59,21 @@ public class Sighting {
       return false;
     }
     Sighting sighting = (Sighting) o;
-    return userId == sighting.userId && speciesId == sighting.speciesId && Objects.equals(
-        id, sighting.id) && Objects.equals(city, sighting.city);
+    return speciesId == sighting.speciesId && Objects.equals(
+        id, sighting.id) && Objects.equals(locationId, sighting.locationId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userId, speciesId, city);
+    return Objects.hash(id, speciesId, locationId);
   }
 
   @Override
   public String toString() {
     return "Sighting{" +
         "id='" + id + '\'' +
-        ", userId=" + userId +
         ", speciesId=" + speciesId +
-        ", city='" + city + '\'' +
+        ", locationId='" + locationId + '\'' +
         '}';
   }
 }
