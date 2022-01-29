@@ -2,8 +2,7 @@ package uk.brdr.controllers;
 
 import io.javalin.http.Context;
 import io.javalin.http.ServiceUnavailableResponse;
-import uk.brdr.data.LocationsDao;
-import uk.brdr.data.SpeciesDao;
+import uk.brdr.data.dao.LocationsDao;
 
 public class LocationsController {
 

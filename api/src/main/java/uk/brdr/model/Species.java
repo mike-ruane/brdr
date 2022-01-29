@@ -14,6 +14,23 @@ public class Species {
   public String breedingPopulation;
   public String winterVisitorPopulation;
 
+  public Species(int id, String scientificName, String preferredCommonName, String habitat,
+      String genus, String family, String familyOrder, String breedingPopulation,
+      String winterVisitorPopulation) {
+    this.id = id;
+    this.scientificName = scientificName;
+    this.preferredCommonName = preferredCommonName;
+    this.habitat = habitat;
+    this.genus = genus;
+    this.family = family;
+    this.familyOrder = familyOrder;
+    this.breedingPopulation = breedingPopulation;
+    this.winterVisitorPopulation = winterVisitorPopulation;
+  }
+
+  public Species() {
+  }
+
   public int getId() {
     return id;
   }

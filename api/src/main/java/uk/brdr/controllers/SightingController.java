@@ -5,7 +5,7 @@ import io.javalin.http.HttpCode;
 import io.javalin.http.InternalServerErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.brdr.data.SightingsDao;
+import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.model.Sighting;
 
 public class SightingController {
@@ -24,6 +24,7 @@ public class SightingController {
       logger.info(ctx.body());
       var sighting = ctx.bodyAsClass(Sighting.class);
       sightingsDao.addSighting(sighting);
+      logger.info("successfully added sighting");
       ctx.status(HttpCode.CREATED);
     } catch (Exception e) {
       throw new InternalServerErrorResponse();

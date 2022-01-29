@@ -9,14 +9,15 @@ import io.javalin.Javalin;
 import io.javalin.plugin.json.JavalinJackson;
 import io.javalin.testtools.TestUtil;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import uk.brdr.controllers.LocationsController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
-import uk.brdr.data.LocationsDaoImpl;
-import uk.brdr.data.SightingsDaoImpl;
-import uk.brdr.data.SpeciesDaoImpl;
+import uk.brdr.data.daoimpl.LocationsDaoImpl;
+import uk.brdr.data.daoimpl.SightingsDaoImpl;
+import uk.brdr.data.daoimpl.SpeciesDaoImpl;
 import uk.brdr.model.Sighting;
 import uk.brdr.model.Species;
 
@@ -53,8 +54,8 @@ public class ApplicationTest {
 
   @Test
   public void addSighting() {
-    var sighting = new Sighting(0, 123, 1, "2022-01-29");
-    var body = "{\"userId\": 123, \"speciesId\": 123, \"city\": \"London\"}";
+    var sighting = new Sighting(0, 123, 123, 535, Date.valueOf("2022-01-29"));
+    var body = "{\"userId\": 123, \"speciesId\": 123, \"locationId\": \"535\", \"date\": \"2022-01-29\"}";
     doNothing().when(sightingsDao).addSighting(sighting);
     TestUtil.test(app, (server, client) -> 
       assertThat(client.post("/v1/sightings", body).code()).isEqualTo(201));

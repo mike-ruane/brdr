@@ -1,4 +1,4 @@
-package uk.brdr.data;
+package uk.brdr.data.dao;
 
 import java.util.List;
 import uk.brdr.model.Species;
