@@ -44,6 +44,7 @@
   }
 
   async function handleSubmit() {
+    formData["userId"] = "1";
     const settings = {
       method: 'POST',
       headers: {

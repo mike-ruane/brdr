@@ -1,16 +1,19 @@
 package uk.brdr.model;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class Sighting {
 
   public int id;
+  public int userId;
   public int speciesId;
   public int locationId;
-  public String date;
+  public Date date;
 
-  public Sighting(int id, int speciesId, int locationId, String date) {
+  public Sighting(int id, int userId, int speciesId, int locationId, Date date) {
     this.id = id;
+    this.userId = userId;
     this.speciesId = speciesId;
     this.locationId = locationId;
     this.date = date;
@@ -22,6 +25,10 @@ public class Sighting {
     return id;
   }
 
+  public int getUserId() {
+    return userId;
+  }
+
   public int getSpeciesId() {
     return speciesId;
   }
@@ -30,12 +37,16 @@ public class Sighting {
     return locationId;
   }
 
-  public String getDate() {
+  public Date getDate() {
     return date;
   }
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setUser_id(int userId) {
+    this.userId = userId;
   }
 
   public void setSpeciesId(int speciesId) {
@@ -46,7 +57,7 @@ public class Sighting {
     this.locationId = locationId;
   }
 
-  public void setDate(String date) {
+  public void setDate(Date date) {
     this.date = date;
   }
 
@@ -59,21 +70,23 @@ public class Sighting {
       return false;
     }
     Sighting sighting = (Sighting) o;
-    return speciesId == sighting.speciesId && Objects.equals(
-        id, sighting.id) && Objects.equals(locationId, sighting.locationId);
+    return id == sighting.id && userId == sighting.userId && speciesId == sighting.speciesId
+        && locationId == sighting.locationId && Objects.equals(date, sighting.date);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, speciesId, locationId);
+    return Objects.hash(id, userId, speciesId, locationId, date);
   }
 
   @Override
   public String toString() {
     return "Sighting{" +
-        "id='" + id + '\'' +
+        "id=" + id +
+        ", userId=" + userId +
         ", speciesId=" + speciesId +
-        ", locationId='" + locationId + '\'' +
+        ", locationId=" + locationId +
+        ", date='" + date + '\'' +
         '}';
   }
 }

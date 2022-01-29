@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
-import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import uk.brdr.data.daoimpl.SpeciesDaoImpl;
 
 public class SpeciesDaoImplTest {
 

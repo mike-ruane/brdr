@@ -5,9 +5,10 @@ import uk.brdr.controllers.LocationsController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
 import uk.brdr.data.DatabaseConfiguration;
-import uk.brdr.data.LocationsDaoImpl;
-import uk.brdr.data.SightingsDaoImpl;
-import uk.brdr.data.SpeciesDaoImpl;
+import uk.brdr.data.daoimpl.LocationsDaoImpl;
+import uk.brdr.data.daoimpl.SightingsDaoImpl;
+import uk.brdr.data.daoimpl.SpeciesDaoImpl;
+import uk.brdr.data.repositories.SightingsOverviewImpl;
 import uk.brdr.properties.ApiProperties;
 
 public class Main {
@@ -24,9 +25,10 @@ public class Main {
 
     var speciesDaoImpl = new SpeciesDaoImpl(datasource);
     var sightingsDaoImpl = new SightingsDaoImpl(datasource);
+    var sightingsOverviewImpl = new SightingsOverviewImpl(sightingsDaoImpl);
     var locationsDaoImpl = new LocationsDaoImpl(datasource);
     var speciesController = new SpeciesController(speciesDaoImpl);
-    var sightingsController = new SightingController(sightingsDaoImpl);
+    var sightingsController = new SightingController(sightingsDaoImpl, sightingsOverviewImpl);
     var locationsController = new LocationsController(locationsDaoImpl);
     var app = new Application(speciesController, sightingsController, locationsController);
     app.javalinApp().start(port);
