@@ -1,7 +1,8 @@
 <script>
 	import {Route, Router, Link} from "svelte-routing";
-	import SpeciesOverview from "./SpeciesOverview.svelte";
 	import AddSighting from "./AddSighting.svelte";
+	import SightingsOverview from "./SightingsOverview.svelte";
+	import Sightings from "./Sightings.svelte";
 
 	export let url = "";
 </script>
@@ -9,18 +10,14 @@
 <Router url="{url}">
 	<header>
 		<nav>
-			<Link to="/">Species</Link>
+			<Link to="/">Sightings</Link>
 			<Link to="add-sighting">Add Sighting</Link>
 		</nav>
 	</header>
-	<div style="display: flex;">
-		<div style="flex-grow: 1;">
-		</div>
-	</div>
 	<hr/>
 	<div>
 		<Route path="/">
-			<SpeciesOverview/>
+			<Sightings/>
 		</Route>
 		<Route path="add-sighting">
 			<AddSighting/>

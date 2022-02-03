@@ -19,7 +19,7 @@
   let locations = [];
   let selectedLocation = "";
   const locationsOptionId = "id";
-  const locationsLabelId = "location";
+  const locationsLabelId = "name";
 
   let store;
 
@@ -36,7 +36,7 @@
 
   function selectLocation(event) {
     formData["locationId"] = event.detail.id;
-    selectedLocation = event.detail.location;
+    selectedLocation = event.detail.name;
   }
 
   function handleClear(event) {
@@ -60,14 +60,6 @@
           showSurprise();
         }
       })
-      // .then(data => console.log(data))
-      // const fetchResponse = await fetch(`http://localhost:8000/v1/sightings`, settings);
-      // const data = await fetchResponse.json();
-      // console.log(data);
-      // return data;
-    // } catch (e) {
-    //   return e;
-    // }
   }
 
   const theme = {
