@@ -25,8 +25,8 @@ public class Main {
 
     var speciesDaoImpl = new SpeciesDaoImpl(datasource);
     var sightingsDaoImpl = new SightingsDaoImpl(datasource);
-    var sightingsOverviewImpl = new SightingsOverviewImpl(sightingsDaoImpl);
     var locationsDaoImpl = new LocationsDaoImpl(datasource);
+    var sightingsOverviewImpl = new SightingsOverviewImpl(sightingsDaoImpl, locationsDaoImpl);
     var speciesController = new SpeciesController(speciesDaoImpl);
     var sightingsController = new SightingController(sightingsDaoImpl, sightingsOverviewImpl);
     var locationsController = new LocationsController(locationsDaoImpl);

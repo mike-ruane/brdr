@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.data.mappers.SightingsOverviewRowMapper;
-import uk.brdr.model.Sighting;
-import uk.brdr.model.SightingOverview;
+import uk.brdr.model.sighting.Sighting;
+import uk.brdr.model.sighting.SightingOverview;
 
 public class SightingsDaoImpl implements SightingsDao {
 
@@ -44,9 +44,10 @@ public class SightingsDaoImpl implements SightingsDao {
     try {
       return jdbi.withHandle(handle ->
           handle.createQuery(
-              "SELECT l.location AS location, l.county AS county, sp.id AS species_id, "
-                  + "sp.preferred_common_name AS species, sp.genus AS genus, "
-                  + "si.date AS date FROM sightings si "
+              "SELECT l.id AS location_id, l.county_id AS county_id, l.region_id AS region_id, l.country_id "
+                  + "AS country_id, sp.id AS species_id, sp.preferred_common_name AS species, "
+                  + "sp.genus AS genus, si.date AS date "
+                  + "FROM sightings si "
                   + "INNER JOIN users u "
                   + "ON si.user_id = u.id "
                   + "INNER JOIN species sp "

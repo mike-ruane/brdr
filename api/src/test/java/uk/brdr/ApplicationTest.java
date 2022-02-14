@@ -19,7 +19,7 @@ import uk.brdr.data.daoimpl.LocationsDaoImpl;
 import uk.brdr.data.daoimpl.SightingsDaoImpl;
 import uk.brdr.data.daoimpl.SpeciesDaoImpl;
 import uk.brdr.data.repositories.SightingsOverviewImpl;
-import uk.brdr.model.Sighting;
+import uk.brdr.model.sighting.Sighting;
 import uk.brdr.model.Species;
 
 public class ApplicationTest {

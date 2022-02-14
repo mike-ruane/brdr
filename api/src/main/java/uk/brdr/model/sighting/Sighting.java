@@ -1,4 +1,4 @@
-package uk.brdr.model;
+package uk.brdr.model.sighting;
 
 import java.sql.Date;
 import java.util.Objects;
@@ -86,7 +86,7 @@ public class Sighting {
         ", userId=" + userId +
         ", speciesId=" + speciesId +
         ", locationId=" + locationId +
-        ", date='" + date + '\'' +
+        ", date=" + date +
         '}';
   }
 }

@@ -5,7 +5,8 @@ import io.javalin.http.HttpCode;
 import io.javalin.http.InternalServerErrorResponse;
 import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.data.repositories.SightingsOverview;
-import uk.brdr.model.Sighting;
+import uk.brdr.model.location.LocationType;
+import uk.brdr.model.sighting.Sighting;
 
 public class SightingController {
 
@@ -30,7 +31,8 @@ public class SightingController {
   public void getSightingsOverview(Context ctx) {
     try {
       var userId = Integer.parseInt(ctx.pathParam("userId"));
-      var sightings = sightingsOverview.getSightingsForUserByLocation(userId);
+      var locationType = LocationType.valueOf(ctx.pathParam("locationType"));
+      var sightings = sightingsOverview.getSightingsForUserByLocation(userId, locationType);
       ctx.json(sightings);
     } catch (RuntimeException e) {
       throw new InternalServerErrorResponse("");

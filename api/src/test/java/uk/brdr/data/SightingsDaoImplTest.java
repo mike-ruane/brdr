@@ -11,7 +11,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import uk.brdr.data.daoimpl.SightingsDaoImpl;
-import uk.brdr.model.Sighting;
+import uk.brdr.model.sighting.Sighting;
 
 public class SightingsDaoImplTest {
 
@@ -35,8 +35,15 @@ public class SightingsDaoImplTest {
         + "('Locustella fluviatilis', 'River Warbler', "
         + "'freshwater', 'Locustella', 'Locustellidae', 'Passeriformes')");
     insertSpecies.execute();
+    var insertCounty = conn.prepareStatement("INSERT INTO counties (name) values ('Lancashire')");
+    insertCounty.execute();
+    var insertRegion = conn.prepareStatement("INSERT INTO regions (name) values ('North West')");
+    insertRegion.execute();
+    var insertCountry = conn.prepareStatement("INSERT INTO countries (name) values ('England')");
+    insertCountry.execute();
     var insertLocation = conn.prepareStatement(
-        "INSERT INTO locations (location, county) values ('Accrington', 'Lancashire')");
+        "INSERT INTO locations (location, county_id, region_id, country_id, lat, lon) "
+            + "values ('Accrington', 1, 1, 1, 45.34, -1.45)");
     insertLocation.execute();
   }
 
