@@ -12,7 +12,7 @@ public class LocationsRowMapper implements RowMapper<Location> {
   public Location map(ResultSet rs, StatementContext ctx) throws SQLException {
     return new Location(
         rs.getInt("id"),
-        rs.getString("location"),
+        rs.getString("name"),
         rs.getInt("county_id"),
         rs.getInt("region_id"),
         rs.getInt("country_id"),
