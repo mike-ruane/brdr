@@ -1,9 +1,9 @@
 package uk.brdr.data.repositories;
 
 import java.util.List;
-import java.util.Map;
-import uk.brdr.model.SightingOverview;
+import uk.brdr.model.location.LocationType;
+import uk.brdr.model.sighting.SightingByLocation;
 
 public interface SightingsOverview {
-  Map<String, List<SightingOverview>> getSightingsForUserByLocation(int userId);
+  List<SightingByLocation> getSightingsForUserByLocation(int userId, LocationType locationType);
 }

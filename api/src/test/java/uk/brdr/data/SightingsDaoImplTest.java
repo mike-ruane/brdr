@@ -11,7 +11,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import uk.brdr.data.daoimpl.SightingsDaoImpl;
-import uk.brdr.model.Sighting;
+import uk.brdr.model.sighting.Sighting;
 
 public class SightingsDaoImplTest {
 
@@ -24,19 +24,36 @@ public class SightingsDaoImplTest {
     flyway.migrate();
 
     var conn = datasource.getConnection();
-    var inertUser = conn.prepareStatement(
-        "INSERT INTO users (email, password) values ('mike@jruane.com', 'secure-password')");
+    var inertUser =
+        conn.prepareStatement(
+            "INSERT INTO users (email, password) values ('mike@jruane.com', 'secure-password')");
     inertUser.execute();
-    var insertSpecies = conn.prepareStatement(""
-        + "INSERT INTO species "
-        + "(scientific_name, preferred_common_name, habitat, genus, family,"
-        + "family_order) "
-        + "values "
-        + "('Locustella fluviatilis', 'River Warbler', "
-        + "'freshwater', 'Locustella', 'Locustellidae', 'Passeriformes')");
+    var insertSpecies =
+        conn.prepareStatement(
+            ""
+                + "INSERT INTO species "
+                + "(scientific_name, preferred_common_name, habitat, genus, family,"
+                + "family_order) "
+                + "values "
+                + "('Locustella fluviatilis', 'River Warbler', "
+                + "'freshwater', 'Locustella', 'Locustellidae', 'Passeriformes')");
     insertSpecies.execute();
-    var insertLocation = conn.prepareStatement(
-        "INSERT INTO locations (location, county) values ('Accrington', 'Lancashire')");
+    var insertCounty =
+        conn.prepareStatement(
+            "INSERT INTO counties (name, lat, lon) values ('Lancashire', 23.4, 54.5)");
+    insertCounty.execute();
+    var insertRegion =
+        conn.prepareStatement(
+            "INSERT INTO regions (name, lat, lon) values ('North West', 23.4, 54.5)");
+    insertRegion.execute();
+    var insertCountry =
+        conn.prepareStatement(
+            "INSERT INTO countries (name, lat, lon) values ('England', 23.4, 54.5)");
+    insertCountry.execute();
+    var insertLocation =
+        conn.prepareStatement(
+            "INSERT INTO locations (name, county_id, region_id, country_id, lat, lon) "
+                + "values ('Accrington', 1, 1, 1, 45.34, -1.45)");
     insertLocation.execute();
   }
 

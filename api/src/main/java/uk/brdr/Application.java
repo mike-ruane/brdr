@@ -18,22 +18,22 @@ public class Application {
       SpeciesController speciesController,
       SightingController sightingController,
       LocationsController locationsController) {
-    app = Javalin.create(JavalinConfig::enableCorsForAllOrigins)
-        .routes(() -> {
-          path("v1/species", () ->
-              get(speciesController::getAll));
-          path("v1/sightings", () -> {
-              post(sightingController::addSighting);
-              path("{userId}", () ->
-                  get(sightingController::getSightingsOverview));
-              });
-          path("v1/locations", () ->
-              get(locationsController::getLocations));
-        });
+    app =
+        Javalin.create(JavalinConfig::enableCorsForAllOrigins)
+            .routes(
+                () -> {
+                  path("v1/species", () -> get(speciesController::getAll));
+                  path(
+                      "v1/sightings",
+                      () -> {
+                        post(sightingController::addSighting);
+                        path("{userId}", () -> get(sightingController::getSightingsOverview));
+                      });
+                  path("v1/locations", () -> get(locationsController::getLocations));
+                });
   }
 
   public Javalin javalinApp() {
     return app;
   }
-
 }

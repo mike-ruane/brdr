@@ -27,7 +27,7 @@ public class DatabaseProperties {
   }
 
   public static DatabaseProperties fromConfig(Config config) {
-    return new DatabaseProperties(config.getString("url"), config.getString("user"), config.getString("password"));
+    return new DatabaseProperties(
+        config.getString("url"), config.getString("user"), config.getString("password"));
   }
-
 }

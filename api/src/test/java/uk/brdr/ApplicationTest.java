@@ -19,8 +19,8 @@ import uk.brdr.data.daoimpl.LocationsDaoImpl;
 import uk.brdr.data.daoimpl.SightingsDaoImpl;
 import uk.brdr.data.daoimpl.SpeciesDaoImpl;
 import uk.brdr.data.repositories.SightingsOverviewImpl;
-import uk.brdr.model.Sighting;
 import uk.brdr.model.Species;
+import uk.brdr.model.sighting.Sighting;
 
 public class ApplicationTest {
 
@@ -31,35 +31,43 @@ public class ApplicationTest {
   SpeciesController speciesController = new SpeciesController(speciesDao);
   SightingController sightingController = new SightingController(sightingsDao, sightingsOverview);
   LocationsController locationsController = new LocationsController(locationsDao);
-  Javalin app = new Application(speciesController, sightingController, locationsController).javalinApp();
+  Javalin app =
+      new Application(speciesController, sightingController, locationsController).javalinApp();
 
   @Test
   public void getAllSpecies() throws IOException {
     var speciesJson = getClass().getClassLoader().getResourceAsStream("species.json");
-    List<Species> species = new ObjectMapper().readValue(speciesJson, new TypeReference<List<Species>>() {});
+    List<Species> species =
+        new ObjectMapper().readValue(speciesJson, new TypeReference<List<Species>>() {});
     var expected = new JavalinJackson().toJsonString(species);
     when(speciesDao.getAll()).thenReturn(species);
-    TestUtil.test(app, (server, client) -> {
-      assertThat(client.get("/v1/species").code()).isEqualTo(200);
-      assertThat(client.get("/v1/species").body().string()).isEqualTo(expected);
-    });
+    TestUtil.test(
+        app,
+        (server, client) -> {
+          assertThat(client.get("/v1/species").code()).isEqualTo(200);
+          assertThat(client.get("/v1/species").body().string()).isEqualTo(expected);
+        });
   }
 
   @Test
   public void returnsServerErrorWhenDaoFails() {
     when(speciesDao.getAll()).thenThrow(new RuntimeException());
-    TestUtil.test(app, (server, client) -> {
-      assertThat(client.get("/v1/species").code()).isEqualTo(503);
-      assertThat(client.get("/v1/species").body().string()).isEqualTo("Service unavailable");
-    });
+    TestUtil.test(
+        app,
+        (server, client) -> {
+          assertThat(client.get("/v1/species").code()).isEqualTo(503);
+          assertThat(client.get("/v1/species").body().string()).isEqualTo("Service unavailable");
+        });
   }
 
   @Test
   public void addSighting() {
     var sighting = new Sighting(0, 123, 123, 535, Date.valueOf("2022-01-29"));
-    var body = "{\"userId\": 123, \"speciesId\": 123, \"locationId\": \"535\", \"date\": \"2022-01-29\"}";
+    var body =
+        "{\"userId\": 123, \"speciesId\": 123, \"locationId\": \"535\", \"date\": \"2022-01-29\"}";
     doNothing().when(sightingsDao).addSighting(sighting);
-    TestUtil.test(app, (server, client) -> 
-      assertThat(client.post("/v1/sightings", body).code()).isEqualTo(201));
+    TestUtil.test(
+        app,
+        (server, client) -> assertThat(client.post("/v1/sightings", body).code()).isEqualTo(201));
   }
 }

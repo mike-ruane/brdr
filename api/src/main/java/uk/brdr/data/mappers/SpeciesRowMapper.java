@@ -19,7 +19,6 @@ public class SpeciesRowMapper implements RowMapper<Species> {
         rs.getString("family"),
         rs.getString("family_order"),
         rs.getString("breeding_population"),
-        rs.getString("winter_visitor_population")
-    );
+        rs.getString("winter_visitor_population"));
   }
 }
