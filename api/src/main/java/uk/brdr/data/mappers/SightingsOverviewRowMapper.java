@@ -12,7 +12,7 @@ public class SightingsOverviewRowMapper implements RowMapper<SightingOverview> {
   public SightingOverview map(ResultSet rs, StatementContext ctx) throws SQLException {
     return new SightingOverview(
         rs.getInt("location_id"),
-        rs.getInt("country_id"),
+        rs.getInt("county_id"),
         rs.getInt("region_id"),
         rs.getInt("country_id"),
         rs.getInt("species_id"),

@@ -1,15 +1,17 @@
 package uk.brdr.model.sighting;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 public class SightingByLocation {
 
   public String name;
-  public double lat;
-  public double lon;
+  public BigDecimal lat;
+  public BigDecimal lon;
   public List<SightingOverview> sightings;
 
-  public SightingByLocation(String name, double lat, double lon,
+  public SightingByLocation(String name, BigDecimal lat, BigDecimal lon,
       List<SightingOverview> sightings) {
     this.name = name;
     this.lat = lat;
@@ -21,11 +23,11 @@ public class SightingByLocation {
     return name;
   }
 
-  public double getLat() {
+  public BigDecimal getLat() {
     return lat;
   }
 
-  public double getLon() {
+  public BigDecimal getLon() {
     return lon;
   }
 
@@ -37,15 +39,44 @@ public class SightingByLocation {
     this.name = name;
   }
 
-  public void setLat(double lat) {
+  public void setLat(BigDecimal lat) {
     this.lat = lat;
   }
 
-  public void setLon(double lon) {
+  public void setLon(BigDecimal lon) {
     this.lon = lon;
   }
 
   public void setSightings(List<SightingOverview> sightings) {
     this.sightings = sightings;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    SightingByLocation that = (SightingByLocation) o;
+    return Objects.equals(name, that.name) && Objects.equals(lat, that.lat)
+        && Objects.equals(lon, that.lon) && Objects.equals(sightings,
+        that.sightings);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, lat, lon, sightings);
+  }
+
+  @Override
+  public String toString() {
+    return "SightingByLocation{" +
+        "name='" + name + '\'' +
+        ", lat=" + lat +
+        ", lon=" + lon +
+        ", sightings=" + sightings +
+        '}';
   }
 }

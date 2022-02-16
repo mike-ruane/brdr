@@ -1,6 +1,8 @@
 package uk.brdr.data.daoimpl;
 
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.RowMapper;
@@ -37,9 +39,9 @@ public class LocationsDaoImpl implements LocationsDao {
   @Override
   public List<LocationGrouping> getLocationGrouping(LocationType locationType) {
     try {
+      var sql = String.format("SELECT * FROM %s", locationType.toString());
       return jdbi.withHandle(handle ->
-          handle.createQuery("SELECT * FROM :location")
-              .bind("location", locationType.toString())
+          handle.createQuery(sql)
               .map(locationGroupingRowMapper)
               .list()
       );

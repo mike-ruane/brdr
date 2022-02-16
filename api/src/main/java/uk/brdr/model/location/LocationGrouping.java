@@ -1,15 +1,16 @@
 package uk.brdr.model.location;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class LocationGrouping {
 
   public int id;
   public String name;
-  public double lat;
-  public double lon;
+  public BigDecimal lat;
+  public BigDecimal lon;
 
-  public LocationGrouping(int id, String name, double lat, double lon) {
+  public LocationGrouping(int id, String name, BigDecimal lat, BigDecimal lon) {
     this.id = id;
     this.name = name;
     this.lat = lat;
@@ -27,11 +28,11 @@ public class LocationGrouping {
     return name;
   }
 
-  public double getLat() {
+  public BigDecimal getLat() {
     return lat;
   }
 
-  public double getLon() {
+  public BigDecimal getLon() {
     return lon;
   }
 
@@ -43,11 +44,11 @@ public class LocationGrouping {
     this.name = name;
   }
 
-  public void setLat(double lat) {
+  public void setLat(BigDecimal lat) {
     this.lat = lat;
   }
 
-  public void setLon(double lon) {
+  public void setLon(BigDecimal lon) {
     this.lon = lon;
   }
 
@@ -60,8 +61,8 @@ public class LocationGrouping {
       return false;
     }
     LocationGrouping that = (LocationGrouping) o;
-    return id == that.id && Double.compare(that.lat, lat) == 0
-        && Double.compare(that.lon, lon) == 0 && Objects.equals(name, that.name);
+    return id == that.id && Objects.equals(name, that.name) && Objects.equals(lat,
+        that.lat) && Objects.equals(lon, that.lon);
   }
 
   @Override

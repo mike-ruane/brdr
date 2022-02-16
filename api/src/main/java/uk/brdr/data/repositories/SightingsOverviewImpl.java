@@ -32,11 +32,11 @@ public class SightingsOverviewImpl implements SightingsOverview {
 
   private Map<Integer, List<SightingOverview>> groupSightings(List<SightingOverview> sightings, LocationType locationType) {
     switch (locationType) {
-      case COUNTY:
+      case COUNTIES:
         return sightings.stream().collect(groupingBy(SightingOverview::getCountyId));
-      case REGION:
+      case REGIONS:
         return sightings.stream().collect(groupingBy(SightingOverview::getRegionId));
-      case COUNTRY:
+      case COUNTRIES:
         return sightings.stream().collect(groupingBy(SightingOverview::getCountryId));
       default:
         return sightings.stream().collect(groupingBy(SightingOverview::getLocationId));
@@ -48,7 +48,7 @@ public class SightingsOverviewImpl implements SightingsOverview {
       List<LocationGrouping> locations) {
     return groupedSightings
         .entrySet().stream().map(entry -> {
-          var locationGrouping = locations.stream().filter(county -> county.id == entry.getKey()).findFirst().orElseThrow();
+          var locationGrouping = locations.stream().filter(location -> location.id == entry.getKey()).findFirst().orElseThrow();
           return new SightingByLocation(locationGrouping.name, locationGrouping.lat, locationGrouping.lon, entry.getValue());
         }).collect(Collectors.toList());
   }

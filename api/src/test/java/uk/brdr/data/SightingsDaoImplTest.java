@@ -35,14 +35,14 @@ public class SightingsDaoImplTest {
         + "('Locustella fluviatilis', 'River Warbler', "
         + "'freshwater', 'Locustella', 'Locustellidae', 'Passeriformes')");
     insertSpecies.execute();
-    var insertCounty = conn.prepareStatement("INSERT INTO counties (name) values ('Lancashire')");
+    var insertCounty = conn.prepareStatement("INSERT INTO counties (name, lat, lon) values ('Lancashire', 23.4, 54.5)");
     insertCounty.execute();
-    var insertRegion = conn.prepareStatement("INSERT INTO regions (name) values ('North West')");
+    var insertRegion = conn.prepareStatement("INSERT INTO regions (name, lat, lon) values ('North West', 23.4, 54.5)");
     insertRegion.execute();
-    var insertCountry = conn.prepareStatement("INSERT INTO countries (name) values ('England')");
+    var insertCountry = conn.prepareStatement("INSERT INTO countries (name, lat, lon) values ('England', 23.4, 54.5)");
     insertCountry.execute();
     var insertLocation = conn.prepareStatement(
-        "INSERT INTO locations (location, county_id, region_id, country_id, lat, lon) "
+        "INSERT INTO locations (name, county_id, region_id, country_id, lat, lon) "
             + "values ('Accrington', 1, 1, 1, 45.34, -1.45)");
     insertLocation.execute();
   }

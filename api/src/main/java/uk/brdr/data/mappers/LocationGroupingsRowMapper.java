@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
-import uk.brdr.model.location.Location;
 import uk.brdr.model.location.LocationGrouping;
 
 public class LocationGroupingsRowMapper implements RowMapper<LocationGrouping> {
@@ -14,8 +13,8 @@ public class LocationGroupingsRowMapper implements RowMapper<LocationGrouping> {
     return new LocationGrouping(
         rs.getInt("id"),
         rs.getString("name"),
-        rs.getDouble("lat"),
-        rs.getDouble("lon")
+        rs.getBigDecimal("lat"),
+        rs.getBigDecimal("lon")
     );
   }
 }

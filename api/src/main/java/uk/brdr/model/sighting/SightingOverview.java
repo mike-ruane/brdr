@@ -110,5 +110,17 @@ public class SightingOverview {
     return Objects.hash(locationId, countyId, regionId, countryId, speciesId, species, genus, date);
   }
 
-
+  @Override
+  public String toString() {
+    return "SightingOverview{" +
+        "locationId=" + locationId +
+        ", countyId=" + countyId +
+        ", regionId=" + regionId +
+        ", countryId=" + countryId +
+        ", speciesId=" + speciesId +
+        ", species='" + species + '\'' +
+        ", genus='" + genus + '\'' +
+        ", date=" + date +
+        '}';
+  }
 }
