@@ -11,8 +11,8 @@ public class SightingByLocation {
   public BigDecimal lon;
   public List<SightingOverview> sightings;
 
-  public SightingByLocation(String name, BigDecimal lat, BigDecimal lon,
-      List<SightingOverview> sightings) {
+  public SightingByLocation(
+      String name, BigDecimal lat, BigDecimal lon, List<SightingOverview> sightings) {
     this.name = name;
     this.lat = lat;
     this.lon = lon;
@@ -60,9 +60,10 @@ public class SightingByLocation {
       return false;
     }
     SightingByLocation that = (SightingByLocation) o;
-    return Objects.equals(name, that.name) && Objects.equals(lat, that.lat)
-        && Objects.equals(lon, that.lon) && Objects.equals(sightings,
-        that.sightings);
+    return Objects.equals(name, that.name)
+        && Objects.equals(lat, that.lat)
+        && Objects.equals(lon, that.lon)
+        && Objects.equals(sightings, that.sightings);
   }
 
   @Override
@@ -72,11 +73,16 @@ public class SightingByLocation {
 
   @Override
   public String toString() {
-    return "SightingByLocation{" +
-        "name='" + name + '\'' +
-        ", lat=" + lat +
-        ", lon=" + lon +
-        ", sightings=" + sightings +
-        '}';
+    return "SightingByLocation{"
+        + "name='"
+        + name
+        + '\''
+        + ", lat="
+        + lat
+        + ", lon="
+        + lon
+        + ", sightings="
+        + sightings
+        + '}';
   }
 }

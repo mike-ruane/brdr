@@ -70,8 +70,11 @@ public class Sighting {
       return false;
     }
     Sighting sighting = (Sighting) o;
-    return id == sighting.id && userId == sighting.userId && speciesId == sighting.speciesId
-        && locationId == sighting.locationId && Objects.equals(date, sighting.date);
+    return id == sighting.id
+        && userId == sighting.userId
+        && speciesId == sighting.speciesId
+        && locationId == sighting.locationId
+        && Objects.equals(date, sighting.date);
   }
 
   @Override
@@ -81,12 +84,17 @@ public class Sighting {
 
   @Override
   public String toString() {
-    return "Sighting{" +
-        "id=" + id +
-        ", userId=" + userId +
-        ", speciesId=" + speciesId +
-        ", locationId=" + locationId +
-        ", date=" + date +
-        '}';
+    return "Sighting{"
+        + "id="
+        + id
+        + ", userId="
+        + userId
+        + ", speciesId="
+        + speciesId
+        + ", locationId="
+        + locationId
+        + ", date="
+        + date
+        + '}';
   }
 }

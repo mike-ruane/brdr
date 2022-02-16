@@ -1,6 +1,5 @@
 package uk.brdr.data;
 
-import com.typesafe.config.Config;
 import javax.sql.DataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 import uk.brdr.properties.DatabaseProperties;
@@ -24,5 +23,4 @@ public class DatabaseConfiguration {
     datasource.setPassword(databaseProperties.getPassword());
     return datasource;
   }
-
 }

@@ -17,8 +17,7 @@ public class LocationGrouping {
     this.lon = lon;
   }
 
-  public LocationGrouping() {
-  }
+  public LocationGrouping() {}
 
   public int getId() {
     return id;
@@ -61,8 +60,10 @@ public class LocationGrouping {
       return false;
     }
     LocationGrouping that = (LocationGrouping) o;
-    return id == that.id && Objects.equals(name, that.name) && Objects.equals(lat,
-        that.lat) && Objects.equals(lon, that.lon);
+    return id == that.id
+        && Objects.equals(name, that.name)
+        && Objects.equals(lat, that.lat)
+        && Objects.equals(lon, that.lon);
   }
 
   @Override
@@ -72,11 +73,16 @@ public class LocationGrouping {
 
   @Override
   public String toString() {
-    return "LocationGrouping{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", lat=" + lat +
-        ", lon=" + lon +
-        '}';
+    return "LocationGrouping{"
+        + "id="
+        + id
+        + ", name='"
+        + name
+        + '\''
+        + ", lat="
+        + lat
+        + ", lon="
+        + lon
+        + '}';
   }
 }

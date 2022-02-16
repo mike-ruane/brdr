@@ -8,6 +8,6 @@ import uk.brdr.model.location.LocationType;
 public interface LocationsDao {
 
   List<Location> getLocations();
-  List<LocationGrouping> getLocationGrouping(LocationType locationType);
 
+  List<LocationGrouping> getLocationGrouping(LocationType locationType);
 }

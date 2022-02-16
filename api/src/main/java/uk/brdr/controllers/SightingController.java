@@ -4,7 +4,6 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
 import io.javalin.http.InternalServerErrorResponse;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.data.repositories.SightingsOverview;
 import uk.brdr.model.location.LocationType;

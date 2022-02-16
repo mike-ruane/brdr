@@ -12,8 +12,8 @@ public class Location {
   public double lat;
   public double lon;
 
-  public Location(int id, String name, int countyId, int regionId, int countryId, double lat,
-      double lon) {
+  public Location(
+      int id, String name, int countyId, int regionId, int countryId, double lat, double lon) {
     this.id = id;
     this.name = name;
     this.countyId = countyId;
@@ -23,8 +23,7 @@ public class Location {
     this.lon = lon;
   }
 
-  public Location() {
-  }
+  public Location() {}
 
   public int getId() {
     return id;
@@ -91,10 +90,13 @@ public class Location {
       return false;
     }
     Location location = (Location) o;
-    return id == location.id && countyId == location.countyId && regionId == location.regionId
-        && countryId == location.countryId && Double.compare(location.lat, lat) == 0
-        && Double.compare(location.lon, lon) == 0 && Objects.equals(name,
-        location.name);
+    return id == location.id
+        && countyId == location.countyId
+        && regionId == location.regionId
+        && countryId == location.countryId
+        && Double.compare(location.lat, lat) == 0
+        && Double.compare(location.lon, lon) == 0
+        && Objects.equals(name, location.name);
   }
 
   @Override
@@ -104,14 +106,22 @@ public class Location {
 
   @Override
   public String toString() {
-    return "Location{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", countyId=" + countyId +
-        ", regionId=" + regionId +
-        ", countryId=" + countryId +
-        ", lat=" + lat +
-        ", lon=" + lon +
-        '}';
+    return "Location{"
+        + "id="
+        + id
+        + ", name='"
+        + name
+        + '\''
+        + ", countyId="
+        + countyId
+        + ", regionId="
+        + regionId
+        + ", countryId="
+        + countryId
+        + ", lat="
+        + lat
+        + ", lon="
+        + lon
+        + '}';
   }
 }

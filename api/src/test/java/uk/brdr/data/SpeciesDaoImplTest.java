@@ -3,8 +3,6 @@ package uk.brdr.data;
 import static uk.brdr.utils.DatabaseUtils.getH2DataSource;
 import static uk.brdr.utils.DatabaseUtils.loadSpecies;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.sql.DataSource;
@@ -35,6 +33,6 @@ public class SpeciesDaoImplTest {
   void getAll() {
     var speciesDaoImpl = new SpeciesDaoImpl(datasource);
     var species = speciesDaoImpl.getAll();
-    assert(!species.isEmpty());
+    assert (!species.isEmpty());
   }
 }

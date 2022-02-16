@@ -14,7 +14,7 @@ public enum LocationType {
 
   private static final Map<String, LocationType> ENUM_MAP;
 
-  LocationType (String name) {
+  LocationType(String name) {
     this.name = name;
   }
 
@@ -30,7 +30,7 @@ public enum LocationType {
     ENUM_MAP = Collections.unmodifiableMap(map);
   }
 
-  public static LocationType get (String name) {
+  public static LocationType get(String name) {
     return ENUM_MAP.get(name.toLowerCase());
   }
 }

@@ -18,7 +18,6 @@ public class SightingsOverviewRowMapper implements RowMapper<SightingOverview> {
         rs.getInt("species_id"),
         rs.getString("species"),
         rs.getString("genus"),
-        rs.getDate("date")
-    );
+        rs.getDate("date"));
   }
 }

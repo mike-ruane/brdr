@@ -18,16 +18,17 @@ public class DatabaseUtils {
     return jdbcDataSource;
   }
 
-
   public static void loadSpecies(DataSource dataSource) throws SQLException, IOException {
     var conn = dataSource.getConnection();
-    var sql = "INSERT INTO species "
-        + "(scientific_name, preferred_common_name, habitat, genus, family, family_order,"
-        + "breeding_population, winter_visitor_population)"
-        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    var sql =
+        "INSERT INTO species "
+            + "(scientific_name, preferred_common_name, habitat, genus, family, family_order,"
+            + "breeding_population, winter_visitor_population)"
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     var statement = conn.prepareStatement(sql);
 
-    BufferedReader lineReader = new BufferedReader(new FileReader("src/test/resources/species.csv"));
+    BufferedReader lineReader =
+        new BufferedReader(new FileReader("src/test/resources/species.csv"));
     String lineText;
     lineReader.readLine(); // skip header
 
@@ -60,12 +61,14 @@ public class DatabaseUtils {
 
   public static void loadLocations(DataSource dataSource) throws SQLException, IOException {
     var conn = dataSource.getConnection();
-    var sql = "INSERT INTO locations "
-        + "(name, county_id, region_id, country_id, lat, lon)"
-        + "VALUES (?, ?, ?, ?, ?, ?)";
+    var sql =
+        "INSERT INTO locations "
+            + "(name, county_id, region_id, country_id, lat, lon)"
+            + "VALUES (?, ?, ?, ?, ?, ?)";
     var statement = conn.prepareStatement(sql);
 
-    BufferedReader lineReader = new BufferedReader(new FileReader("src/test/resources/locations.csv"));
+    BufferedReader lineReader =
+        new BufferedReader(new FileReader("src/test/resources/locations.csv"));
     String lineText;
     lineReader.readLine(); // skip header
 
@@ -92,14 +95,14 @@ public class DatabaseUtils {
     conn.close();
   }
 
-  public static void loadLocationGrouping(DataSource dataSource, String location) throws SQLException, IOException {
+  public static void loadLocationGrouping(DataSource dataSource, String location)
+      throws SQLException, IOException {
     var conn = dataSource.getConnection();
-    var sql = String.format("INSERT INTO %s "
-        + "(name, lat, lon)"
-        + "VALUES (?, ?, ?)", location);
+    var sql = String.format("INSERT INTO %s " + "(name, lat, lon)" + "VALUES (?, ?, ?)", location);
     var statement = conn.prepareStatement(sql);
 
-    BufferedReader lineReader = new BufferedReader(new FileReader(String.format("src/test/resources/%s.csv", location)));
+    BufferedReader lineReader =
+        new BufferedReader(new FileReader(String.format("src/test/resources/%s.csv", location)));
     String lineText;
     lineReader.readLine(); // skip header
 

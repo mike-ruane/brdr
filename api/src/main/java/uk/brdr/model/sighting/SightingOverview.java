@@ -14,8 +14,15 @@ public class SightingOverview {
   public String genus;
   public Date date;
 
-  public SightingOverview(int locationId, int countyId, int regionId, int countryId, int speciesId,
-      String species, String genus, Date date) {
+  public SightingOverview(
+      int locationId,
+      int countyId,
+      int regionId,
+      int countryId,
+      int speciesId,
+      String species,
+      String genus,
+      Date date) {
     this.locationId = locationId;
     this.countyId = countyId;
     this.regionId = regionId;
@@ -99,9 +106,13 @@ public class SightingOverview {
       return false;
     }
     SightingOverview that = (SightingOverview) o;
-    return locationId == that.locationId && countyId == that.countyId && regionId == that.regionId
-        && countryId == that.countryId && speciesId == that.speciesId && Objects.equals(
-        species, that.species) && Objects.equals(genus, that.genus)
+    return locationId == that.locationId
+        && countyId == that.countyId
+        && regionId == that.regionId
+        && countryId == that.countryId
+        && speciesId == that.speciesId
+        && Objects.equals(species, that.species)
+        && Objects.equals(genus, that.genus)
         && Objects.equals(date, that.date);
   }
 
@@ -112,15 +123,25 @@ public class SightingOverview {
 
   @Override
   public String toString() {
-    return "SightingOverview{" +
-        "locationId=" + locationId +
-        ", countyId=" + countyId +
-        ", regionId=" + regionId +
-        ", countryId=" + countryId +
-        ", speciesId=" + speciesId +
-        ", species='" + species + '\'' +
-        ", genus='" + genus + '\'' +
-        ", date=" + date +
-        '}';
+    return "SightingOverview{"
+        + "locationId="
+        + locationId
+        + ", countyId="
+        + countyId
+        + ", regionId="
+        + regionId
+        + ", countryId="
+        + countryId
+        + ", speciesId="
+        + speciesId
+        + ", species='"
+        + species
+        + '\''
+        + ", genus='"
+        + genus
+        + '\''
+        + ", date="
+        + date
+        + '}';
   }
 }

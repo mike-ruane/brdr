@@ -14,8 +14,15 @@ public class Species {
   public String breedingPopulation;
   public String winterVisitorPopulation;
 
-  public Species(int id, String scientificName, String preferredCommonName, String habitat,
-      String genus, String family, String familyOrder, String breedingPopulation,
+  public Species(
+      int id,
+      String scientificName,
+      String preferredCommonName,
+      String habitat,
+      String genus,
+      String family,
+      String familyOrder,
+      String breedingPopulation,
       String winterVisitorPopulation) {
     this.id = id;
     this.scientificName = scientificName;
@@ -28,8 +35,7 @@ public class Species {
     this.winterVisitorPopulation = winterVisitorPopulation;
   }
 
-  public Species() {
-  }
+  public Species() {}
 
   public int getId() {
     return id;
@@ -105,17 +111,34 @@ public class Species {
 
   @Override
   public String toString() {
-    return "Species{" +
-        "id=" + id +
-        ", scientificName='" + scientificName + '\'' +
-        ", preferredCommonName='" + preferredCommonName + '\'' +
-        ", habitat='" + habitat + '\'' +
-        ", genus='" + genus + '\'' +
-        ", family='" + family + '\'' +
-        ", familyOrder='" + familyOrder + '\'' +
-        ", breedingPopulation='" + breedingPopulation + '\'' +
-        ", winterVisitorPopulation='" + winterVisitorPopulation + '\'' +
-        '}';
+    return "Species{"
+        + "id="
+        + id
+        + ", scientificName='"
+        + scientificName
+        + '\''
+        + ", preferredCommonName='"
+        + preferredCommonName
+        + '\''
+        + ", habitat='"
+        + habitat
+        + '\''
+        + ", genus='"
+        + genus
+        + '\''
+        + ", family='"
+        + family
+        + '\''
+        + ", familyOrder='"
+        + familyOrder
+        + '\''
+        + ", breedingPopulation='"
+        + breedingPopulation
+        + '\''
+        + ", winterVisitorPopulation='"
+        + winterVisitorPopulation
+        + '\''
+        + '}';
   }
 
   @Override
@@ -127,19 +150,28 @@ public class Species {
       return false;
     }
     Species species = (Species) o;
-    return id == species.id && Objects.equals(scientificName, species.scientificName)
+    return id == species.id
+        && Objects.equals(scientificName, species.scientificName)
         && Objects.equals(preferredCommonName, species.preferredCommonName)
-        && Objects.equals(habitat, species.habitat) && Objects.equals(genus,
-        species.genus) && Objects.equals(family, species.family)
-        && Objects.equals(familyOrder, species.familyOrder) && Objects.equals(
-        breedingPopulation, species.breedingPopulation) && Objects.equals(
-        winterVisitorPopulation, species.winterVisitorPopulation);
+        && Objects.equals(habitat, species.habitat)
+        && Objects.equals(genus, species.genus)
+        && Objects.equals(family, species.family)
+        && Objects.equals(familyOrder, species.familyOrder)
+        && Objects.equals(breedingPopulation, species.breedingPopulation)
+        && Objects.equals(winterVisitorPopulation, species.winterVisitorPopulation);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, scientificName, preferredCommonName, habitat, genus, family,
+    return Objects.hash(
+        id,
+        scientificName,
+        preferredCommonName,
+        habitat,
+        genus,
+        family,
         familyOrder,
-        breedingPopulation, winterVisitorPopulation);
+        breedingPopulation,
+        winterVisitorPopulation);
   }
 }

@@ -1,8 +1,6 @@
 package uk.brdr.data.daoimpl;
 
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.RowMapper;
@@ -17,7 +15,8 @@ public class LocationsDaoImpl implements LocationsDao {
 
   private final Jdbi jdbi;
   private static final RowMapper<Location> locationRowMapper = new LocationsRowMapper();
-  private static final RowMapper<LocationGrouping> locationGroupingRowMapper = new LocationGroupingsRowMapper();
+  private static final RowMapper<LocationGrouping> locationGroupingRowMapper =
+      new LocationGroupingsRowMapper();
 
   public LocationsDaoImpl(DataSource dataSource) {
     this.jdbi = Jdbi.create(dataSource);
@@ -26,11 +25,8 @@ public class LocationsDaoImpl implements LocationsDao {
   @Override
   public List<Location> getLocations() {
     try {
-      return jdbi.withHandle(handle ->
-          handle.createQuery("SELECT * FROM locations")
-              .map(locationRowMapper)
-              .list()
-      );
+      return jdbi.withHandle(
+          handle -> handle.createQuery("SELECT * FROM locations").map(locationRowMapper).list());
     } catch (Exception e) {
       throw new RuntimeException("error fetching locations from db");
     }
@@ -40,11 +36,8 @@ public class LocationsDaoImpl implements LocationsDao {
   public List<LocationGrouping> getLocationGrouping(LocationType locationType) {
     try {
       var sql = String.format("SELECT * FROM %s", locationType.toString());
-      return jdbi.withHandle(handle ->
-          handle.createQuery(sql)
-              .map(locationGroupingRowMapper)
-              .list()
-      );
+      return jdbi.withHandle(
+          handle -> handle.createQuery(sql).map(locationGroupingRowMapper).list());
     } catch (Exception e) {
       throw new RuntimeException("error fetching locations from db");
     }

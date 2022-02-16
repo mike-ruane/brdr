@@ -17,7 +17,6 @@ public class LocationsRowMapper implements RowMapper<Location> {
         rs.getInt("region_id"),
         rs.getInt("country_id"),
         rs.getDouble("lat"),
-        rs.getDouble("lon")
-    );
+        rs.getDouble("lon"));
   }
 }

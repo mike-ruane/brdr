@@ -33,5 +33,4 @@ public class Main {
     var app = new Application(speciesController, sightingsController, locationsController);
     app.javalinApp().start(port);
   }
-
 }

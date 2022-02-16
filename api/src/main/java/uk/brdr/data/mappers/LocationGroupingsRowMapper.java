@@ -11,10 +11,6 @@ public class LocationGroupingsRowMapper implements RowMapper<LocationGrouping> {
   @Override
   public LocationGrouping map(ResultSet rs, StatementContext ctx) throws SQLException {
     return new LocationGrouping(
-        rs.getInt("id"),
-        rs.getString("name"),
-        rs.getBigDecimal("lat"),
-        rs.getBigDecimal("lon")
-    );
+        rs.getInt("id"), rs.getString("name"), rs.getBigDecimal("lat"), rs.getBigDecimal("lon"));
   }
 }

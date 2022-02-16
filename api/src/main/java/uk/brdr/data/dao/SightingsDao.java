@@ -7,6 +7,6 @@ import uk.brdr.model.sighting.SightingOverview;
 public interface SightingsDao {
 
   void addSighting(Sighting sighting);
-  List<SightingOverview> getSightings(int userId);
 
+  List<SightingOverview> getSightings(int userId);
 }

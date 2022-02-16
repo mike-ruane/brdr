@@ -9,8 +9,8 @@ import uk.brdr.data.dao.LocationsDao;
 import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.model.location.LocationGrouping;
 import uk.brdr.model.location.LocationType;
-import uk.brdr.model.sighting.SightingOverview;
 import uk.brdr.model.sighting.SightingByLocation;
+import uk.brdr.model.sighting.SightingOverview;
 
 public class SightingsOverviewImpl implements SightingsOverview {
 
@@ -23,14 +23,16 @@ public class SightingsOverviewImpl implements SightingsOverview {
   }
 
   @Override
-  public List<SightingByLocation> getSightingsForUserByLocation(int userId, LocationType locationType) {
+  public List<SightingByLocation> getSightingsForUserByLocation(
+      int userId, LocationType locationType) {
     var sightings = sightingsDao.getSightings(userId);
     var locations = locationsDao.getLocationGrouping(locationType);
     var groupedSightings = groupSightings(sightings, locationType);
     return mapToSightingByLocation(groupedSightings, locations);
   }
 
-  private Map<Integer, List<SightingOverview>> groupSightings(List<SightingOverview> sightings, LocationType locationType) {
+  private Map<Integer, List<SightingOverview>> groupSightings(
+      List<SightingOverview> sightings, LocationType locationType) {
     switch (locationType) {
       case COUNTIES:
         return sightings.stream().collect(groupingBy(SightingOverview::getCountyId));
@@ -40,16 +42,25 @@ public class SightingsOverviewImpl implements SightingsOverview {
         return sightings.stream().collect(groupingBy(SightingOverview::getCountryId));
       default:
         return sightings.stream().collect(groupingBy(SightingOverview::getLocationId));
-
     }
   }
 
-  private List<SightingByLocation> mapToSightingByLocation(Map<Integer, List<SightingOverview>> groupedSightings,
-      List<LocationGrouping> locations) {
-    return groupedSightings
-        .entrySet().stream().map(entry -> {
-          var locationGrouping = locations.stream().filter(location -> location.id == entry.getKey()).findFirst().orElseThrow();
-          return new SightingByLocation(locationGrouping.name, locationGrouping.lat, locationGrouping.lon, entry.getValue());
-        }).collect(Collectors.toList());
+  private List<SightingByLocation> mapToSightingByLocation(
+      Map<Integer, List<SightingOverview>> groupedSightings, List<LocationGrouping> locations) {
+    return groupedSightings.entrySet().stream()
+        .map(
+            entry -> {
+              var locationGrouping =
+                  locations.stream()
+                      .filter(location -> location.id == entry.getKey())
+                      .findFirst()
+                      .orElseThrow();
+              return new SightingByLocation(
+                  locationGrouping.name,
+                  locationGrouping.lat,
+                  locationGrouping.lon,
+                  entry.getValue());
+            })
+        .collect(Collectors.toList());
   }
 }
