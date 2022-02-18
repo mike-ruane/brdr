@@ -6,7 +6,7 @@ import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 import uk.brdr.model.location.Location;
 
-public class LocationsRowMapper implements RowMapper<Location> {
+public class LocationRowMapper implements RowMapper<Location> {
 
   @Override
   public Location map(ResultSet rs, StatementContext ctx) throws SQLException {

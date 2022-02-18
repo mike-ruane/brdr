@@ -3,7 +3,6 @@
   let rows = [];
 
   onMount(async () => {
-    console.log("Mounting IntegrationsOverview");
     await fetch(`http://localhost:8000/v1/species`)
     .then(response => response.json())
     .then(data => {

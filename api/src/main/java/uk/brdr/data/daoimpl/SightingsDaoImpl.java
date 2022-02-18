@@ -24,6 +24,7 @@ public class SightingsDaoImpl implements SightingsDao {
 
   @Override
   public void addSighting(Sighting sighting) {
+    validateSighting(sighting);
     try {
       jdbi.useHandle(
           handle ->
@@ -37,7 +38,7 @@ public class SightingsDaoImpl implements SightingsDao {
                   .bind("user_id", sighting.getUserId())
                   .execute());
     } catch (Exception e) {
-      logger.error("failed to add sighting {}, error: {}", sighting.toString(), e.getMessage());
+      logger.error("failed to add sighting {}, error: {}", sighting, e.getMessage());
       throw new RuntimeException("failed to add sighting: {}", e.getCause());
     }
   }
@@ -65,6 +66,20 @@ public class SightingsDaoImpl implements SightingsDao {
                   .list());
     } catch (Exception e) {
       throw new RuntimeException("failed to get sighting overview", e);
+    }
+  }
+
+  private void validateSighting(Sighting sighting) {
+    var sightings = getSightings(sighting.userId);
+    var existingSighting =
+        sightings.stream()
+            .filter(
+                currSighting ->
+                    currSighting.locationId == sighting.locationId
+                        && currSighting.speciesId == sighting.speciesId)
+            .findFirst();
+    if (existingSighting.isPresent()) {
+      throw new IllegalStateException("sighting already exists");
     }
   }
 }

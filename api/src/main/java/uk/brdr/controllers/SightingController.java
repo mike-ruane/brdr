@@ -1,5 +1,6 @@
 package uk.brdr.controllers;
 
+import io.javalin.http.ConflictResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
 import io.javalin.http.InternalServerErrorResponse;
@@ -24,6 +25,8 @@ public class SightingController {
       var sighting = ctx.bodyAsClass(Sighting.class);
       sightingsDao.addSighting(sighting);
       ctx.status(HttpCode.CREATED);
+    } catch (IllegalStateException e) {
+      throw new ConflictResponse();
     } catch (Exception e) {
       throw new InternalServerErrorResponse();
     }
