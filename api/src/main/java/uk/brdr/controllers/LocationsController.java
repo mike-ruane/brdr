@@ -3,6 +3,7 @@ package uk.brdr.controllers;
 import io.javalin.http.Context;
 import io.javalin.http.ServiceUnavailableResponse;
 import uk.brdr.data.dao.LocationsDao;
+import uk.brdr.model.location.LocationType;
 
 public class LocationsController {
 
@@ -12,10 +13,20 @@ public class LocationsController {
     this.locationsDao = locationsDao;
   }
 
-  public void getLocations(Context ctx) {
+  public void getLocationsByCounty(Context ctx) {
     try {
-      var locations = locationsDao.getLocations();
+      var countyId = Integer.parseInt(ctx.pathParam("countyId"));
+      var locations = locationsDao.getLocationByCounty(countyId);
       ctx.json(locations);
+    } catch (RuntimeException e) {
+      throw new ServiceUnavailableResponse();
+    }
+  }
+
+  public void getCounties(Context ctx) {
+    try {
+      var counties = locationsDao.getCounties();
+      ctx.json(counties);
     } catch (RuntimeException e) {
       throw new ServiceUnavailableResponse();
     }

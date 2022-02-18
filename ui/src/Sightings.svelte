@@ -2,9 +2,8 @@
   import {onMount} from "svelte";
   import Map from './Map.svelte';
   import MapMarker from './MapMarker.svelte';
-  import dayjs from "dayjs";
-
-  import mbxGeocode from "@mapbox/mapbox-sdk/services/geocoding";
+  import Modal from "svelte-simple-modal";
+  import AddSightingButton from "./AddSightingButton.svelte";
 
   let sightings = [];
   let showList = false;
@@ -18,6 +17,9 @@
     })});
 </script>
 
+<Modal styleContent={{ 'height': '80vh', 'display': 'flex', 'justify-content': 'center' }}>
+  <AddSightingButton/>
+</Modal>
 <div class="container">
   <Map lat={55} lon={-2.7885207382742863} zoom={5}>
     {#each sightings as sighting}
@@ -35,7 +37,7 @@
 <style>
   .container {
     position: relative;
-    top: 0px;
+    top: 0;
     bottom: 40px;
     width: 100%;
     height: 100vh;

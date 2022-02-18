@@ -11,11 +11,11 @@
 
 </script>
 
-<p>🪶 🪶 🪶</p>
-<p> {buildMessage()} </p>
-
+<p><span>🪶 🪶 🪶</span><span> {buildMessage()} </span></p>
 <style>
   p {
+    display: inline-grid;
+    margin: auto;
     text-align: center;
   }
 </style>

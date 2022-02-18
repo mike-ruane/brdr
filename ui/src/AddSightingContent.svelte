@@ -144,8 +144,8 @@
     height: 56px;
   }
 
-  :global(input) {
-    height: 56px;
-  }
+  /*:global(input) {*/
+  /*  height: 56px;*/
+  /*}*/
 
 </style>

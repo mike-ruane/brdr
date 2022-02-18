@@ -27,7 +27,6 @@
   });
 </script>
 
-<!-- this special element will be explained in a later section -->
 <svelte:head>
   <link
       rel="stylesheet"
