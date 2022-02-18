@@ -3,7 +3,7 @@
   import { DateInput } from 'date-picker-svelte'
   import dayjs from 'dayjs';
   import { getContext } from 'svelte';
-  import Popup from './Popup.svelte';
+  import Popup from './AddSightingResponse.svelte';
 
   export let species = [];
   export let counties = []

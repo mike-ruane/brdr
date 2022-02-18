@@ -19,10 +19,10 @@
     });
   })
 
-  const showSurprise = () => open(AddSightingPopup, { counties: counties, species: species });
+  const showAddSighting = () => open(AddSightingPopup, { counties: counties, species: species });
 </script>
 
-<button on:click={showSurprise}>Add a sighting!</button>
+<button on:click={showAddSighting}>Add a sighting!</button>
 
 <style>
   button {
