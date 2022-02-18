@@ -17,7 +17,7 @@
     })});
 </script>
 
-<Modal styleContent={{ 'height': '80vh', 'display': 'flex', 'justify-content': 'center' }}>
+<Modal styleContent={{ 'display': 'flex', 'justify-content': 'center' }}>
   <AddSightingButton/>
 </Modal>
 <div class="container">

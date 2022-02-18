@@ -16,7 +16,8 @@ import uk.brdr.model.location.LocationType;
 public class LocationsDaoImpl implements LocationsDao {
 
   private final Jdbi jdbi;
-  private static final RowMapper<LocationSelect> locationSelectRowMapper = new LocationSelectRowMapper();
+  private static final RowMapper<LocationSelect> locationSelectRowMapper =
+      new LocationSelectRowMapper();
   private static final RowMapper<Location> locationRowMapper = new LocationRowMapper();
   private static final RowMapper<LocationGrouping> locationGroupingRowMapper =
       new LocationGroupingsRowMapper();
@@ -29,13 +30,16 @@ public class LocationsDaoImpl implements LocationsDao {
   public List<LocationSelect> getLocationByCounty(int countyId) {
     try {
       return jdbi.withHandle(
-          handle -> handle.createQuery(
-              "SELECT * FROM locations l "
-                  + "INNER JOIN counties c "
-                  + "ON l.county_id  = c.id "
-                  + "WHERE c.id = :id")
-              .bind("id", countyId)
-              .map(locationSelectRowMapper).list());
+          handle ->
+              handle
+                  .createQuery(
+                      "SELECT * FROM locations l "
+                          + "INNER JOIN counties c "
+                          + "ON l.county_id  = c.id "
+                          + "WHERE c.id = :id")
+                  .bind("id", countyId)
+                  .map(locationSelectRowMapper)
+                  .list());
     } catch (Exception e) {
       throw new RuntimeException("error fetching locations from db");
     }
@@ -45,8 +49,8 @@ public class LocationsDaoImpl implements LocationsDao {
   public List<LocationSelect> getCounties() {
     try {
       return jdbi.withHandle(
-          handle -> handle.createQuery("SELECT * FROM counties")
-              .map(locationSelectRowMapper).list());
+          handle ->
+              handle.createQuery("SELECT * FROM counties").map(locationSelectRowMapper).list());
     } catch (Exception e) {
       throw new RuntimeException("error fetching locations from db");
     }

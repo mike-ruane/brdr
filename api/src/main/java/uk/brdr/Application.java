@@ -29,7 +29,9 @@ public class Application {
                         post(sightingController::addSighting);
                         path("{userId}", () -> get(sightingController::getSightingsOverview));
                       });
-                  path("v1/locations/{countyId}", () -> get(locationsController::getLocationsByCounty));
+                  path(
+                      "v1/locations/{countyId}",
+                      () -> get(locationsController::getLocationsByCounty));
                   path("v1/counties", () -> get(locationsController::getCounties));
                 });
   }

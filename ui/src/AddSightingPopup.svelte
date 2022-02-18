@@ -15,7 +15,9 @@
   formData["date"] = date;
 
   const { open } = getContext('simple-modal');
-  const showResponseModal = () => open(Popup, { species: selectedSpecies, location: selectedLocation, date: date });
+  function showResponseModal(success) {
+    open(Popup, { species: selectedSpecies, location: selectedLocation, date: date, success: success });
+  }
 
   function selectSpecies(event) {
     formData["speciesId"] = event.detail.id;
@@ -47,7 +49,9 @@
     await fetch(`http://localhost:8000/v1/sightings`, settings)
     .then(response => {
       if (response.status === 201) {
-        showResponseModal();
+        showResponseModal(true);
+      } else if (response.status === 409) {
+        showResponseModal(false)
       }
     })
   }

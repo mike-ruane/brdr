@@ -49,9 +49,6 @@ public class LocationSelect {
 
   @Override
   public String toString() {
-    return "LocationSelect{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        '}';
+    return "LocationSelect{" + "id=" + id + ", name='" + name + '\'' + '}';
   }
 }

@@ -3,7 +3,6 @@ package uk.brdr.controllers;
 import io.javalin.http.Context;
 import io.javalin.http.ServiceUnavailableResponse;
 import uk.brdr.data.dao.LocationsDao;
-import uk.brdr.model.location.LocationType;
 
 public class LocationsController {
 
