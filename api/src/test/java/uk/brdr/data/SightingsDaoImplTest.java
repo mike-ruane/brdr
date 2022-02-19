@@ -7,6 +7,7 @@ import static uk.brdr.utils.DatabaseUtils.getH2DataSource;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.AfterAll;
@@ -53,7 +54,7 @@ public class SightingsDaoImplTest {
   @Test
   void insertSighting() throws SQLException {
     var sightingsDao = new SightingsDaoImpl(datasource);
-    var sighting = new Sighting(0, 1, 1, 1, Date.valueOf("2022-01-29"));
+    var sighting = new Sighting(0, 1, List.of(1), 1, Date.valueOf("2022-01-29"));
     sightingsDao.addSighting(sighting);
     var conn = datasource.getConnection();
     var statement = conn.prepareStatement("SELECT * FROM sightings");
@@ -69,7 +70,7 @@ public class SightingsDaoImplTest {
   @Test
   void failInsertSightingOnDuplicate() {
     var sightingsDao = new SightingsDaoImpl(datasource);
-    var sighting = new Sighting(0, 1, 1, 1, Date.valueOf("2022-01-29"));
+    var sighting = new Sighting(0, 1, List.of(1), 1, Date.valueOf("2022-01-29"));
     sightingsDao.addSighting(sighting);
     assertThrows(IllegalStateException.class, () -> sightingsDao.addSighting(sighting));
   }

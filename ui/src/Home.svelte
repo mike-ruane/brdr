@@ -6,15 +6,12 @@
   import AddSightingButton from "./AddSightingButton.svelte";
 
   let sightings = [];
-  let showList = false;
-  let locationToShow;
 
   onMount(async () => {
     await fetch(`http://localhost:8000/v1/sightings/1`)
     .then(response => response.json())
-    .then(data => {
-      sightings = data;
-    })});
+    .then(data => sightings = data)
+  });
 </script>
 
 <Modal styleContent={{ 'display': 'flex', 'justify-content': 'center' }}>
@@ -27,9 +24,7 @@
           lat={sighting.lat}
           lon={sighting.lon}
           count={sighting.sightings.length}
-          location={sighting.name}
-          bind:show={showList}
-          bind:listLocation={locationToShow}/>
+          sighting={sighting}/>
     {/each}
   </Map>
 </div>

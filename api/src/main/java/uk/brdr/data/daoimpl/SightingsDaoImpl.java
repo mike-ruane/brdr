@@ -25,18 +25,28 @@ public class SightingsDaoImpl implements SightingsDao {
   @Override
   public void addSighting(Sighting sighting) {
     validateSighting(sighting);
+
     try {
       jdbi.useHandle(
-          handle ->
-              handle
-                  .createUpdate(
-                      "INSERT INTO sightings (species_id, location_id, date, user_id) "
-                          + "values (:species_id, :location_id, :date, :user_id)")
-                  .bind("species_id", sighting.getSpeciesId())
-                  .bind("location_id", sighting.getLocationId())
-                  .bind("date", sighting.getDate())
-                  .bind("user_id", sighting.getUserId())
-                  .execute());
+          handle -> {
+            var preparedBatch =
+                handle.prepareBatch(
+                    "INSERT INTO sightings "
+                        + "(species_id, location_id, user_id, date) "
+                        + "values (:species_id, :location_id, :user_id, :date)");
+
+            sighting
+                .getSpecies()
+                .forEach(
+                    species ->
+                        preparedBatch
+                            .bind("species_id", species.intValue())
+                            .bind("location_id", sighting.getLocationId())
+                            .bind("user_id", sighting.getUserId())
+                            .bind("date", sighting.getDate())
+                            .add());
+            preparedBatch.execute();
+          });
     } catch (Exception e) {
       logger.error("failed to add sighting {}, error: {}", sighting, e.getMessage());
       throw new RuntimeException("failed to add sighting: {}", e.getCause());
@@ -75,8 +85,8 @@ public class SightingsDaoImpl implements SightingsDao {
         sightings.stream()
             .filter(
                 currSighting ->
-                    currSighting.locationId == sighting.locationId
-                        && currSighting.speciesId == sighting.speciesId)
+                    currSighting.getLocationId() == sighting.getLocationId()
+                        && sighting.getSpecies().contains(currSighting.getSpeciesId()))
             .findFirst();
     if (existingSighting.isPresent()) {
       throw new IllegalStateException("sighting already exists");

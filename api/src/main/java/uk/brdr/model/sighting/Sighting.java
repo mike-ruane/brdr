@@ -1,20 +1,21 @@
 package uk.brdr.model.sighting;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Sighting {
 
   public int id;
   public int userId;
-  public int speciesId;
+  public List<Integer> species;
   public int locationId;
   public Date date;
 
-  public Sighting(int id, int userId, int speciesId, int locationId, Date date) {
+  public Sighting(int id, int userId, List<Integer> species, int locationId, Date date) {
     this.id = id;
     this.userId = userId;
-    this.speciesId = speciesId;
+    this.species = species;
     this.locationId = locationId;
     this.date = date;
   }
@@ -29,8 +30,8 @@ public class Sighting {
     return userId;
   }
 
-  public int getSpeciesId() {
-    return speciesId;
+  public List<Integer> getSpecies() {
+    return species;
   }
 
   public int getLocationId() {
@@ -45,12 +46,12 @@ public class Sighting {
     this.id = id;
   }
 
-  public void setUser_id(int userId) {
+  public void setUserId(int userId) {
     this.userId = userId;
   }
 
-  public void setSpeciesId(int speciesId) {
-    this.speciesId = speciesId;
+  public void setSpecies(List<Integer> species) {
+    this.species = species;
   }
 
   public void setLocationId(int locationId) {
@@ -72,14 +73,14 @@ public class Sighting {
     Sighting sighting = (Sighting) o;
     return id == sighting.id
         && userId == sighting.userId
-        && speciesId == sighting.speciesId
         && locationId == sighting.locationId
+        && Objects.equals(species, sighting.species)
         && Objects.equals(date, sighting.date);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userId, speciesId, locationId, date);
+    return Objects.hash(id, userId, species, locationId, date);
   }
 
   @Override
@@ -89,8 +90,8 @@ public class Sighting {
         + id
         + ", userId="
         + userId
-        + ", speciesId="
-        + speciesId
+        + ", species="
+        + species
         + ", locationId="
         + locationId
         + ", date="

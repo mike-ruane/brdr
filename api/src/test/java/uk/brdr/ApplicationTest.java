@@ -62,9 +62,9 @@ public class ApplicationTest {
 
   @Test
   public void addSighting() {
-    var sighting = new Sighting(0, 123, 123, 535, Date.valueOf("2022-01-29"));
+    var sighting = new Sighting(0, 123, List.of(123), 535, Date.valueOf("2022-01-29"));
     var body =
-        "{\"userId\": 123, \"speciesId\": 123, \"locationId\": \"535\", \"date\": \"2022-01-29\"}";
+        "{\"userId\": 123, \"species\": [123], \"locationId\": \"535\", \"date\": \"2022-01-29\"}";
     doNothing().when(sightingsDao).addSighting(sighting);
     TestUtil.test(
         app,

@@ -1,5 +1,5 @@
 <script>
-	import Sightings from "./Sightings.svelte";
+	import Sightings from "./Home.svelte";
 </script>
 
 <Sightings/>
