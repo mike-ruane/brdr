@@ -1,15 +1,15 @@
 <script>
   import Select from "svelte-select";
-  import { DateInput } from 'date-picker-svelte'
+  import {DateInput} from 'date-picker-svelte'
   import dayjs from 'dayjs';
-  import { getContext } from 'svelte';
+  import {getContext} from 'svelte';
   import Popup from './AddSightingResponse.svelte';
 
   export let species = [];
   export let counties = []
   let locations = [];
   export let date = new Date();
-  let selectedSpecies = "";
+  let selectedSpecies = [];
   let selectedLocation = "";
   let formData = {};
   formData["date"] = date;
@@ -20,8 +20,13 @@
   }
 
   function selectSpecies(event) {
-    formData["speciesId"] = event.detail.id;
-    selectedSpecies = event.detail.preferredCommonName;
+    if (event.detail) {
+      formData['species'] = event.detail.map(item => item.id);
+      selectedSpecies = event.detail.map(item => item.preferredCommonName)
+    } else {
+      formData['species'] = []
+    }
+    console.log(formData['species'])
   }
 
   async function selectCounty(event) {
@@ -66,6 +71,7 @@
         optionIdentifier="id"
         labelIdentifier="preferredCommonName"
         placeholder="enter species..."
+        isMulti="true"
         on:select={selectSpecies}
     />
   </div>

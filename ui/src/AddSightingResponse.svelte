@@ -7,7 +7,13 @@
   export let success;
 
   function buildSuccessMessage() {
-    return `Added your sighting of ${species} in ${location} on ${dayjs(date).format('ddd MMM D, YYYY')}`
+    if (species.length === 1) {
+      return `Added your sighting of ${species} in ${location} on ${dayjs(date).format(
+          'ddd MMM D, YYYY')}`
+    } else {
+      return `Added the following sightings in ${location} on ${dayjs(date).format(
+          'ddd MMM D, YYYY')}:\n${species.join('\n')}`
+    }
   }
 
   function buildDuplicateMessage() {

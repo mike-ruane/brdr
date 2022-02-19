@@ -8,12 +8,11 @@
   export let lat;
   export let lon;
   export let count;
-  export let show = false;
-  export let location;
-  export let listLocation="";
+  export let sighting = {};
+  let tooltipId = `${sighting.name}-tooltip`
 
-  const newDiv = document.createElement("div");
-  newDiv.id = location;
+  const newDiv = document.createElement('div');
+  newDiv.id = sighting.name;
   newDiv.style.borderRadius = `50%`;
   newDiv.style.width = `18px`;
   newDiv.style.height = `18px`;
@@ -25,14 +24,29 @@
 
   const newContent = document.createTextNode(count);
   newDiv.appendChild(newContent);
-  newDiv.addEventListener('click', (e) => {
-    if (!show) {
-      show = true
-    }
-    listLocation = e.target.id;
+
+  const list = document.createElement('ul');
+  list.style.fontFamily = `'Courier New', monospace`;
+  list.style.listStyleType = `none`;
+  list.style.textAlign = `left`;
+  list.style.padding = `0`;
+  list.style.margin = `0`;
+  sighting.sightings.forEach(function (arrayItem) {
+    const listEl = document.createElement('li');
+    listEl.appendChild(document.createTextNode(arrayItem.species));
+    list.appendChild(listEl);
   });
 
+  const popup = new mapbox.Popup({ offset: 25 }).setDOMContent(list)
   const marker = new mapbox.Marker(newDiv)
   .setLngLat([lon, lat])
+  .setPopup(popup)
   .addTo(map);
 </script>
+
+<style>
+  :global(.mapboxgl-popup-content) {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+</style>

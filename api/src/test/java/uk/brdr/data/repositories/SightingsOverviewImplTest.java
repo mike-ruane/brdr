@@ -51,13 +51,8 @@ public class SightingsOverviewImplTest {
   void getSightingsByLocation() {
     var sightings =
         List.of(
-            new Sighting(0, 1, 23, 8, Date.valueOf("2022-02-15")),
-            new Sighting(0, 1, 64, 56, Date.valueOf("2022-02-15")),
-            new Sighting(0, 1, 13, 56, Date.valueOf("2022-02-15")),
-            new Sighting(0, 1, 78, 56, Date.valueOf("2022-02-15")),
-            new Sighting(0, 1, 12, 8, Date.valueOf("2022-02-15")),
-            new Sighting(0, 1, 5, 8, Date.valueOf("2022-02-15")),
-            new Sighting(0, 1, 45, 8, Date.valueOf("2022-02-15")));
+            new Sighting(0, 1, List.of(23, 12, 5, 45), 8, Date.valueOf("2022-02-15")),
+            new Sighting(0, 1, List.of(64, 13, 78), 56, Date.valueOf("2022-02-15")));
 
     sightingsDao = new SightingsDaoImpl(datasource);
     locationsDao = new LocationsDaoImpl(datasource);
