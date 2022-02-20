@@ -8,15 +8,16 @@ import io.javalin.Javalin;
 import io.javalin.core.JavalinConfig;
 import uk.brdr.controllers.LocationsController;
 import uk.brdr.controllers.SightingController;
-import uk.brdr.controllers.SpeciesController;
 import uk.brdr.controllers.UserController;
+import uk.brdr.handlers.JwtCookieHandler;
+import uk.brdr.managers.TokenManager;
 
 public class Application {
 
   private final Javalin app;
 
   public Application(
-      SpeciesController speciesController,
+      TokenManager tokenManager,
       SightingController sightingController,
       LocationsController locationsController,
       UserController userController) {
@@ -24,12 +25,11 @@ public class Application {
         Javalin.create(JavalinConfig::enableCorsForAllOrigins)
             .routes(
                 () -> {
-                  path("v1/species", () -> get(speciesController::getAll));
                   path(
                       "v1/sightings",
                       () -> {
                         post(sightingController::addSighting);
-                        path("{userId}", () -> get(sightingController::getSightingsOverview));
+                        get(sightingController::getSightings);
                       });
                   path(
                       "v1/locations/{countyId}",
@@ -39,6 +39,8 @@ public class Application {
                   path("v1/login", () -> post(userController::login));
                   path("v1/user/validate", () -> get(userController::validate));
                 });
+
+    app.before("v1/sightings", JwtCookieHandler.createCookieDecodeHandler(tokenManager));
   }
 
   public Javalin javalinApp() {

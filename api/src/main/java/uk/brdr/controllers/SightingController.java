@@ -5,25 +5,23 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
 import io.javalin.http.InternalServerErrorResponse;
 import java.util.Optional;
-import uk.brdr.data.dao.SightingsDao;
-import uk.brdr.data.repositories.SightingsOverview;
+import uk.brdr.handlers.JwtCookieHandler;
 import uk.brdr.model.location.LocationType;
 import uk.brdr.model.sighting.Sighting;
+import uk.brdr.services.SightingsService;
 
 public class SightingController {
 
-  private final SightingsDao sightingsDao;
-  private final SightingsOverview sightingsOverview;
+  private final SightingsService sightingsService;
 
-  public SightingController(SightingsDao sightingsDao, SightingsOverview sightingsOverview) {
-    this.sightingsDao = sightingsDao;
-    this.sightingsOverview = sightingsOverview;
+  public SightingController(SightingsService sightingsService) {
+    this.sightingsService = sightingsService;
   }
 
   public void addSighting(Context ctx) {
     try {
       var sighting = ctx.bodyAsClass(Sighting.class);
-      sightingsDao.addSighting(sighting);
+      sightingsService.addSighting(sighting);
       ctx.status(HttpCode.CREATED);
     } catch (IllegalStateException e) {
       throw new ConflictResponse();
@@ -32,11 +30,11 @@ public class SightingController {
     }
   }
 
-  public void getSightingsOverview(Context ctx) {
+  public void getSightings(Context ctx) {
     try {
-      var userId = Integer.parseInt(ctx.pathParam("userId"));
+      var userId = Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer());
       var locationType = getLocationTypeQueryParam(ctx);
-      var sightings = sightingsOverview.getSightingsForUserByLocation(userId, locationType);
+      var sightings = sightingsService.getSightingsForUserByLocation(userId, locationType);
       ctx.json(sightings);
     } catch (RuntimeException e) {
       throw new InternalServerErrorResponse("");

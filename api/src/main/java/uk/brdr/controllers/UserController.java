@@ -47,5 +47,4 @@ public class UserController {
     var userId = Integer.parseInt(jwt.getIssuer());
     ctx.json(userId).status(HttpCode.OK);
   }
-
 }

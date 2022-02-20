@@ -9,5 +9,4 @@ public interface TokenManager {
   String issueToken(User user);
 
   Optional<DecodedJWT> verifyToken(String token);
-
 }

@@ -7,5 +7,4 @@ public interface UserService {
   void save(User user);
 
   String login(User user);
-
 }

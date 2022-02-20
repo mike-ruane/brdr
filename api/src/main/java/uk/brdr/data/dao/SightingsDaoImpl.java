@@ -1,11 +1,10 @@
-package uk.brdr.data.daoimpl;
+package uk.brdr.data.dao;
 
 import java.util.List;
 import javax.sql.DataSource;
 import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.data.mappers.SightingsOverviewRowMapper;
 import uk.brdr.model.sighting.Sighting;
 import uk.brdr.model.sighting.SightingOverview;

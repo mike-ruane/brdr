@@ -4,6 +4,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.javalin.http.InternalServerErrorResponse;
+import io.javalin.http.UnauthorizedResponse;
 import java.util.Optional;
 import uk.brdr.managers.TokenManager;
 
@@ -28,9 +29,10 @@ public class JwtCookieHandler {
   }
 
   public static Handler createCookieDecodeHandler(TokenManager tokenManager) {
-    return context -> getTokenFromCookie(context)
-        .flatMap(tokenManager::verifyToken)
-        .ifPresent(jwt -> addDecodedToContext(context, jwt));
+    return context -> {
+      var token = getTokenFromCookie(context).orElseThrow(UnauthorizedResponse::new);
+      var decodedJWT = tokenManager.verifyToken(token).orElseThrow(UnauthorizedResponse::new);
+      addDecodedToContext(context, decodedJWT);
+    };
   }
-
 }

@@ -1,4 +1,4 @@
-package uk.brdr.data.repositories;
+package uk.brdr.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.brdr.utils.DatabaseUtils.getH2DataSource;
@@ -13,20 +13,20 @@ import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import uk.brdr.data.dao.LocationsDao;
+import uk.brdr.data.dao.LocationsDaoImpl;
 import uk.brdr.data.dao.SightingsDao;
-import uk.brdr.data.daoimpl.LocationsDaoImpl;
-import uk.brdr.data.daoimpl.SightingsDaoImpl;
+import uk.brdr.data.dao.SightingsDaoImpl;
 import uk.brdr.model.location.LocationType;
 import uk.brdr.model.sighting.Sighting;
 import uk.brdr.model.sighting.SightingByLocation;
 import uk.brdr.model.sighting.SightingOverview;
 import uk.brdr.utils.DatabaseUtils;
 
-public class SightingsOverviewImplTest {
+public class SightingsServiceImplTest {
 
   static DataSource datasource = getH2DataSource();
   SightingsDao sightingsDao;
-  SightingsOverview sightingsOverview;
+  SightingsService sightingsService;
   LocationsDao locationsDao;
 
   @BeforeAll
@@ -56,11 +56,11 @@ public class SightingsOverviewImplTest {
 
     sightingsDao = new SightingsDaoImpl(datasource);
     locationsDao = new LocationsDaoImpl(datasource);
-    sightingsOverview = new SightingsOverviewImpl(sightingsDao, locationsDao);
+    sightingsService = new SightingsServiceImpl(sightingsDao, locationsDao);
 
     sightings.forEach(sightingsDao::addSighting);
     var sightingsByLocation =
-        sightingsOverview.getSightingsForUserByLocation(1, LocationType.LOCATIONS);
+        sightingsService.getSightingsForUserByLocation(1, LocationType.LOCATIONS);
     var expected =
         List.of(
             new SightingByLocation(

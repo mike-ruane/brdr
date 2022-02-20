@@ -1,10 +1,9 @@
-package uk.brdr.data.daoimpl;
+package uk.brdr.data.dao;
 
 import java.util.List;
 import javax.sql.DataSource;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.RowMapper;
-import uk.brdr.data.dao.LocationsDao;
 import uk.brdr.data.mappers.LocationGroupingsRowMapper;
 import uk.brdr.data.mappers.LocationRowMapper;
 import uk.brdr.data.mappers.LocationSelectRowMapper;

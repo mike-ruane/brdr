@@ -1,7 +1,5 @@
 package uk.brdr.services;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import io.javalin.http.BadRequestResponse;
 import uk.brdr.data.dao.UserDao;
 import uk.brdr.managers.TokenManager;
