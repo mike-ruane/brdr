@@ -9,6 +9,7 @@ import io.javalin.core.JavalinConfig;
 import uk.brdr.controllers.LocationsController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
+import uk.brdr.controllers.UserController;
 
 public class Application {
 
@@ -17,7 +18,8 @@ public class Application {
   public Application(
       SpeciesController speciesController,
       SightingController sightingController,
-      LocationsController locationsController) {
+      LocationsController locationsController,
+      UserController userController) {
     app =
         Javalin.create(JavalinConfig::enableCorsForAllOrigins)
             .routes(
@@ -33,6 +35,8 @@ public class Application {
                       "v1/locations/{countyId}",
                       () -> get(locationsController::getLocationsByCounty));
                   path("v1/counties", () -> get(locationsController::getCounties));
+                  path("v1/login", () -> post(userController::login));
+                  path("v1/user/validate", () -> get(userController::validate));
                 });
   }
 

@@ -25,7 +25,6 @@ public class SightingsDaoImpl implements SightingsDao {
   @Override
   public void addSighting(Sighting sighting) {
     validateSighting(sighting);
-
     try {
       jdbi.useHandle(
           handle -> {
@@ -49,7 +48,7 @@ public class SightingsDaoImpl implements SightingsDao {
           });
     } catch (Exception e) {
       logger.error("failed to add sighting {}, error: {}", sighting, e.getMessage());
-      throw new RuntimeException("failed to add sighting: {}", e.getCause());
+      throw e;
     }
   }
 
