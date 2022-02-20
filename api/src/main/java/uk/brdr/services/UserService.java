@@ -1,22 +1,11 @@
 package uk.brdr.services;
 
-import java.util.Optional;
-import uk.brdr.data.dao.UserDao;
 import uk.brdr.model.User;
 
-public class UserService {
+public interface UserService {
 
-  private final UserDao userDao;
+  void save(User user);
 
-  public UserService(UserDao userDao) {
-    this.userDao = userDao;
-  }
+  String login(User user);
 
-  public void save(User user) {
-    userDao.addUser(user);
-  }
-
-  public Optional<User> findByEmail(String email) {
-    return userDao.findByEmail(email);
-  }
 }

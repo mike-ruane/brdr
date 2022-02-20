@@ -35,6 +35,7 @@ public class Application {
                       "v1/locations/{countyId}",
                       () -> get(locationsController::getLocationsByCounty));
                   path("v1/counties", () -> get(locationsController::getCounties));
+                  path("v1/register", () -> post(userController::register));
                   path("v1/login", () -> post(userController::login));
                   path("v1/user/validate", () -> get(userController::validate));
                 });
