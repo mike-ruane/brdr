@@ -1,11 +1,10 @@
-package uk.brdr.data.daoimpl;
+package uk.brdr.data.dao;
 
 import java.util.List;
 import javax.sql.DataSource;
 import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.data.mappers.SightingsOverviewRowMapper;
 import uk.brdr.model.sighting.Sighting;
 import uk.brdr.model.sighting.SightingOverview;
@@ -25,7 +24,6 @@ public class SightingsDaoImpl implements SightingsDao {
   @Override
   public void addSighting(Sighting sighting) {
     validateSighting(sighting);
-
     try {
       jdbi.useHandle(
           handle -> {
@@ -49,7 +47,7 @@ public class SightingsDaoImpl implements SightingsDao {
           });
     } catch (Exception e) {
       logger.error("failed to add sighting {}, error: {}", sighting, e.getMessage());
-      throw new RuntimeException("failed to add sighting: {}", e.getCause());
+      throw e;
     }
   }
 

@@ -14,6 +14,8 @@ public class User {
     this.password = password;
   }
 
+  public User() {}
+
   public int getId() {
     return id;
   }
@@ -36,6 +38,10 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public boolean comparePassword(String password) {
+    return this.password.equals(password);
   }
 
   @Override

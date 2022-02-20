@@ -1,4 +1,4 @@
-package uk.brdr.data.repositories;
+package uk.brdr.services;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -9,17 +9,23 @@ import uk.brdr.data.dao.LocationsDao;
 import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.model.location.LocationGrouping;
 import uk.brdr.model.location.LocationType;
+import uk.brdr.model.sighting.Sighting;
 import uk.brdr.model.sighting.SightingByLocation;
 import uk.brdr.model.sighting.SightingOverview;
 
-public class SightingsOverviewImpl implements SightingsOverview {
+public class SightingsServiceImpl implements SightingsService {
 
   private final SightingsDao sightingsDao;
   private final LocationsDao locationsDao;
 
-  public SightingsOverviewImpl(SightingsDao sightingsDao, LocationsDao locationsDao) {
+  public SightingsServiceImpl(SightingsDao sightingsDao, LocationsDao locationsDao) {
     this.sightingsDao = sightingsDao;
     this.locationsDao = locationsDao;
+  }
+
+  @Override
+  public void addSighting(Sighting sighting) {
+    sightingsDao.addSighting(sighting);
   }
 
   @Override
