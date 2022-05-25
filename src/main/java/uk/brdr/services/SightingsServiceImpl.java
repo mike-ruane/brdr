@@ -22,11 +22,14 @@ public class SightingsServiceImpl implements SightingsService {
 
   @Override
   public void addSighting(Sighting sighting) {
+    if (sightingExists(sighting)) {
+      throw new IllegalStateException("sighting already exists");
+    }
     sightingsDao.addSighting(sighting);
   }
 
   @Override
-  public List<GeoSighting> getGeoSightings(int userId) {
+  public List<GeoSighting> getSightingsForUser(int userId) {
     var sightings = sightingsDao.getGeoSightings(userId);
     var sightingGeos = sightings.stream().map(SightingForUser::getGeoId).distinct().collect(toList());
     var geoLocations = geoLocationsDao.getGeos(sightingGeos);
@@ -40,5 +43,17 @@ public class SightingsServiceImpl implements SightingsService {
           .map(SightingForUser::getSpeciesId).collect(toList());
       return new GeoSighting(g.getName(), g.getGeo(), species);
     }).collect(toList());
+  }
+
+  private boolean sightingExists(Sighting sighting) {
+    var sightings = sightingsDao.getGeoSightings(sighting.userId);
+    var existingSighting =
+        sightings.stream()
+            .filter(
+                currSighting ->
+                    currSighting.getGeoId() == sighting.getLocationId()
+                        && sighting.getSpecies().contains(currSighting.getSpeciesId()))
+            .findFirst();
+    return existingSighting.isPresent();
   }
 }

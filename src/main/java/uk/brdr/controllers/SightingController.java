@@ -33,7 +33,7 @@ public class SightingController {
   public void getSightings(Context ctx) {
     try {
       var userId = Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer());
-      var sightings = sightingsService.getGeoSightings(userId);
+      var sightings = sightingsService.getSightingsForUser(userId);
       ctx.json(sightings);
     } catch (RuntimeException e) {
       throw new InternalServerErrorResponse("");

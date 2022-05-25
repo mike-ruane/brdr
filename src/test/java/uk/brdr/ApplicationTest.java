@@ -14,11 +14,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import uk.brdr.controllers.GeoLocationsController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
 import uk.brdr.controllers.UserController;
-import uk.brdr.data.dao.GeoLocationsDao;
 import uk.brdr.data.dao.SpeciesDao;
 import uk.brdr.data.dao.SpeciesDaoImpl;
 import uk.brdr.managers.JwtTokenManager;
@@ -37,15 +35,13 @@ public class ApplicationTest {
   SightingsService sightingsService = mock(SightingsServiceImpl.class);
   SpeciesDao speciesDao = mock(SpeciesDaoImpl.class);
   UserService userServiceImpl = mock(UserServiceImpl.class);
-  GeoLocationsDao geoLocationsDao = mock(GeoLocationsDao.class);
   TokenManager tokenManager = new JwtTokenManager(algorithm);
 
   SightingController sightingController = new SightingController(sightingsService);
   SpeciesController speciesController = new SpeciesController(speciesDao);
   UserController userController = new UserController(userServiceImpl);
-  GeoLocationsController geoLocationsController = new GeoLocationsController(geoLocationsDao);
   Javalin app =
-      new Application(tokenManager, sightingController, speciesController, userController, geoLocationsController)
+      new Application(tokenManager, sightingController, speciesController, userController)
           .javalinApp();
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -92,7 +88,7 @@ public class ApplicationTest {
                 List.of(1, 2)
                 )
             );
-    when(sightingsService.getGeoSightings(1))
+    when(sightingsService.getSightingsForUser(1))
         .thenReturn(sightingsByLocation);
     TestUtil.test(
         app,

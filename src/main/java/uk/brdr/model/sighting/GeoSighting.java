@@ -2,6 +2,7 @@ package uk.brdr.model.sighting;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 public class GeoSighting {
 
@@ -40,5 +41,32 @@ public class GeoSighting {
 
   public void setSpecies(List<Integer> species) {
     this.species = species;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    GeoSighting that = (GeoSighting) o;
+    return Objects.equals(name, that.name) && Objects.equals(geo, that.geo)
+        && Objects.equals(species, that.species);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, geo, species);
+  }
+
+  @Override
+  public String toString() {
+    return "GeoSighting{" +
+        "name='" + name + '\'' +
+        ", geo=" + geo +
+        ", species=" + species +
+        '}';
   }
 }

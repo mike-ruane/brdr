@@ -8,7 +8,7 @@ public interface SightingsService {
 
   void addSighting(Sighting sighting);
 
-  List<GeoSighting> getGeoSightings(int userId);
+  List<GeoSighting> getSightingsForUser(int userId);
 
 
 }

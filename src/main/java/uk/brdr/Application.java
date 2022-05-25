@@ -6,7 +6,6 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import io.javalin.Javalin;
 import io.javalin.core.JavalinConfig;
-import uk.brdr.controllers.GeoLocationsController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
 import uk.brdr.controllers.UserController;
@@ -21,13 +20,11 @@ public class Application {
       TokenManager tokenManager,
       SightingController sightingController,
       SpeciesController speciesController,
-      UserController userController,
-      GeoLocationsController geoLocationsController) {
+      UserController userController) {
     app =
         Javalin.create(JavalinConfig::enableCorsForAllOrigins)
             .routes(() -> path("api", () -> {
               get("species", speciesController::getSpecies);
-//                 path("api/species", () -> get(speciesController::getSpecies));
               path(
                   "sightings",
                   () -> {
@@ -37,7 +34,6 @@ public class Application {
               post("register", userController::register);
               post("login", userController::login);
               get("user/validate", userController::validate);
-              get("geoLocations", geoLocationsController::getAll);
             }));
 
     app.before("api/sightings", JwtCookieHandler.createCookieDecodeHandler(tokenManager));

@@ -2,7 +2,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.typesafe.config.ConfigFactory;
 import org.flywaydb.core.Flyway;
 import uk.brdr.Application;
-import uk.brdr.controllers.GeoLocationsController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
 import uk.brdr.controllers.UserController;
@@ -46,10 +45,9 @@ public class Main {
     var sightingsController = new SightingController(sightingsService);
     var speciesController = new SpeciesController(speciesDaoImpl);
     var userController = new UserController(userService);
-    var geoLocationsController = new GeoLocationsController(geoLocationsDaoImpl);
 
     var app =
-        new Application(tokenManager, sightingsController, speciesController, userController, geoLocationsController);
+        new Application(tokenManager, sightingsController, speciesController, userController);
     app.javalinApp().start(port);
   }
 }

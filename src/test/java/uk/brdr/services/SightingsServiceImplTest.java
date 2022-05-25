@@ -1,115 +1,84 @@
 package uk.brdr.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static uk.brdr.utils.DatabaseUtils.getH2DataSource;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.List;
-import javax.sql.DataSource;
-import org.flywaydb.core.Flyway;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.brdr.data.dao.GeoLocationsDao;
 import uk.brdr.data.dao.GeoLocationsDaoImpl;
 import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.data.dao.SightingsDaoImpl;
+import uk.brdr.model.location.GeoLocation;
+import uk.brdr.model.sighting.GeoSighting;
 import uk.brdr.model.sighting.Sighting;
-import uk.brdr.utils.DatabaseUtils;
+import uk.brdr.model.sighting.SightingForUser;
 
 public class SightingsServiceImplTest {
 
-  static DataSource datasource = getH2DataSource();
-  SightingsDao sightingsDao;
+  SightingsDao sightingsDao = mock(SightingsDaoImpl.class);
+  GeoLocationsDao geoLocationsDao = mock(GeoLocationsDaoImpl.class);
   SightingsService sightingsService;
-  GeoLocationsDao geoLocationsDao;
 
-  @BeforeAll
-  static void setup() throws SQLException, IOException {
-    var flyway = Flyway.configure().dataSource(datasource).load();
-    flyway.clean();
-    flyway.migrate();
-
-    var conn = datasource.getConnection();
-    var insertUser =
-        conn.prepareStatement(
-            "INSERT INTO users (email, password) values ('mike@jruane.com', 'secure-password')");
-    insertUser.execute();
-    DatabaseUtils.loadSpecies(datasource);
+  @BeforeEach
+  void setup() {
+    sightingsService = new SightingsServiceImpl(sightingsDao, geoLocationsDao);
   }
 
-//  @Test
-//  void getSightingsByLocation() {
-//    var sightings =
-//        List.of(
-//            new Sighting(0, 1, List.of(23, 12, 5, 45), 8, Date.valueOf("2022-02-15")),
-//            new Sighting(0, 1, List.of(64, 13, 78), 56, Date.valueOf("2022-02-15")));
-//
-//    sightingsDao = new SightingsDaoImpl(datasource);
-//    geoLocationsDao = new GeoLocationsDaoImpl(datasource);
-//    sightingsService = new SightingsServiceImpl(sightingsDao, geoLocationsDao);
-//
-//    sightings.forEach(sightingsDao::addSighting);
-//    var sightingsByLocation =
-//        sightingsService.getGeoSightings(1);
-//    var expected =
-//        List.of(
-//            new SightingByLocation(
-//                "Abbots Worthy",
-//                BigDecimal.valueOf(5109132, 5),
-//                BigDecimal.valueOf(-129097, 5),
-//                List.of(
-//                    new SightingOverview(
-//                        56,
-//                        29,
-//                        1,
-//                        1,
-//                        64,
-//                        "Greenish Warbler",
-//                        "Phylloscopus",
-//                        Date.valueOf("2022-02-15")),
-//                    new SightingOverview(
-//                        56, 29, 1, 1, 13, "Pine Grosbeak", "Pinicola", Date.valueOf("2022-02-15")),
-//                    new SightingOverview(
-//                        56,
-//                        29,
-//                        1,
-//                        1,
-//                        78,
-//                        "Philadelphia Vireo",
-//                        "Vireo",
-//                        Date.valueOf("2022-02-15")))),
-//            new SightingByLocation(
-//                "Abbess Roding",
-//                BigDecimal.valueOf(5177815, 5),
-//                BigDecimal.valueOf(27685, 5),
-//                List.of(
-//                    new SightingOverview(
-//                        8, 4, 4, 1, 23, "Greenfinch", "Chloris", Date.valueOf("2022-02-15")),
-//                    new SightingOverview(
-//                        8, 4, 4, 1, 12, "Chaffinch", "Fringilla", Date.valueOf("2022-02-15")),
-//                    new SightingOverview(
-//                        8,
-//                        4,
-//                        4,
-//                        1,
-//                        5,
-//                        "Pallas's Grasshopper Warbler",
-//                        "Helopsaltes",
-//                        Date.valueOf("2022-02-15")),
-//                    new SightingOverview(
-//                        8,
-//                        4,
-//                        4,
-//                        1,
-//                        45,
-//                        "Rose-breasted Grosbeak",
-//                        "Pheucticus",
-//                        Date.valueOf("2022-02-15")))));
-//
-//    assertEquals(sightingsByLocation.size(), expected.size());
-//    assertEquals(expected, sightingsByLocation);
-//  }
+  @Test
+  void getSightingsForUser() {
+
+    BigDecimal[] geo1 = {
+        BigDecimal.valueOf(5324564, 5),
+        BigDecimal.valueOf(-134567, 5)};
+    BigDecimal[] geo2 = {
+        BigDecimal.valueOf(5324565, 5),
+        BigDecimal.valueOf(-134568, 5)};
+
+    when(sightingsDao.getGeoSightings(1)).thenReturn(List.of(
+        new SightingForUser(8, 23),
+        new SightingForUser(8, 12),
+        new SightingForUser(8, 5),
+        new SightingForUser(8, 45),
+        new SightingForUser(56, 64),
+        new SightingForUser(56, 13),
+        new SightingForUser(56, 78)));
+
+    when(geoLocationsDao.getGeos(List.of(8, 56))).thenReturn(List.of(
+        new GeoLocation(8, "Bath and North East Somerset", List.of(geo1, geo2)),
+        new GeoLocation(56, "East Yorkshire", List.of(geo1, geo2))
+    ));
+    var sightingsByLocation =
+        sightingsService.getSightingsForUser(1);
+    var expected =
+        List.of(
+            new GeoSighting("Bath and North East Somerset", List.of(geo1, geo2), List.of(23, 12, 5, 45)),
+            new GeoSighting("East Yorkshire", List.of(geo1, geo2), List.of(64, 13, 78)));
+
+    assertEquals(sightingsByLocation.size(), expected.size());
+    assertEquals(expected, sightingsByLocation);
+  }
+
+  @Test
+  void addValidSighting() {
+    var sighting = new Sighting(0, 1, List.of(1), 1, Date.valueOf("2022-05-25"));
+    when(sightingsDao.getGeoSightings(1)).thenReturn(List.of());
+    sightingsService.addSighting(sighting);
+    verify(sightingsDao).addSighting(sighting);
+  }
+
+  @Test
+  void dontAddSightingWhenAlreadyExist() {
+    var sighting = new Sighting(0, 1, List.of(1), 1, Date.valueOf("2022-05-25"));
+    when(sightingsDao.getGeoSightings(1)).thenReturn(List.of(new SightingForUser(1, 1)));
+    assertThrows(IllegalStateException.class, () -> sightingsService.addSighting(sighting));
+    verify(sightingsDao, never()).addSighting(sighting);
+  }
 }

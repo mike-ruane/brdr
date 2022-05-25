@@ -18,17 +18,6 @@ public class GeoLocationsDaoImpl implements GeoLocationsDao {
   }
 
   @Override
-  public List<GeoLocation> getAll() {
-    try {
-      return jdbi.withHandle(
-          handle ->
-              handle.createQuery("SELECT * FROM geo_locations").map(GEO_LOCATIONS_ROW_MAPPER).list());
-    } catch (Exception e) {
-      throw new RuntimeException("error fetching locations from db");
-    }
-  }
-
-  @Override
   public List<GeoLocation> getGeos(List<Integer> geoIds) {
     try {
       return jdbi.withHandle(
