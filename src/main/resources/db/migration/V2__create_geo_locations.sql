@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS GEO_LOCATIONS
+(
+    id   SERIAL   PRIMARY KEY,
+    name TEXT,
+    geo NUMERIC(7,5)[][]
+)
