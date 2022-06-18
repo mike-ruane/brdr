@@ -1,7 +1,6 @@
 package uk.brdr.data.dao;
 
 import java.util.List;
-import uk.brdr.model.Species;
 import uk.brdr.model.sighting.Sighting;
 import uk.brdr.model.sighting.SightingDetail;
 import uk.brdr.model.sighting.UserSighting;

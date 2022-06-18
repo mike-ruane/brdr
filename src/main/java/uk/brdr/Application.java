@@ -25,18 +25,24 @@ public class Application {
       GeosController geosController) {
     app =
         Javalin.create(JavalinConfig::enableCorsForAllOrigins)
-            .routes(() -> path("api", () -> {
-              get("species", speciesController::getAll);
-              get("geos", geosController::getGeoNames);
-              path("sightings", () -> {
-                post(sightingController::addSighting);
-                get(sightingController::getSightingsByGeo);
-                path("{geo}", () -> get(sightingController::getSightingsForGeo));
-                  });
-              post("register", userController::register);
-              post("login", userController::login);
-              get("user/validate", userController::validate);
-            }));
+            .routes(
+                () ->
+                    path(
+                        "api",
+                        () -> {
+                          get("species", speciesController::getAll);
+                          get("geos", geosController::getGeoNames);
+                          path(
+                              "sightings",
+                              () -> {
+                                post(sightingController::addSighting);
+                                get(sightingController::getSightingsByGeo);
+                                path("{geo}", () -> get(sightingController::getSightingsForGeo));
+                              });
+                          post("register", userController::register);
+                          post("login", userController::login);
+                          get("user/validate", userController::validate);
+                        }));
 
     app.before("api/sightings", JwtCookieHandler.createCookieDecodeHandler(tokenManager));
     app.before("api/sightings/{geo}", JwtCookieHandler.createCookieDecodeHandler(tokenManager));

@@ -10,8 +10,7 @@ public class UserSighting {
     this.speciesId = speciesId;
   }
 
-  public UserSighting() {
-  }
+  public UserSighting() {}
 
   public int getGeoId() {
     return geoId;

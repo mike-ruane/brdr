@@ -2,9 +2,6 @@ package uk.brdr.controllers;
 
 import io.javalin.http.Context;
 import io.javalin.http.ServiceUnavailableResponse;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -34,7 +31,8 @@ public class SpeciesController {
     try {
       var batch = ctx.queryParam("ids");
       assert batch != null;
-      var speciesIds = Stream.of(batch.split(",", -1)).map(Integer::parseInt).collect(Collectors.toList());
+      var speciesIds =
+          Stream.of(batch.split(",", -1)).map(Integer::parseInt).collect(Collectors.toList());
       var species = speciesDao.getSpecies(speciesIds);
       ctx.json(species);
     } catch (RuntimeException e) {

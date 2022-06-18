@@ -10,8 +10,6 @@ public class UserSightingsRowMapper implements RowMapper<UserSighting> {
 
   @Override
   public UserSighting map(ResultSet rs, StatementContext ctx) throws SQLException {
-    return new UserSighting(
-        rs.getInt("geo_id"),
-        rs.getInt("species_id"));
+    return new UserSighting(rs.getInt("geo_id"), rs.getInt("species_id"));
   }
 }

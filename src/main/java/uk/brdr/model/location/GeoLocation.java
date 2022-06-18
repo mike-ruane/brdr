@@ -13,8 +13,7 @@ public class GeoLocation extends Geo {
     this.geo = geo;
   }
 
-  public GeoLocation() {
-  }
+  public GeoLocation() {}
 
   public int getId() {
     return id;
@@ -49,8 +48,7 @@ public class GeoLocation extends Geo {
       return false;
     }
     GeoLocation that = (GeoLocation) o;
-    return id == that.id && Objects.equals(name, that.name) && Objects.equals(geo,
-        that.geo);
+    return id == that.id && Objects.equals(name, that.name) && Objects.equals(geo, that.geo);
   }
 
   @Override
@@ -60,10 +58,6 @@ public class GeoLocation extends Geo {
 
   @Override
   public String toString() {
-    return "GeoLocation{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", geo=" + geo +
-        '}';
+    return "GeoLocation{" + "id=" + id + ", name='" + name + '\'' + ", geo=" + geo + '}';
   }
 }

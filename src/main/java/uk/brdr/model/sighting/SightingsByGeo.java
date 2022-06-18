@@ -11,8 +11,7 @@ public class SightingsByGeo {
   List<BigDecimal[]> geo;
   List<Integer> species;
 
-  public SightingsByGeo() {
-  }
+  public SightingsByGeo() {}
 
   public SightingsByGeo(String name, int geoId, List<BigDecimal[]> geo, List<Integer> species) {
     this.name = name;
@@ -62,8 +61,10 @@ public class SightingsByGeo {
       return false;
     }
     SightingsByGeo that = (SightingsByGeo) o;
-    return geoId == that.geoId && Objects.equals(name, that.name)
-        && Objects.equals(geo, that.geo) && Objects.equals(species, that.species);
+    return geoId == that.geoId
+        && Objects.equals(name, that.name)
+        && Objects.equals(geo, that.geo)
+        && Objects.equals(species, that.species);
   }
 
   @Override
@@ -73,11 +74,16 @@ public class SightingsByGeo {
 
   @Override
   public String toString() {
-    return "SightingsByGeo{" +
-        "name='" + name + '\'' +
-        ", geoId=" + geoId +
-        ", geo=" + geo +
-        ", species=" + species +
-        '}';
+    return "SightingsByGeo{"
+        + "name='"
+        + name
+        + '\''
+        + ", geoId="
+        + geoId
+        + ", geo="
+        + geo
+        + ", species="
+        + species
+        + '}';
   }
 }

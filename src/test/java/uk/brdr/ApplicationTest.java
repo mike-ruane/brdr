@@ -24,8 +24,8 @@ import uk.brdr.data.dao.SpeciesDaoImpl;
 import uk.brdr.managers.JwtTokenManager;
 import uk.brdr.managers.TokenManager;
 import uk.brdr.model.User;
-import uk.brdr.model.sighting.SightingsByGeo;
 import uk.brdr.model.sighting.Sighting;
+import uk.brdr.model.sighting.SightingsByGeo;
 import uk.brdr.services.SightingsService;
 import uk.brdr.services.SightingsServiceImpl;
 import uk.brdr.services.UserService;
@@ -45,7 +45,8 @@ public class ApplicationTest {
   UserController userController = new UserController(userServiceImpl);
   GeosController geosController = new GeosController(geoLocationsDao);
   Javalin app =
-      new Application(tokenManager, sightingController, speciesController, userController, geosController)
+      new Application(
+              tokenManager, sightingController, speciesController, userController, geosController)
           .javalinApp();
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -55,7 +56,7 @@ public class ApplicationTest {
     var sighting = new Sighting(0, 123, List.of(123), 535, Date.valueOf("2022-01-29"));
     var body =
         "{\"userId\": 123, \"species\": [123], \"geoId\": \"535\", \"date\": \"2022-01-29\"}";
-    var user = new User(1,"Mike", "mike@jruane.com", "secure-password");
+    var user = new User(1, "Mike", "mike@jruane.com", "secure-password");
     var jwt = tokenManager.issueToken(user);
     doNothing().when(sightingsService).addSighting(sighting);
     TestUtil.test(
@@ -83,18 +84,9 @@ public class ApplicationTest {
     var user = new User(1, "Mike", "mike@jruane.com", "secure-password");
     var jwt = tokenManager.issueToken(user);
     List<BigDecimal[]> geo = new ArrayList<BigDecimal[]>();
-    geo.add(new BigDecimal[]{BigDecimal.valueOf(5109132, 5), BigDecimal.valueOf(5109132, 5)});
-    var sightingsByLocation =
-        List.of(
-            new SightingsByGeo(
-                "Abbots Worthy",
-                1,
-                geo,
-                List.of(1, 2)
-                )
-            );
-    when(sightingsService.getSightings(1))
-        .thenReturn(sightingsByLocation);
+    geo.add(new BigDecimal[] {BigDecimal.valueOf(5109132, 5), BigDecimal.valueOf(5109132, 5)});
+    var sightingsByLocation = List.of(new SightingsByGeo("Abbots Worthy", 1, geo, List.of(1, 2)));
+    when(sightingsService.getSightings(1)).thenReturn(sightingsByLocation);
     TestUtil.test(
         app,
         (server, client) ->

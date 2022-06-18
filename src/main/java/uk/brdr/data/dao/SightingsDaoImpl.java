@@ -15,8 +15,10 @@ public class SightingsDaoImpl implements SightingsDao {
 
   private final Jdbi jdbi;
 
-  private static final UserSightingsRowMapper USER_SIGHTINGS_ROW_MAPPER = new UserSightingsRowMapper();
-  private static final SightingDetailRowMapper SIGHTING_DETAIL_ROW_MAPPER = new SightingDetailRowMapper();
+  private static final UserSightingsRowMapper USER_SIGHTINGS_ROW_MAPPER =
+      new UserSightingsRowMapper();
+  private static final SightingDetailRowMapper SIGHTING_DETAIL_ROW_MAPPER =
+      new SightingDetailRowMapper();
   Logger logger = LoggerFactory.getLogger(SightingsDaoImpl.class);
 
   public SightingsDaoImpl(DataSource dataSource) {
@@ -74,22 +76,24 @@ public class SightingsDaoImpl implements SightingsDao {
   @Override
   public List<SightingDetail> getSightings(int geoId, int userId) {
     try {
-      return jdbi.withHandle(handle ->
-          handle.createQuery(
-              "SELECT sp.id AS id, sp.scientific_name AS scientific_name, "
-                  + "sp.preferred_common_name AS common_name, sp.habitat AS habitat, "
-                  + "sp.genus AS genus, sp.family AS family, sp.family_order AS family_order, "
-                  + "sp.breeding_population AS breeding_population, "
-                  + "sp.winter_visitor_population AS winter_visitor_population, "
-                  + "si.date AS date "
-                  + "FROM sightings si "
-                  + "INNER JOIN species sp "
-                  + "ON si.species_id = sp.id "
-                  + "WHERE si.user_id = :user_id AND si.geo_id = :geo_id")
-              .bind("user_id", userId)
-              .bind("geo_id", geoId)
-              .map(SIGHTING_DETAIL_ROW_MAPPER)
-              .list());
+      return jdbi.withHandle(
+          handle ->
+              handle
+                  .createQuery(
+                      "SELECT sp.id AS id, sp.scientific_name AS scientific_name, "
+                          + "sp.preferred_common_name AS common_name, sp.habitat AS habitat, "
+                          + "sp.genus AS genus, sp.family AS family, sp.family_order AS family_order, "
+                          + "sp.breeding_population AS breeding_population, "
+                          + "sp.winter_visitor_population AS winter_visitor_population, "
+                          + "si.date AS date "
+                          + "FROM sightings si "
+                          + "INNER JOIN species sp "
+                          + "ON si.species_id = sp.id "
+                          + "WHERE si.user_id = :user_id AND si.geo_id = :geo_id")
+                  .bind("user_id", userId)
+                  .bind("geo_id", geoId)
+                  .map(SIGHTING_DETAIL_ROW_MAPPER)
+                  .list());
     } catch (Exception e) {
       throw new RuntimeException("failed to get sighting for user", e);
     }
