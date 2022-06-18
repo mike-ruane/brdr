@@ -2,7 +2,7 @@ package uk.brdr.model;
 
 import java.util.Objects;
 
-public class Species {
+public class Species implements Comparable<Species> {
 
   public int id;
   public String scientificName;
@@ -107,6 +107,11 @@ public class Species {
 
   public void setWinterVisitorPopulation(String winterVisitorPopulation) {
     this.winterVisitorPopulation = winterVisitorPopulation;
+  }
+
+  @Override
+  public int compareTo(Species s) {
+    return this.getPreferredCommonName().compareTo(s.getPreferredCommonName());
   }
 
   @Override

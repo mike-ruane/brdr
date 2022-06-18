@@ -1,19 +1,29 @@
 package uk.brdr.services;
 
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import uk.brdr.data.dao.GeoLocationsDao;
 import uk.brdr.data.dao.SightingsDao;
+import uk.brdr.model.Species;
 import uk.brdr.model.location.GeoLocation;
-import uk.brdr.model.sighting.GeoSighting;
+import uk.brdr.model.sighting.SightingDetail;
+import uk.brdr.model.sighting.SightingsByGeo;
 import uk.brdr.model.sighting.Sighting;
-import uk.brdr.model.sighting.SightingForUser;
+import uk.brdr.model.sighting.UserSighting;
 
 public class SightingsServiceImpl implements SightingsService {
 
   private final SightingsDao sightingsDao;
   private final GeoLocationsDao geoLocationsDao;
+
+  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
   public SightingsServiceImpl(SightingsDao sightingsDao, GeoLocationsDao geoLocationsDao) {
     this.sightingsDao = sightingsDao;
@@ -29,29 +39,40 @@ public class SightingsServiceImpl implements SightingsService {
   }
 
   @Override
-  public List<GeoSighting> getSightingsForUser(int userId) {
-    var sightings = sightingsDao.getGeoSightings(userId);
-    var sightingGeos = sightings.stream().map(SightingForUser::getGeoId).distinct().collect(toList());
-    var geoLocations = geoLocationsDao.getGeos(sightingGeos);
+  public List<SightingsByGeo> getSightings(int userId) {
+    var sightings = sightingsDao.getSightings(userId);
+    if (sightings.isEmpty()) {
+      return List.of();
+    }
+    var geoIds = sightings.stream().map(UserSighting::getGeoId).distinct().collect(toList());
+    var geoLocations = geoLocationsDao.getGeos(geoIds);
     return groupSightingsByGeo(sightings, geoLocations);
   }
 
-  private List<GeoSighting> groupSightingsByGeo(List<SightingForUser> sightings,
+  @Override
+  public Map<String, List<Species>> getSightings(int geoId, int userId) {
+    var sightings = sightingsDao.getSightings(geoId, userId);
+    return sightings.stream().collect(
+        groupingBy(sd -> DATE_FORMAT.format(sd.getDate()),
+            Collectors.mapping(SightingDetail::getSpecies, toList())));
+  }
+
+  private List<SightingsByGeo> groupSightingsByGeo(List<UserSighting> sightings,
       List<GeoLocation> geoLocations) {
     return geoLocations.stream().map(g -> {
       var species = sightings.stream().filter(s -> s.getGeoId() == g.getId())
-          .map(SightingForUser::getSpeciesId).collect(toList());
-      return new GeoSighting(g.getName(), g.getGeo(), species);
+          .map(UserSighting::getSpeciesId).collect(toList());
+      return new SightingsByGeo(g.getName(), g.getId(), g.getGeo(), species);
     }).collect(toList());
   }
 
   private boolean sightingExists(Sighting sighting) {
-    var sightings = sightingsDao.getGeoSightings(sighting.userId);
+    var sightings = sightingsDao.getSightings(sighting.userId);
     var existingSighting =
         sightings.stream()
             .filter(
                 currSighting ->
-                    currSighting.getGeoId() == sighting.getLocationId()
+                    currSighting.getGeoId() == sighting.getGeoId()
                         && sighting.getSpecies().contains(currSighting.getSpeciesId()))
             .findFirst();
     return existingSighting.isPresent();

@@ -4,15 +4,12 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
-public class GeoLocation {
+public class GeoLocation extends Geo {
 
-  int id;
-  String name;
   List<BigDecimal[]> geo;
 
   public GeoLocation(int id, String name, List<BigDecimal[]> geo) {
-    this.id = id;
-    this.name = name;
+    super(id, name);
     this.geo = geo;
   }
 

@@ -6,6 +6,7 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import io.javalin.Javalin;
 import io.javalin.core.JavalinConfig;
+import uk.brdr.controllers.GeosController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
 import uk.brdr.controllers.UserController;
@@ -20,16 +21,17 @@ public class Application {
       TokenManager tokenManager,
       SightingController sightingController,
       SpeciesController speciesController,
-      UserController userController) {
+      UserController userController,
+      GeosController geosController) {
     app =
         Javalin.create(JavalinConfig::enableCorsForAllOrigins)
             .routes(() -> path("api", () -> {
-              get("species", speciesController::getSpecies);
-              path(
-                  "sightings",
-                  () -> {
-                    post(sightingController::addSighting);
-                    get(sightingController::getSightings);
+              get("species", speciesController::getAll);
+              get("geos", geosController::getGeoNames);
+              path("sightings", () -> {
+                post(sightingController::addSighting);
+                get(sightingController::getSightingsByGeo);
+                path("{geo}", () -> get(sightingController::getSightingsForGeo));
                   });
               post("register", userController::register);
               post("login", userController::login);
@@ -37,6 +39,7 @@ public class Application {
             }));
 
     app.before("api/sightings", JwtCookieHandler.createCookieDecodeHandler(tokenManager));
+    app.before("api/sightings/{geo}", JwtCookieHandler.createCookieDecodeHandler(tokenManager));
   }
 
   public Javalin javalinApp() {

@@ -1,14 +1,16 @@
 package uk.brdr.services;
 
 import java.util.List;
-import uk.brdr.model.sighting.GeoSighting;
+import java.util.Map;
+import uk.brdr.model.Species;
+import uk.brdr.model.sighting.SightingsByGeo;
 import uk.brdr.model.sighting.Sighting;
 
 public interface SightingsService {
 
   void addSighting(Sighting sighting);
 
-  List<GeoSighting> getSightingsForUser(int userId);
+  List<SightingsByGeo> getSightings(int userId);
 
-
+  Map<String, List<Species>> getSightings(int geoId, int userId);
 }

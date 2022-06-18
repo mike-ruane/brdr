@@ -32,9 +32,17 @@ public class UserServiceImplTest {
   }
 
   @Test
-  void save() {
+  void saveNewUser() {
+    when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.empty());
     userService.save(user);
     verify(userDao).addUser(user);
+  }
+
+  @Test
+  void dontSaveUserIfExists() {
+    when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    assertThrows( BadRequestResponse.class, () -> userService.save(user));
+    verify(userDao, never()).addUser(user);
   }
 
   @Test

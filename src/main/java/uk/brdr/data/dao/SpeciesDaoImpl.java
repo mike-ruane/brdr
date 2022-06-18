@@ -1,5 +1,6 @@
 package uk.brdr.data.dao;
 
+import java.util.Collections;
 import java.util.List;
 import javax.sql.DataSource;
 import org.jdbi.v3.core.Jdbi;
@@ -19,8 +20,10 @@ public class SpeciesDaoImpl implements SpeciesDao {
   @Override
   public List<Species> getAll() {
     try {
-      return jdbi.withHandle(
+      var species = jdbi.withHandle(
           handle -> handle.createQuery("SELECT * FROM species").map(speciesRowMapper).list());
+      Collections.sort(species);
+      return species;
     } catch (Exception e) {
       throw new RuntimeException("error fetching species from db");
     }

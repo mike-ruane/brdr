@@ -14,15 +14,17 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import uk.brdr.controllers.GeosController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
 import uk.brdr.controllers.UserController;
+import uk.brdr.data.dao.GeoLocationsDao;
 import uk.brdr.data.dao.SpeciesDao;
 import uk.brdr.data.dao.SpeciesDaoImpl;
 import uk.brdr.managers.JwtTokenManager;
 import uk.brdr.managers.TokenManager;
 import uk.brdr.model.User;
-import uk.brdr.model.sighting.GeoSighting;
+import uk.brdr.model.sighting.SightingsByGeo;
 import uk.brdr.model.sighting.Sighting;
 import uk.brdr.services.SightingsService;
 import uk.brdr.services.SightingsServiceImpl;
@@ -34,14 +36,16 @@ public class ApplicationTest {
   private static final Algorithm algorithm = Algorithm.HMAC256("secret");
   SightingsService sightingsService = mock(SightingsServiceImpl.class);
   SpeciesDao speciesDao = mock(SpeciesDaoImpl.class);
+  GeoLocationsDao geoLocationsDao = mock(GeoLocationsDao.class);
   UserService userServiceImpl = mock(UserServiceImpl.class);
   TokenManager tokenManager = new JwtTokenManager(algorithm);
 
   SightingController sightingController = new SightingController(sightingsService);
   SpeciesController speciesController = new SpeciesController(speciesDao);
   UserController userController = new UserController(userServiceImpl);
+  GeosController geosController = new GeosController(geoLocationsDao);
   Javalin app =
-      new Application(tokenManager, sightingController, speciesController, userController)
+      new Application(tokenManager, sightingController, speciesController, userController, geosController)
           .javalinApp();
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -50,7 +54,7 @@ public class ApplicationTest {
   public void addSighting() {
     var sighting = new Sighting(0, 123, List.of(123), 535, Date.valueOf("2022-01-29"));
     var body =
-        "{\"userId\": 123, \"species\": [123], \"locationId\": \"535\", \"date\": \"2022-01-29\"}";
+        "{\"userId\": 123, \"species\": [123], \"geoId\": \"535\", \"date\": \"2022-01-29\"}";
     var user = new User(1,"Mike", "mike@jruane.com", "secure-password");
     var jwt = tokenManager.issueToken(user);
     doNothing().when(sightingsService).addSighting(sighting);
@@ -67,7 +71,7 @@ public class ApplicationTest {
   @Test
   public void unauthenticatedAddSighting() {
     var body =
-        "{\"userId\": 123, \"species\": [123], \"locationId\": \"535\", \"date\": \"2022-01-29\"}";
+        "{\"userId\": 123, \"species\": [123], \"geoId\": \"535\", \"date\": \"2022-01-29\"}";
 
     TestUtil.test(
         app,
@@ -82,13 +86,14 @@ public class ApplicationTest {
     geo.add(new BigDecimal[]{BigDecimal.valueOf(5109132, 5), BigDecimal.valueOf(5109132, 5)});
     var sightingsByLocation =
         List.of(
-            new GeoSighting(
+            new SightingsByGeo(
                 "Abbots Worthy",
+                1,
                 geo,
                 List.of(1, 2)
                 )
             );
-    when(sightingsService.getSightingsForUser(1))
+    when(sightingsService.getSightings(1))
         .thenReturn(sightingsByLocation);
     TestUtil.test(
         app,

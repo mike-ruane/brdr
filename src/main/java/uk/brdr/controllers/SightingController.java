@@ -30,10 +30,21 @@ public class SightingController {
     }
   }
 
-  public void getSightings(Context ctx) {
+  public void getSightingsByGeo(Context ctx) {
     try {
       var userId = Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer());
-      var sightings = sightingsService.getSightingsForUser(userId);
+      var sightings = sightingsService.getSightings(userId);
+      ctx.json(sightings);
+    } catch (RuntimeException e) {
+      throw new InternalServerErrorResponse("");
+    }
+  }
+
+  public void getSightingsForGeo(Context ctx) {
+    try {
+      var userId = Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer());
+      var geoId = Integer.parseInt(ctx.pathParam("geo"));
+      var sightings = sightingsService.getSightings(geoId, userId);
       ctx.json(sightings);
     } catch (RuntimeException e) {
       throw new InternalServerErrorResponse("");
