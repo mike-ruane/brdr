@@ -23,13 +23,13 @@ public class UserDaoImpl implements UserDao {
   public void addUser(User user) {
     try {
       jdbi.useHandle(
-              handle ->
-                  handle
-                      .createUpdate(
-                          "INSERT INTO users(password, email, username) VALUES(:password, :email, :username)")
-                      .bind("password", user.getPassword())
-                      .bind("email", user.getEmail())
-                      .bind("username", user.getUsername())
+          handle ->
+              handle
+                  .createUpdate(
+                      "INSERT INTO users(password, email, username) VALUES(:password, :email, :username)")
+                  .bind("password", user.getPassword())
+                  .bind("email", user.getEmail())
+                  .bind("username", user.getUsername())
                   .execute());
     } catch (Exception e) {
       logger.error("failed to create user: {}", e.getMessage());

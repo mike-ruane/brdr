@@ -16,7 +16,12 @@ public class UserServiceImpl implements UserService {
   }
 
   public void save(User user) {
-    userDao.findByEmail(user.getEmail()).ifPresent(s -> { throw new BadRequestResponse(); });
+    userDao
+        .findByEmail(user.getEmail())
+        .ifPresent(
+            s -> {
+              throw new BadRequestResponse();
+            });
     userDao.addUser(user);
   }
 

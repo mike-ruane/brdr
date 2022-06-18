@@ -23,9 +23,11 @@ public class GeoLocationsDaoImpl implements GeoLocationsDao {
     try {
       return jdbi.withHandle(
           handle ->
-              handle.createQuery("SELECT * FROM geo_locations WHERE id IN (<listOfGeos>)")
+              handle
+                  .createQuery("SELECT * FROM geo_locations WHERE id IN (<listOfGeos>)")
                   .bindList("listOfGeos", geoIds)
-                  .map(GEO_LOCATIONS_ROW_MAPPER).list());
+                  .map(GEO_LOCATIONS_ROW_MAPPER)
+                  .list());
     } catch (Exception e) {
       throw new RuntimeException("error fetching locations from db");
     }
@@ -36,12 +38,14 @@ public class GeoLocationsDaoImpl implements GeoLocationsDao {
     try {
       return jdbi.withHandle(
           handle ->
-              handle.createQuery("SELECT id, name FROM geo_locations")
-                  .map(row ->
-                      new Geo(
-                          row.getColumn("id", Integer.class),
-                          row.getColumn("name", String.class))
-                  ).list());
+              handle
+                  .createQuery("SELECT id, name FROM geo_locations")
+                  .map(
+                      row ->
+                          new Geo(
+                              row.getColumn("id", Integer.class),
+                              row.getColumn("name", String.class)))
+                  .list());
     } catch (Exception e) {
       throw new RuntimeException("error fetching locations from db");
     }

@@ -14,14 +14,14 @@ public class SightingDetailRowMapper implements RowMapper<SightingDetail> {
     return new SightingDetail(
         rs.getDate("date"),
         new Species(
-        rs.getInt("id"),
-        rs.getString("scientific_name"),
-        rs.getString("common_name"),
-        rs.getString("habitat"),
-        rs.getString("genus"),
-        rs.getString("family"),
-        rs.getString("family_order"),
-        rs.getString("breeding_population"),
-        rs.getString("winter_visitor_population")));
+            rs.getInt("id"),
+            rs.getString("scientific_name"),
+            rs.getString("common_name"),
+            rs.getString("habitat"),
+            rs.getString("genus"),
+            rs.getString("family"),
+            rs.getString("family_order"),
+            rs.getString("breeding_population"),
+            rs.getString("winter_visitor_population")));
   }
 }

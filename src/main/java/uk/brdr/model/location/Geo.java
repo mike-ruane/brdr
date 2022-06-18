@@ -12,8 +12,7 @@ public class Geo {
     this.name = name;
   }
 
-  public Geo() {
-  }
+  public Geo() {}
 
   public int getId() {
     return id;
@@ -50,9 +49,6 @@ public class Geo {
 
   @Override
   public String toString() {
-    return "Geo{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        '}';
+    return "Geo{" + "id=" + id + ", name='" + name + '\'' + '}';
   }
 }

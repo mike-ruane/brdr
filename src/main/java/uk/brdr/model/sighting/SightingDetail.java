@@ -5,7 +5,7 @@ import java.util.Objects;
 import uk.brdr.model.Species;
 
 public class SightingDetail {
-  
+
   Date date;
   Species species;
 
@@ -14,8 +14,7 @@ public class SightingDetail {
     this.species = species;
   }
 
-  public SightingDetail() {
-  }
+  public SightingDetail() {}
 
   public Date getDate() {
     return date;
@@ -42,8 +41,7 @@ public class SightingDetail {
       return false;
     }
     SightingDetail that = (SightingDetail) o;
-    return Objects.equals(date, that.date) && Objects.equals(species,
-        that.species);
+    return Objects.equals(date, that.date) && Objects.equals(species, that.species);
   }
 
   @Override
@@ -53,9 +51,6 @@ public class SightingDetail {
 
   @Override
   public String toString() {
-    return "SightingDetail{" +
-        "date=" + date +
-        ", species=" + species +
-        '}';
+    return "SightingDetail{" + "date=" + date + ", species=" + species + '}';
   }
 }

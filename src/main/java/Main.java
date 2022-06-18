@@ -49,7 +49,8 @@ public class Main {
     var geosController = new GeosController(geoLocationsDaoImpl);
 
     var app =
-        new Application(tokenManager, sightingsController, speciesController, userController, geosController);
+        new Application(
+            tokenManager, sightingsController, speciesController, userController, geosController);
     app.javalinApp().start(port);
   }
 }

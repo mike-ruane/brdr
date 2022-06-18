@@ -20,8 +20,9 @@ public class SpeciesDaoImpl implements SpeciesDao {
   @Override
   public List<Species> getAll() {
     try {
-      var species = jdbi.withHandle(
-          handle -> handle.createQuery("SELECT * FROM species").map(speciesRowMapper).list());
+      var species =
+          jdbi.withHandle(
+              handle -> handle.createQuery("SELECT * FROM species").map(speciesRowMapper).list());
       Collections.sort(species);
       return species;
     } catch (Exception e) {
@@ -33,9 +34,12 @@ public class SpeciesDaoImpl implements SpeciesDao {
   public List<Species> getSpecies(List<Integer> species) {
     try {
       return jdbi.withHandle(
-          handle -> handle.createQuery("SELECT * FROM species WHERE id IN (<listOfSpecies>)")
-              .bindList("listOfSpecies", species)
-              .map(speciesRowMapper).list());
+          handle ->
+              handle
+                  .createQuery("SELECT * FROM species WHERE id IN (<listOfSpecies>)")
+                  .bindList("listOfSpecies", species)
+                  .map(speciesRowMapper)
+                  .list());
     } catch (Exception e) {
       throw new RuntimeException("error fetching species from db");
     }

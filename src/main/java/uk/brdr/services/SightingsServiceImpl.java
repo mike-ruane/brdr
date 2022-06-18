@@ -2,9 +2,7 @@ package uk.brdr.services;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +11,9 @@ import uk.brdr.data.dao.GeoLocationsDao;
 import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.model.Species;
 import uk.brdr.model.location.GeoLocation;
+import uk.brdr.model.sighting.Sighting;
 import uk.brdr.model.sighting.SightingDetail;
 import uk.brdr.model.sighting.SightingsByGeo;
-import uk.brdr.model.sighting.Sighting;
 import uk.brdr.model.sighting.UserSighting;
 
 public class SightingsServiceImpl implements SightingsService {
@@ -52,18 +50,26 @@ public class SightingsServiceImpl implements SightingsService {
   @Override
   public Map<String, List<Species>> getSightings(int geoId, int userId) {
     var sightings = sightingsDao.getSightings(geoId, userId);
-    return sightings.stream().collect(
-        groupingBy(sd -> DATE_FORMAT.format(sd.getDate()),
-            Collectors.mapping(SightingDetail::getSpecies, toList())));
+    return sightings.stream()
+        .collect(
+            groupingBy(
+                sd -> DATE_FORMAT.format(sd.getDate()),
+                Collectors.mapping(SightingDetail::getSpecies, toList())));
   }
 
-  private List<SightingsByGeo> groupSightingsByGeo(List<UserSighting> sightings,
-      List<GeoLocation> geoLocations) {
-    return geoLocations.stream().map(g -> {
-      var species = sightings.stream().filter(s -> s.getGeoId() == g.getId())
-          .map(UserSighting::getSpeciesId).collect(toList());
-      return new SightingsByGeo(g.getName(), g.getId(), g.getGeo(), species);
-    }).collect(toList());
+  private List<SightingsByGeo> groupSightingsByGeo(
+      List<UserSighting> sightings, List<GeoLocation> geoLocations) {
+    return geoLocations.stream()
+        .map(
+            g -> {
+              var species =
+                  sightings.stream()
+                      .filter(s -> s.getGeoId() == g.getId())
+                      .map(UserSighting::getSpeciesId)
+                      .collect(toList());
+              return new SightingsByGeo(g.getName(), g.getId(), g.getGeo(), species);
+            })
+        .collect(toList());
   }
 
   private boolean sightingExists(Sighting sighting) {
