@@ -9,14 +9,14 @@ public class Sighting {
   public int id;
   public int userId;
   public List<Integer> species;
-  public int locationId;
+  public int geoId;
   public Date date;
 
-  public Sighting(int id, int userId, List<Integer> species, int locationId, Date date) {
+  public Sighting(int id, int userId, List<Integer> species, int geoId, Date date) {
     this.id = id;
     this.userId = userId;
     this.species = species;
-    this.locationId = locationId;
+    this.geoId = geoId;
     this.date = date;
   }
 
@@ -34,8 +34,8 @@ public class Sighting {
     return species;
   }
 
-  public int getLocationId() {
-    return locationId;
+  public int getGeoId() {
+    return geoId;
   }
 
   public Date getDate() {
@@ -54,8 +54,8 @@ public class Sighting {
     this.species = species;
   }
 
-  public void setLocationId(int locationId) {
-    this.locationId = locationId;
+  public void setGeoId(int geoId) {
+    this.geoId = geoId;
   }
 
   public void setDate(Date date) {
@@ -71,31 +71,24 @@ public class Sighting {
       return false;
     }
     Sighting sighting = (Sighting) o;
-    return id == sighting.id
-        && userId == sighting.userId
-        && locationId == sighting.locationId
-        && Objects.equals(species, sighting.species)
-        && Objects.equals(date, sighting.date);
+    return id == sighting.id && userId == sighting.userId && geoId == sighting.geoId
+        && Objects.equals(species, sighting.species) && Objects.equals(date,
+        sighting.date);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userId, species, locationId, date);
+    return Objects.hash(id, userId, species, geoId, date);
   }
 
   @Override
   public String toString() {
-    return "Sighting{"
-        + "id="
-        + id
-        + ", userId="
-        + userId
-        + ", species="
-        + species
-        + ", locationId="
-        + locationId
-        + ", date="
-        + date
-        + '}';
+    return "Sighting{" +
+        "id=" + id +
+        ", userId=" + userId +
+        ", species=" + species +
+        ", geoId=" + geoId +
+        ", date=" + date +
+        '}';
   }
 }

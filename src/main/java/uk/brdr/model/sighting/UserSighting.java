@@ -1,16 +1,16 @@
 package uk.brdr.model.sighting;
 
-public class SightingForUser {
+public class UserSighting {
 
   int geoId;
   int speciesId;
 
-  public SightingForUser(int geoId, int speciesId) {
+  public UserSighting(int geoId, int speciesId) {
     this.geoId = geoId;
     this.speciesId = speciesId;
   }
 
-  public SightingForUser() {
+  public UserSighting() {
   }
 
   public int getGeoId() {
