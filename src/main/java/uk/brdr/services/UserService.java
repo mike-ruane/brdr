@@ -6,5 +6,7 @@ public interface UserService {
 
   void save(User user);
 
-  String login(User user);
+  User login(User user);
+
+  String getUsername(int userId);
 }

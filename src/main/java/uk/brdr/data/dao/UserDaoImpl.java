@@ -52,4 +52,20 @@ public class UserDaoImpl implements UserDao {
       throw e;
     }
   }
+
+  @Override
+  public Optional<User> findById(int userId) {
+    try {
+      return jdbi.withHandle(
+          handle ->
+              handle
+                  .createQuery("SELECT * FROM users WHERE id = :userId")
+                  .bind("userId", userId)
+                  .map(userRowMapper)
+                  .findFirst());
+    } catch (Exception e) {
+      logger.error("failed to execute findByEmail query: {}", e.getMessage());
+      throw e;
+    }
+  }
 }

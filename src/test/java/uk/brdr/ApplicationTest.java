@@ -42,7 +42,7 @@ public class ApplicationTest {
 
   SightingController sightingController = new SightingController(sightingsService);
   SpeciesController speciesController = new SpeciesController(speciesDao);
-  UserController userController = new UserController(userServiceImpl);
+  UserController userController = new UserController(userServiceImpl, tokenManager);
   GeosController geosController = new GeosController(geoLocationsDao);
   Javalin app =
       new Application(

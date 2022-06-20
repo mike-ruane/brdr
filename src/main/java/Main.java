@@ -40,12 +40,12 @@ public class Main {
 
     // services
     var sightingsService = new SightingsServiceImpl(sightingsDaoImpl, geoLocationsDaoImpl);
-    var userService = new UserServiceImpl(userDaoImpl, tokenManager);
+    var userService = new UserServiceImpl(userDaoImpl);
 
     // controllers
     var sightingsController = new SightingController(sightingsService);
     var speciesController = new SpeciesController(speciesDaoImpl);
-    var userController = new UserController(userService);
+    var userController = new UserController(userService, tokenManager);
     var geosController = new GeosController(geoLocationsDaoImpl);
 
     var app =
