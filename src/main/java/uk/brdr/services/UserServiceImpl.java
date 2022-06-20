@@ -1,18 +1,16 @@
 package uk.brdr.services;
 
 import io.javalin.http.BadRequestResponse;
+import io.javalin.http.NotFoundResponse;
 import uk.brdr.data.dao.UserDao;
-import uk.brdr.managers.TokenManager;
 import uk.brdr.model.User;
 
 public class UserServiceImpl implements UserService {
 
   private final UserDao userDao;
-  private final TokenManager tokenManager;
 
-  public UserServiceImpl(UserDao userDao, TokenManager tokenManager) {
+  public UserServiceImpl(UserDao userDao) {
     this.userDao = userDao;
-    this.tokenManager = tokenManager;
   }
 
   public void save(User user) {
@@ -25,7 +23,7 @@ public class UserServiceImpl implements UserService {
     userDao.addUser(user);
   }
 
-  public String login(User user) {
+  public User login(User user) {
     var maybeUser = userDao.findByEmail(user.getEmail());
     if (maybeUser.isEmpty()) {
       throw new BadRequestResponse();
@@ -34,7 +32,11 @@ public class UserServiceImpl implements UserService {
     if (!dbUser.comparePassword(user.getPassword())) {
       throw new BadRequestResponse();
     }
+    return dbUser;
+  }
 
-    return tokenManager.issueToken(dbUser);
+  @Override
+  public String getUsername(int userId) {
+    return userDao.findById(userId).map(User::getUsername).orElseThrow(NotFoundResponse::new);
   }
 }
