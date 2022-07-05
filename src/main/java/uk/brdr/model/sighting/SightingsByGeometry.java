@@ -1,24 +1,24 @@
 package uk.brdr.model.sighting;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import net.postgis.jdbc.geometry.Geometry;
 
-public class SightingsByGeo {
+public class SightingsByGeometry {
 
   String name;
   int geoId;
-  List<BigDecimal[]> geo;
+  Geometry geometry;
   List<Integer> species;
 
-  public SightingsByGeo() {}
-
-  public SightingsByGeo(String name, int geoId, List<BigDecimal[]> geo, List<Integer> species) {
+  public SightingsByGeometry(String name, int geoId, Geometry geometry, List<Integer> species) {
     this.name = name;
     this.geoId = geoId;
-    this.geo = geo;
+    this.geometry = geometry;
     this.species = species;
   }
+
+  public SightingsByGeometry() {}
 
   public String getName() {
     return name;
@@ -28,8 +28,8 @@ public class SightingsByGeo {
     return geoId;
   }
 
-  public List<BigDecimal[]> getGeo() {
-    return geo;
+  public Geometry getGeometry() {
+    return geometry;
   }
 
   public List<Integer> getSpecies() {
@@ -44,8 +44,8 @@ public class SightingsByGeo {
     this.geoId = geoId;
   }
 
-  public void setGeo(List<BigDecimal[]> geo) {
-    this.geo = geo;
+  public void setGeometry(Geometry geometry) {
+    this.geometry = geometry;
   }
 
   public void setSpecies(List<Integer> species) {
@@ -60,28 +60,28 @@ public class SightingsByGeo {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    SightingsByGeo that = (SightingsByGeo) o;
+    SightingsByGeometry that = (SightingsByGeometry) o;
     return geoId == that.geoId
         && Objects.equals(name, that.name)
-        && Objects.equals(geo, that.geo)
+        && Objects.equals(geometry, that.geometry)
         && Objects.equals(species, that.species);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, geoId, geo, species);
+    return Objects.hash(name, geoId, geometry, species);
   }
 
   @Override
   public String toString() {
-    return "SightingsByGeo{"
+    return "SightingsByGeometry{"
         + "name='"
         + name
         + '\''
         + ", geoId="
         + geoId
-        + ", geo="
-        + geo
+        + ", geometry="
+        + geometry
         + ", species="
         + species
         + '}';

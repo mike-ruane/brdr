@@ -35,6 +35,28 @@ public class SightingsServiceImplTest {
     sightingsService = new SightingsServiceImpl(sightingsDao, geoLocationsDao);
   }
 
+  //  @Test
+  //  void getGeometryLocationSightingsForUser() {
+  //
+  //    when(sightingsDao.getSightings(1))
+  //        .thenReturn(
+  //            List.of(
+  //                new UserSighting(8, 23),
+  //                new UserSighting(8, 12),
+  //                new UserSighting(8, 5),
+  //                new UserSighting(8, 45),
+  //                new UserSighting(56, 64),
+  //                new UserSighting(56, 13),
+  //                new UserSighting(56, 78)));
+  //
+  //    when(geoLocationsDao.getGeos(List.of(8, 56)))
+  //        .thenReturn(
+  //            List.of(
+  //                new GeometryLocation(8, "Bath and North East Somerset", new PGgeometry(new
+  // Polygon())),
+  //                new GeoLocation(56, "East Yorkshire", List.of(geo1, geo2))));
+  //  }
+
   @Test
   void getSightingsForUser() {
 
