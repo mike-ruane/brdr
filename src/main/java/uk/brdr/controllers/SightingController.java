@@ -1,5 +1,7 @@
 package uk.brdr.controllers;
 
+import static uk.brdr.serializers.Utils.serializeSightings;
+
 import io.javalin.http.ConflictResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
@@ -33,8 +35,8 @@ public class SightingController {
   public void getSightingsByGeo(Context ctx) {
     try {
       var userId = Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer());
-      var sightings = sightingsService.getSightings(userId);
-      ctx.json(sightings);
+      var sightingsByGeometry = sightingsService.getSightings(userId);
+      ctx.json(serializeSightings(sightingsByGeometry));
     } catch (RuntimeException e) {
       throw new InternalServerErrorResponse("");
     }

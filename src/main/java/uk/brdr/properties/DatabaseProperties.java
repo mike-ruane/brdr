@@ -30,4 +30,8 @@ public class DatabaseProperties {
     return new DatabaseProperties(
         config.getString("url"), config.getString("user"), config.getString("password"));
   }
+
+  public static DatabaseProperties forTesting(String host, String user, String password) {
+    return new DatabaseProperties(host, user, password);
+  }
 }

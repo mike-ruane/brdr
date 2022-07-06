@@ -4,15 +4,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.brdr.util.GeometryBuilder.createPolygon;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import io.javalin.testtools.TestUtil;
-import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
+import net.postgis.jdbc.geometry.Point;
+import net.postgis.jdbc.geometry.Polygon;
 import org.junit.jupiter.api.Test;
 import uk.brdr.controllers.GeosController;
 import uk.brdr.controllers.SightingController;
@@ -25,7 +25,8 @@ import uk.brdr.managers.JwtTokenManager;
 import uk.brdr.managers.TokenManager;
 import uk.brdr.model.User;
 import uk.brdr.model.sighting.Sighting;
-import uk.brdr.model.sighting.SightingsByGeo;
+import uk.brdr.model.sighting.SightingsByGeometry;
+import uk.brdr.serializers.Utils;
 import uk.brdr.services.SightingsService;
 import uk.brdr.services.SightingsServiceImpl;
 import uk.brdr.services.UserService;
@@ -48,8 +49,6 @@ public class ApplicationTest {
       new Application(
               tokenManager, sightingController, speciesController, userController, geosController)
           .javalinApp();
-
-  private static final ObjectMapper objectMapper = new ObjectMapper();
 
   @Test
   public void addSighting() {
@@ -83,10 +82,10 @@ public class ApplicationTest {
   public void getSightings() {
     var user = new User(1, "Mike", "mike@jruane.com", "secure-password");
     var jwt = tokenManager.issueToken(user);
-    List<BigDecimal[]> geo = new ArrayList<BigDecimal[]>();
-    geo.add(new BigDecimal[] {BigDecimal.valueOf(5109132, 5), BigDecimal.valueOf(5109132, 5)});
-    var sightingsByLocation = List.of(new SightingsByGeo("Abbots Worthy", 1, geo, List.of(1, 2)));
-    when(sightingsService.getSightings(1)).thenReturn(sightingsByLocation);
+    Polygon polygon = createPolygon(new Point[] {new Point(-1.34525, 54.59486)});
+    var sightingsByGeometry =
+        List.of(new SightingsByGeometry("Abbots Worthy", 1, polygon, List.of(1, 2)));
+    when(sightingsService.getSightings(1)).thenReturn(sightingsByGeometry);
     TestUtil.test(
         app,
         (server, client) ->
@@ -95,7 +94,7 @@ public class ApplicationTest {
                         .get("/api/sightings", req -> req.addHeader("Cookie", "jwt=" + jwt))
                         .body()
                         .string())
-                .isEqualTo(objectMapper.writeValueAsString(sightingsByLocation)));
+                .isEqualTo(Utils.serializeSightings(sightingsByGeometry)));
   }
 
   @Test

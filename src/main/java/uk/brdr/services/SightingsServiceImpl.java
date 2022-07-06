@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 import uk.brdr.data.dao.GeoLocationsDao;
 import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.model.Species;
-import uk.brdr.model.location.GeoLocation;
+import uk.brdr.model.location.GeometryLocation;
 import uk.brdr.model.sighting.Sighting;
 import uk.brdr.model.sighting.SightingDetail;
-import uk.brdr.model.sighting.SightingsByGeo;
+import uk.brdr.model.sighting.SightingsByGeometry;
 import uk.brdr.model.sighting.UserSighting;
 
 public class SightingsServiceImpl implements SightingsService {
@@ -37,14 +37,14 @@ public class SightingsServiceImpl implements SightingsService {
   }
 
   @Override
-  public List<SightingsByGeo> getSightings(int userId) {
+  public List<SightingsByGeometry> getSightings(int userId) {
     var sightings = sightingsDao.getSightings(userId);
     if (sightings.isEmpty()) {
       return List.of();
     }
     var geoIds = sightings.stream().map(UserSighting::getGeoId).distinct().collect(toList());
-    var geoLocations = geoLocationsDao.getGeos(geoIds);
-    return groupSightingsByGeo(sightings, geoLocations);
+    var geoLocations = geoLocationsDao.getGeometries(geoIds);
+    return groupSightingsByGeometry(sightings, geoLocations);
   }
 
   @Override
@@ -57,8 +57,8 @@ public class SightingsServiceImpl implements SightingsService {
                 Collectors.mapping(SightingDetail::getSpecies, toList())));
   }
 
-  private List<SightingsByGeo> groupSightingsByGeo(
-      List<UserSighting> sightings, List<GeoLocation> geoLocations) {
+  private List<SightingsByGeometry> groupSightingsByGeometry(
+      List<UserSighting> sightings, List<GeometryLocation> geoLocations) {
     return geoLocations.stream()
         .map(
             g -> {
@@ -67,7 +67,8 @@ public class SightingsServiceImpl implements SightingsService {
                       .filter(s -> s.getGeoId() == g.getId())
                       .map(UserSighting::getSpeciesId)
                       .collect(toList());
-              return new SightingsByGeo(g.getName(), g.getId(), g.getGeo(), species);
+              return new SightingsByGeometry(
+                  g.getName(), g.getId(), g.getpGgeometry().getGeometry(), species);
             })
         .collect(toList());
   }
