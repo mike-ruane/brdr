@@ -1,8 +1,8 @@
-package uk.brdr.geo;
+package uk.brdr.serializers;
 
-import static uk.brdr.geo.GeometryTypes.FEATURE_COLLECTION;
-import static uk.brdr.geo.GeometryTypes.MULTI_POLYGON;
-import static uk.brdr.geo.GeometryTypes.POLYGON;
+import static uk.brdr.serializers.GeometryTypes.FEATURE_COLLECTION;
+import static uk.brdr.serializers.GeometryTypes.MULTI_POLYGON;
+import static uk.brdr.serializers.GeometryTypes.POLYGON;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

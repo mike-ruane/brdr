@@ -1,4 +1,4 @@
-package uk.brdr.geo;
+package uk.brdr.serializers;
 
 public interface GeometryTypes {
   String POLYGON = "Polygon";

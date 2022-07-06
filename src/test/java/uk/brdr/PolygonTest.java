@@ -10,8 +10,8 @@ import net.postgis.jdbc.geometry.Geometry;
 import net.postgis.jdbc.geometry.Polygon;
 import org.junit.jupiter.api.Test;
 import uk.brdr.data.DatabaseConfiguration;
-import uk.brdr.geo.GeometrySerializer;
 import uk.brdr.properties.DatabaseProperties;
+import uk.brdr.serializers.GeometrySerializer;
 
 public class PolygonTest {
 
