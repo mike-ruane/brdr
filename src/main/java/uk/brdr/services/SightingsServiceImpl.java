@@ -57,6 +57,15 @@ public class SightingsServiceImpl implements SightingsService {
                 Collectors.mapping(SightingDetail::getSpecies, toList())));
   }
 
+  @Override
+  public Map<String, List<Species>> getSightingsByGenus(int geoId, int userId) {
+    var sightings = sightingsDao.getSightings(geoId, userId);
+    return sightings.stream()
+        .map(SightingDetail::getSpecies)
+        .distinct()
+        .collect(groupingBy(Species::getGenus));
+  }
+
   private List<SightingsByGeometry> groupSightingsByGeometry(
       List<UserSighting> sightings, List<GeometryLocation> geoLocations) {
     return geoLocations.stream()
