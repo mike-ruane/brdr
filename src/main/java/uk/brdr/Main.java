@@ -1,3 +1,5 @@
+package uk.brdr;
+
 import com.auth0.jwt.algorithms.Algorithm;
 import com.typesafe.config.ConfigFactory;
 import org.flywaydb.core.Flyway;
