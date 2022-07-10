@@ -37,7 +37,7 @@ public class DatabaseProperties {
     var uri = new URI(config.getString("url"));
     var user = uri.getUserInfo().split(":")[0];
     var password = uri.getUserInfo().split(":")[1];
-    var url = "jdbc:postgresql://" + uri.getHost() + ":" + uri.getPort() + ":" + uri.getPath() + "?sslmode=require";
+    var url = "jdbc:postgresql://" + uri.getHost() + ":" + uri.getPort()  + uri.getPath() + "?sslmode=require";
 
     return new DatabaseProperties(url, user, password);
   }
