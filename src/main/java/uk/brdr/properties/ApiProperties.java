@@ -1,6 +1,7 @@
 package uk.brdr.properties;
 
 import com.typesafe.config.Config;
+import java.net.URISyntaxException;
 
 public class ApiProperties {
 
@@ -16,7 +17,11 @@ public class ApiProperties {
 
   public static ApiProperties fromConfig(Config config) {
     var databaseConfig = config.getConfig("database");
-    var database = DatabaseProperties.fromConfig(databaseConfig);
-    return new ApiProperties(database);
+    try {
+      var database = DatabaseProperties.fromHerokuConfig(databaseConfig);
+      return new ApiProperties(database);
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

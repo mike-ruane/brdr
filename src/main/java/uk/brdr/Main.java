@@ -2,6 +2,7 @@ package uk.brdr;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.typesafe.config.ConfigFactory;
+import java.net.URISyntaxException;
 import org.flywaydb.core.Flyway;
 import uk.brdr.controllers.GeosController;
 import uk.brdr.controllers.SightingController;
