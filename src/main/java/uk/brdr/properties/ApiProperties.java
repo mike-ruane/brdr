@@ -24,6 +24,13 @@ public class ApiProperties {
   public static ApiProperties fromConfig(Config config) {
     var databaseConfig = config.getConfig("database");
     var serverConfig = config.getConfig("javalin");
+    var environment = config.getString("environment");
+
+    if (environment.equals("local")) {
+      var database = DatabaseProperties.fromConfig(databaseConfig);
+      var server = ServerProperties.fromConfig(serverConfig);
+      return new ApiProperties(database, server);
+    }
 
     try {
       var database = DatabaseProperties.fromHerokuConfig(databaseConfig);

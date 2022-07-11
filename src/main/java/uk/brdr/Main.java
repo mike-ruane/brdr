@@ -22,7 +22,7 @@ public class Main {
 
   public static void main(String[] args) {
     var conf = ConfigFactory.load();
-    var properties = ApiProperties.fromConfig(conf);
+    var properties = ApiProperties.fromConfig(conf.getConfig("application"));
     var databaseConfiguration = new DatabaseConfiguration(properties.getDatabaseProperties());
     var datasource = databaseConfiguration.getDatasource();
     Flyway flyway = Flyway.configure().dataSource(datasource).load();
