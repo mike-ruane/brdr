@@ -15,6 +15,7 @@ import net.postgis.jdbc.geometry.Point;
 import net.postgis.jdbc.geometry.Polygon;
 import org.junit.jupiter.api.Test;
 import uk.brdr.controllers.GeosController;
+import uk.brdr.controllers.HealthCheckController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
 import uk.brdr.controllers.UserController;
@@ -41,13 +42,14 @@ public class ApplicationTest {
   UserService userServiceImpl = mock(UserServiceImpl.class);
   TokenManager tokenManager = new JwtTokenManager(algorithm);
 
+  HealthCheckController healthCheckController = new HealthCheckController();
   SightingController sightingController = new SightingController(sightingsService);
   SpeciesController speciesController = new SpeciesController(speciesDao);
   UserController userController = new UserController(userServiceImpl, tokenManager);
   GeosController geosController = new GeosController(geoLocationsDao);
   Javalin app =
       new Application(
-              tokenManager, sightingController, speciesController, userController, geosController)
+              tokenManager, healthCheckController, sightingController, speciesController, userController, geosController)
           .javalinApp();
 
   @Test

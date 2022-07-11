@@ -2,9 +2,9 @@ package uk.brdr;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.typesafe.config.ConfigFactory;
-import java.net.URISyntaxException;
 import org.flywaydb.core.Flyway;
 import uk.brdr.controllers.GeosController;
+import uk.brdr.controllers.HealthCheckController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
 import uk.brdr.controllers.UserController;
@@ -43,6 +43,7 @@ public class Main {
     var userService = new UserServiceImpl(userDaoImpl);
 
     // controllers
+    var healthCheckController = new HealthCheckController();
     var sightingsController = new SightingController(sightingsService);
     var speciesController = new SpeciesController(speciesDaoImpl);
     var userController = new UserController(userService, tokenManager);
@@ -50,7 +51,7 @@ public class Main {
 
     var app =
         new Application(
-            tokenManager, sightingsController, speciesController, userController, geosController);
+            tokenManager, healthCheckController, sightingsController, speciesController, userController, geosController);
     app.javalinApp().start(properties.getServerProperties().getPort());
   }
 }

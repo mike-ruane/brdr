@@ -7,6 +7,7 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 import io.javalin.Javalin;
 import io.javalin.core.JavalinConfig;
 import uk.brdr.controllers.GeosController;
+import uk.brdr.controllers.HealthCheckController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
 import uk.brdr.controllers.UserController;
@@ -19,6 +20,7 @@ public class Application {
 
   public Application(
       TokenManager tokenManager,
+      HealthCheckController healthCheckController,
       SightingController sightingController,
       SpeciesController speciesController,
       UserController userController,
@@ -30,6 +32,7 @@ public class Application {
                     path(
                         "api",
                         () -> {
+                          get("healthcheck", healthCheckController::ping);
                           get("species", speciesController::getAll);
                           get("geos", geosController::getGeoNames);
                           path(
