@@ -6,20 +6,29 @@ import java.net.URISyntaxException;
 public class ApiProperties {
 
   private final DatabaseProperties databaseProperties;
+  private final ServerProperties serverProperties;
 
-  private ApiProperties(DatabaseProperties databaseProperties) {
+  private ApiProperties(DatabaseProperties databaseProperties, ServerProperties serverProperties) {
     this.databaseProperties = databaseProperties;
+    this.serverProperties = serverProperties;
   }
 
   public DatabaseProperties getDatabaseProperties() {
     return databaseProperties;
   }
 
+  public ServerProperties getServerProperties() {
+    return serverProperties;
+  }
+
   public static ApiProperties fromConfig(Config config) {
     var databaseConfig = config.getConfig("database");
+    var serverConfig = config.getConfig("javalin");
+
     try {
       var database = DatabaseProperties.fromHerokuConfig(databaseConfig);
-      return new ApiProperties(database);
+      var server = ServerProperties.fromConfig(serverConfig);
+      return new ApiProperties(database, server);
     } catch (URISyntaxException e) {
       throw new RuntimeException(e);
     }

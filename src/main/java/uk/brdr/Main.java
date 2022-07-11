@@ -20,8 +20,6 @@ import uk.brdr.services.UserServiceImpl;
 
 public class Main {
 
-  private static final int port = 8000;
-
   public static void main(String[] args) {
     var conf = ConfigFactory.load();
     var properties = ApiProperties.fromConfig(conf);
@@ -53,6 +51,6 @@ public class Main {
     var app =
         new Application(
             tokenManager, sightingsController, speciesController, userController, geosController);
-    app.javalinApp().start(port);
+    app.javalinApp().start(properties.getServerProperties().getPort());
   }
 }
