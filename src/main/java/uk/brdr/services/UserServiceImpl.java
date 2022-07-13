@@ -4,6 +4,7 @@ import io.javalin.http.BadRequestResponse;
 import io.javalin.http.NotFoundResponse;
 import uk.brdr.data.dao.UserDao;
 import uk.brdr.model.User;
+import uk.brdr.utils.HashingUtils;
 
 public class UserServiceImpl implements UserService {
 
@@ -20,7 +21,9 @@ public class UserServiceImpl implements UserService {
             s -> {
               throw new BadRequestResponse();
             });
-    userDao.addUser(user);
+
+    var hashedUser = HashingUtils.hashUserPassword(user);
+    userDao.addUser(hashedUser);
   }
 
   public User login(User user) {
@@ -29,7 +32,7 @@ public class UserServiceImpl implements UserService {
       throw new BadRequestResponse();
     }
     var dbUser = maybeUser.get();
-    if (!dbUser.comparePassword(user.getPassword())) {
+    if (!HashingUtils.validateUser(dbUser, user)) {
       throw new BadRequestResponse();
     }
     return dbUser;
