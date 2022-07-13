@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import static uk.brdr.util.GeometryBuilder.createPolygon;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import com.typesafe.config.ConfigFactory;
 import io.javalin.Javalin;
 import io.javalin.testtools.TestUtil;
 import java.sql.Date;
@@ -27,6 +28,7 @@ import uk.brdr.managers.TokenManager;
 import uk.brdr.model.User;
 import uk.brdr.model.sighting.Sighting;
 import uk.brdr.model.sighting.SightingsByGeometry;
+import uk.brdr.properties.JwtProperties;
 import uk.brdr.serializers.Utils;
 import uk.brdr.services.SightingsService;
 import uk.brdr.services.SightingsServiceImpl;
@@ -35,12 +37,12 @@ import uk.brdr.services.UserServiceImpl;
 
 public class ApplicationTest {
 
-  private static final Algorithm algorithm = Algorithm.HMAC256("secret");
+  JwtProperties jwtProperties = new JwtProperties("secret");
   SightingsService sightingsService = mock(SightingsServiceImpl.class);
   SpeciesDao speciesDao = mock(SpeciesDaoImpl.class);
   GeoLocationsDao geoLocationsDao = mock(GeoLocationsDao.class);
   UserService userServiceImpl = mock(UserServiceImpl.class);
-  TokenManager tokenManager = new JwtTokenManager(algorithm);
+  TokenManager tokenManager = new JwtTokenManager(jwtProperties);
 
   HealthCheckController healthCheckController = new HealthCheckController();
   SightingController sightingController = new SightingController(sightingsService);

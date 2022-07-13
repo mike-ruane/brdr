@@ -2,6 +2,7 @@ package uk.brdr.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -14,21 +15,24 @@ import org.junit.jupiter.api.Test;
 import uk.brdr.data.dao.UserDao;
 import uk.brdr.data.dao.UserDaoImpl;
 import uk.brdr.model.User;
+import uk.brdr.utils.HashingUtils;
 
 public class UserServiceImplTest {
 
   UserDao userDao = mock(UserDaoImpl.class);
+  HashingUtils hashingUtils = mock(HashingUtils.class);
   UserService userService;
   User user = new User(1, "mikeyru", "mike@ruane.com", "secure-password");
 
   @BeforeEach
   void setup() {
-    userService = new UserServiceImpl(userDao);
+    userService = new UserServiceImpl(userDao, hashingUtils);
   }
 
   @Test
   void saveNewUser() {
     when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.empty());
+    when(hashingUtils.hashUserPassword(user)).thenReturn(user);
     userService.save(user);
     verify(userDao).addUser(user);
   }
@@ -43,6 +47,7 @@ public class UserServiceImplTest {
   @Test
   void successfulLogin() {
     when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    when(hashingUtils.validateUser(user, user)).thenReturn(true);
     var actual = userService.login(user);
     assertEquals(actual, user);
   }
@@ -58,6 +63,7 @@ public class UserServiceImplTest {
     var userDbEntry =
         new User(user.getId(), user.getUsername(), user.getEmail(), "some-other-password");
     when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.of(userDbEntry));
+    when(hashingUtils.validateUser(userDbEntry, user)).thenReturn(false);
     assertThrows(BadRequestResponse.class, () -> userService.login(user));
   }
 }
