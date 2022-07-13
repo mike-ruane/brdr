@@ -6,7 +6,7 @@ public class ServerProperties {
 
   private final int port;
 
-  public ServerProperties(int port) {
+  private ServerProperties(int port) {
     this.port = port;
   }
 

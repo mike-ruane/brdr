@@ -10,11 +10,12 @@ import uk.brdr.model.User;
 class HashingUtilsTest {
 
   private static final Argon2 ARGON_2 = Argon2Factory.create();
+  HashingUtils hashingUtils = new HashingUtils();
 
   @Test
   void hashUserPassword() {
     var user = new User(1, "test-user", "test-user@test.com", "test-password");
-    var hashedUser = HashingUtils.hashUserPassword(user);
+    var hashedUser = hashingUtils.hashUserPassword(user);
     var expectedPassword = hashedUser.getPassword();
     assertTrue(ARGON_2.verify(expectedPassword, user.getPassword().toCharArray()));
   }
@@ -24,6 +25,6 @@ class HashingUtilsTest {
     var hashedPassword = ARGON_2.hash(5, 65536, 1, "test-password".toCharArray());
     var dbUser = new User(1, "test-user", "test-user@test.com", hashedPassword);
     var user = new User(1, "test-user", "test-user@test.com", "test-password");
-    assertTrue(HashingUtils.validateUser(dbUser, user));
+    assertTrue(hashingUtils.validateUser(dbUser, user));
   }
 }

@@ -6,13 +6,14 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.Optional;
 import uk.brdr.model.User;
+import uk.brdr.properties.JwtProperties;
 
 public class JwtTokenManager implements TokenManager {
 
   private final Algorithm algorithm;
 
-  public JwtTokenManager(Algorithm algorithm) {
-    this.algorithm = algorithm;
+  public JwtTokenManager(JwtProperties jwtProperties) {
+    this.algorithm = Algorithm.HMAC256(jwtProperties.getSecret());;
   }
 
   @Override

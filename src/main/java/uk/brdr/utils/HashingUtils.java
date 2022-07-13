@@ -8,7 +8,7 @@ public class HashingUtils {
 
   public static final Argon2 ARGON_2 = Argon2Factory.create();
 
-  public static User hashUserPassword(User user) {
+  public User hashUserPassword(User user) {
     try {
       var hashedPassword = ARGON_2.hash(5, 65536, 1, user.getPassword().toCharArray());
       return new User(user.getId(), user.getUsername(), user.getEmail(), hashedPassword);
@@ -17,7 +17,7 @@ public class HashingUtils {
     }
   }
 
-  public static boolean validateUser(User dbUser, User user) {
+  public boolean validateUser(User dbUser, User user) {
     return ARGON_2.verify(dbUser.getPassword(), user.getPassword().toCharArray());
   }
 

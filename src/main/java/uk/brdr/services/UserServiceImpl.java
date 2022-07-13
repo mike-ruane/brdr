@@ -9,9 +9,11 @@ import uk.brdr.utils.HashingUtils;
 public class UserServiceImpl implements UserService {
 
   private final UserDao userDao;
+  private final HashingUtils hashingUtils;
 
-  public UserServiceImpl(UserDao userDao) {
+  public UserServiceImpl(UserDao userDao, HashingUtils hashingUtils) {
     this.userDao = userDao;
+    this.hashingUtils = hashingUtils;
   }
 
   public void save(User user) {
@@ -22,7 +24,7 @@ public class UserServiceImpl implements UserService {
               throw new BadRequestResponse();
             });
 
-    var hashedUser = HashingUtils.hashUserPassword(user);
+    var hashedUser = hashingUtils.hashUserPassword(user);
     userDao.addUser(hashedUser);
   }
 
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
       throw new BadRequestResponse();
     }
     var dbUser = maybeUser.get();
-    if (!HashingUtils.validateUser(dbUser, user)) {
+    if (!hashingUtils.validateUser(dbUser, user)) {
       throw new BadRequestResponse();
     }
     return dbUser;

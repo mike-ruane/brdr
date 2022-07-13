@@ -17,6 +17,7 @@ import uk.brdr.managers.JwtTokenManager;
 import uk.brdr.properties.ApiProperties;
 import uk.brdr.services.SightingsServiceImpl;
 import uk.brdr.services.UserServiceImpl;
+import uk.brdr.utils.HashingUtils;
 
 public class Main {
 
@@ -28,7 +29,6 @@ public class Main {
     Flyway flyway = Flyway.configure().dataSource(datasource).load();
     flyway.baseline();
     flyway.migrate();
-    var algorithm = Algorithm.HMAC256("secret");
 
     // DAO
     var sightingsDaoImpl = new SightingsDaoImpl(datasource);
@@ -36,11 +36,11 @@ public class Main {
     var speciesDaoImpl = new SpeciesDaoImpl(datasource);
     var userDaoImpl = new UserDaoImpl(datasource);
 
-    var tokenManager = new JwtTokenManager(algorithm);
+    var tokenManager = new JwtTokenManager(properties.getJwtProperties());
 
     // services
     var sightingsService = new SightingsServiceImpl(sightingsDaoImpl, geoLocationsDaoImpl);
-    var userService = new UserServiceImpl(userDaoImpl);
+    var userService = new UserServiceImpl(userDaoImpl, new HashingUtils());
 
     // controllers
     var healthCheckController = new HealthCheckController();
