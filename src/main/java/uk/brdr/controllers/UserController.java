@@ -17,7 +17,6 @@ public class UserController {
   private final UserService userServiceImpl;
   private final TokenManager tokenManager;
   private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-  private static final Algorithm algorithmHS = Algorithm.HMAC256("secret");
 
   public UserController(UserService userServiceImpl, TokenManager tokenManager) {
     this.userServiceImpl = userServiceImpl;
@@ -53,7 +52,7 @@ public class UserController {
   public void validate(Context ctx) {
     var token = Optional.ofNullable(ctx.cookie("jwt"));
     if (token.isPresent()) {
-      var verifier = JWT.require(algorithmHS).build();
+      var verifier = JWT.require(tokenManager.getAlgorithm()).build();
       var jwt = verifier.verify(token.get());
       var userId = Integer.parseInt(jwt.getIssuer());
       var username = userServiceImpl.getUsername(userId);

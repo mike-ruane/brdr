@@ -17,6 +17,11 @@ public class JwtTokenManager implements TokenManager {
   }
 
   @Override
+  public Algorithm getAlgorithm() {
+    return algorithm;
+  }
+
+  @Override
   public String issueToken(User user) {
     return JWT.create().withIssuer(String.valueOf(user.getId())).sign(algorithm);
   }
