@@ -1,6 +1,7 @@
 import psycopg2
 import urllib.parse as urlparse
 import os
+from pathlib import Path
 
 url = urlparse.urlparse(os.environ['DATABASE_URL'])
 dbname = url.path[1:]
@@ -19,13 +20,11 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-sql = '''
-COPY sample_table_name
-FROM '../data/species.csv'
-DELIMITER ','
-CSV HEADER;'''
+path = Path(__file__).parent / "../data/species.csv"
+with path.open() as file:
+    next(file)
+    cur.copy_from(file, 'species', sep=',')
 
-cur.execute(sql)
 conn.commit()
 cur.close()
 conn.close()
