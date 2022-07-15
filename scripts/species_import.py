@@ -23,7 +23,7 @@ cur = conn.cursor()
 path = Path(__file__).parent / "../data/species.csv"
 with path.open() as file:
     next(file)
-    cur.copy_from(file, 'species', columns=('scientific_name', 'preferred_common_name', 'habitat', 'genus', 'family', 'family_order', 'breeding_population', 'winter_visitor_population'), sep=',')
+    cur.copy_from(file, 'species', columns=('scientific_name', 'preferred_common_name', 'habitat', 'genus', 'family', 'family_order', 'breeding_population', 'winter_visitor_population'), sep=',', null='')
 
 conn.commit()
 cur.close()
