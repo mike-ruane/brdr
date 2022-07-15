@@ -25,7 +25,7 @@ FROM '../data/species.csv'
 DELIMITER ','
 CSV HEADER;'''
 
-cur.execute()
+cur.execute(sql)
 conn.commit()
 cur.close()
 conn.close()
