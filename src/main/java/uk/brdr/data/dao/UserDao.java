@@ -9,5 +9,7 @@ public interface UserDao {
 
   Optional<User> findByEmail(String email);
 
+  Optional<User> findByUsername(String username);
+
   Optional<User> findById(int userId);
 }

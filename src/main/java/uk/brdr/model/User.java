@@ -4,10 +4,10 @@ import java.util.Objects;
 
 public class User {
 
-  public int id;
-  public String username;
-  public String email;
-  public String password;
+  private int id;
+  private String username;
+  private String email;
+  private String password;
 
   public User(int id, String username, String email, String password) {
     this.id = id;

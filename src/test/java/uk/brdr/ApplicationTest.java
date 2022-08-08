@@ -15,6 +15,7 @@ import java.util.List;
 import net.postgis.jdbc.geometry.Point;
 import net.postgis.jdbc.geometry.Polygon;
 import org.junit.jupiter.api.Test;
+import uk.brdr.controllers.AdminController;
 import uk.brdr.controllers.GeosController;
 import uk.brdr.controllers.HealthCheckController;
 import uk.brdr.controllers.SightingController;
@@ -30,6 +31,7 @@ import uk.brdr.model.sighting.Sighting;
 import uk.brdr.model.sighting.SightingsByGeometry;
 import uk.brdr.properties.JwtProperties;
 import uk.brdr.serializers.Utils;
+import uk.brdr.services.MailService;
 import uk.brdr.services.SightingsService;
 import uk.brdr.services.SightingsServiceImpl;
 import uk.brdr.services.UserService;
@@ -42,6 +44,7 @@ public class ApplicationTest {
   SpeciesDao speciesDao = mock(SpeciesDaoImpl.class);
   GeoLocationsDao geoLocationsDao = mock(GeoLocationsDao.class);
   UserService userServiceImpl = mock(UserServiceImpl.class);
+  MailService mailService = mock(MailService.class);
   TokenManager tokenManager = new JwtTokenManager(jwtProperties);
 
   HealthCheckController healthCheckController = new HealthCheckController();
@@ -49,9 +52,11 @@ public class ApplicationTest {
   SpeciesController speciesController = new SpeciesController(speciesDao);
   UserController userController = new UserController(userServiceImpl, tokenManager);
   GeosController geosController = new GeosController(geoLocationsDao);
+  AdminController adminController = new AdminController(mailService);
+
   Javalin app =
       new Application(
-              tokenManager, healthCheckController, sightingController, speciesController, userController, geosController)
+              tokenManager, healthCheckController, adminController, sightingController, speciesController, userController, geosController)
           .javalinApp();
 
   @Test

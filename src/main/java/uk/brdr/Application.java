@@ -6,6 +6,7 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 import io.javalin.Javalin;
 import io.javalin.core.JavalinConfig;
+import uk.brdr.controllers.AdminController;
 import uk.brdr.controllers.GeosController;
 import uk.brdr.controllers.HealthCheckController;
 import uk.brdr.controllers.SightingController;
@@ -21,6 +22,7 @@ public class Application {
   public Application(
       TokenManager tokenManager,
       HealthCheckController healthCheckController,
+      AdminController adminController,
       SightingController sightingController,
       SpeciesController speciesController,
       UserController userController,
@@ -46,6 +48,7 @@ public class Application {
                                 get(sightingController::getSightingsByGeo);
                                 path("{geo}", () -> get(sightingController::getSightingsForGeo));
                               });
+                          post("message", adminController::sendMessage);
                           post("register", userController::register);
                           post("login", userController::login);
                           get("user/validate", userController::validate);
@@ -53,6 +56,7 @@ public class Application {
 
     app.before("api/sightings", JwtCookieHandler.createCookieDecodeHandler(tokenManager));
     app.before("api/sightings/{geo}", JwtCookieHandler.createCookieDecodeHandler(tokenManager));
+    app.before("api/message", JwtCookieHandler.createCookieDecodeHandler(tokenManager));
   }
 
   public Javalin javalinApp() {
