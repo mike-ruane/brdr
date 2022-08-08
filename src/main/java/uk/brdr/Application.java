@@ -33,8 +33,12 @@ public class Application {
                         "api",
                         () -> {
                           get("healthcheck", healthCheckController::ping);
-                          get("species", speciesController::getAll);
-                          get("geos", geosController::getGeoNames);
+                          get("geos/all", geosController::getGeoNames);
+                          path("species", () -> {
+                            get(speciesController::getAll);
+                            get("all", speciesController::getAll);
+                            path("{id}", () -> get(speciesController::get));
+                          });
                           path(
                               "sightings",
                               () -> {
