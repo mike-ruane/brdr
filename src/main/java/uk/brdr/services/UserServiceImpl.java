@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
     var dbUser = maybeUser.get();
     if (!hashingUtils.validateUser(dbUser, user)) {
-      throw new BadRequestResponse();
+      throw new IllegalArgumentException();
     }
     return dbUser;
   }
