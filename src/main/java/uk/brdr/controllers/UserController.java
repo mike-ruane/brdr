@@ -44,7 +44,10 @@ public class UserController {
           .status(HttpCode.OK)
           .cookie(cookie)
           .header("Content-Type", "application/json");
-    } catch (Exception e) {
+    } catch (IllegalArgumentException e) {
+      ctx.status(HttpCode.UNAUTHORIZED);
+    }
+    catch (Exception e) {
       ctx.status(HttpCode.SERVICE_UNAVAILABLE);
     }
   }

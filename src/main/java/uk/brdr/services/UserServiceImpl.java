@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
   public User login(User user) {
     var maybeUser = userDao.findByEmail(user.getEmail());
     if (maybeUser.isEmpty()) {
-      throw new BadRequestResponse();
+      throw new IllegalArgumentException();
     }
     var dbUser = maybeUser.get();
     if (!hashingUtils.validateUser(dbUser, user)) {
