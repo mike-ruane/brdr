@@ -8,11 +8,13 @@ public class ApiProperties {
   private final DatabaseProperties databaseProperties;
   private final ServerProperties serverProperties;
   private final JwtProperties jwtProperties;
+  private final MailServiceProperties mailServiceProperties;
 
-  private ApiProperties(DatabaseProperties databaseProperties, ServerProperties serverProperties, JwtProperties jwtProperties) {
+  private ApiProperties(DatabaseProperties databaseProperties, ServerProperties serverProperties, JwtProperties jwtProperties, MailServiceProperties mailServiceProperties) {
     this.databaseProperties = databaseProperties;
     this.serverProperties = serverProperties;
     this.jwtProperties = jwtProperties;
+    this.mailServiceProperties = mailServiceProperties;
   }
 
   public DatabaseProperties getDatabaseProperties() {
@@ -27,26 +29,27 @@ public class ApiProperties {
     return jwtProperties;
   }
 
+  public MailServiceProperties getMailServiceProperties() {
+    return mailServiceProperties;
+  }
+
   public static ApiProperties fromConfig(Config config) {
-    var databaseConfig = config.getConfig("database");
-    var serverConfig = config.getConfig("javalin");
-    var jwtConfig = config.getConfig("jwt");
-    var environment = config.getString("environment");
-
-    if (environment.equals("local")) {
-      var database = DatabaseProperties.fromConfig(databaseConfig);
-      var server = ServerProperties.fromConfig(serverConfig);
-      var jwt = JwtProperties.fromConfig(jwtConfig);
-      return new ApiProperties(database, server, jwt);
-    }
-
     try {
-      var database = DatabaseProperties.fromHerokuConfig(databaseConfig);
-      var server = ServerProperties.fromConfig(serverConfig);
-      var jwt = JwtProperties.fromConfig(jwtConfig);
-      return new ApiProperties(database, server, jwt);
+      var database = getDatabasePropertiesForEnvironment(config.getString("environment"), config.getConfig("database"));
+      var server = ServerProperties.fromConfig(config.getConfig("javalin"));
+      var jwt = JwtProperties.fromConfig(config.getConfig("jwt"));
+      var mail = MailServiceProperties.fromConfig(config.getConfig("mail"));
+      return new ApiProperties(database, server, jwt, mail);
     } catch (URISyntaxException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  private static DatabaseProperties getDatabasePropertiesForEnvironment(String environment, Config databaseConfig)
+      throws URISyntaxException {
+    if (environment.equals("local")) {
+      return DatabaseProperties.fromConfig(databaseConfig);
+    }
+    return DatabaseProperties.fromHerokuConfig(databaseConfig);
   }
 }

@@ -1,8 +1,8 @@
 package uk.brdr;
 
-import com.auth0.jwt.algorithms.Algorithm;
 import com.typesafe.config.ConfigFactory;
 import org.flywaydb.core.Flyway;
+import uk.brdr.controllers.AdminController;
 import uk.brdr.controllers.GeosController;
 import uk.brdr.controllers.HealthCheckController;
 import uk.brdr.controllers.SightingController;
@@ -15,6 +15,7 @@ import uk.brdr.data.dao.SpeciesDaoImpl;
 import uk.brdr.data.dao.UserDaoImpl;
 import uk.brdr.managers.JwtTokenManager;
 import uk.brdr.properties.ApiProperties;
+import uk.brdr.services.MailService;
 import uk.brdr.services.SightingsServiceImpl;
 import uk.brdr.services.UserServiceImpl;
 import uk.brdr.utils.HashingUtils;
@@ -41,6 +42,7 @@ public class Main {
     // services
     var sightingsService = new SightingsServiceImpl(sightingsDaoImpl, geoLocationsDaoImpl);
     var userService = new UserServiceImpl(userDaoImpl, new HashingUtils());
+    var mailService = new MailService(properties.getMailServiceProperties(), userDaoImpl);
 
     // controllers
     var healthCheckController = new HealthCheckController();
@@ -48,10 +50,17 @@ public class Main {
     var speciesController = new SpeciesController(speciesDaoImpl);
     var userController = new UserController(userService, tokenManager);
     var geosController = new GeosController(geoLocationsDaoImpl);
+    var adminController = new AdminController(mailService);
 
-    var app =
-        new Application(
-            tokenManager, healthCheckController, sightingsController, speciesController, userController, geosController);
+    var app = new Application(
+        tokenManager,
+        healthCheckController,
+        adminController,
+        sightingsController,
+        speciesController,
+        userController,
+        geosController);
+
     app.javalinApp().start(properties.getServerProperties().getPort());
   }
 }

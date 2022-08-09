@@ -2,8 +2,6 @@ package uk.brdr.controllers;
 
 import io.javalin.http.Context;
 import io.javalin.http.ServiceUnavailableResponse;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.brdr.data.dao.SpeciesDao;
@@ -27,13 +25,10 @@ public class SpeciesController {
     }
   }
 
-  public void getSpecies(Context ctx) {
+  public void get(Context ctx) {
     try {
-      var batch = ctx.queryParam("ids");
-      assert batch != null;
-      var speciesIds =
-          Stream.of(batch.split(",", -1)).map(Integer::parseInt).collect(Collectors.toList());
-      var species = speciesDao.getSpecies(speciesIds);
+      var id = ctx.pathParam("id");
+      var species = speciesDao.get(Integer.parseInt(id));
       ctx.json(species);
     } catch (RuntimeException e) {
       throw new ServiceUnavailableResponse();
