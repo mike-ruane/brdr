@@ -46,20 +46,21 @@ public class Main {
 
     // controllers
     var healthCheckController = new HealthCheckController();
-    var sightingsController = new SightingController(sightingsService);
+    var sightingsController = new SightingController(sightingsService, userDaoImpl);
     var speciesController = new SpeciesController(speciesDaoImpl);
     var userController = new UserController(userService, tokenManager);
     var geosController = new GeosController(geoLocationsDaoImpl);
     var adminController = new AdminController(mailService);
 
-    var app = new Application(
-        tokenManager,
-        healthCheckController,
-        adminController,
-        sightingsController,
-        speciesController,
-        userController,
-        geosController);
+    var app =
+        new Application(
+            tokenManager,
+            healthCheckController,
+            adminController,
+            sightingsController,
+            speciesController,
+            userController,
+            geosController);
 
     app.javalinApp().start(properties.getServerProperties().getPort());
   }

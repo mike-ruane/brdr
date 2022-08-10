@@ -5,8 +5,7 @@ import io.javalin.http.HttpCode;
 
 public class HealthCheckController {
 
-  public HealthCheckController() {
-  }
+  public HealthCheckController() {}
 
   public void ping(Context ctx) {
     ctx.status(HttpCode.OK);

@@ -13,7 +13,8 @@ public class JwtTokenManager implements TokenManager {
   private final Algorithm algorithm;
 
   public JwtTokenManager(JwtProperties jwtProperties) {
-    this.algorithm = Algorithm.HMAC256(jwtProperties.getSecret());;
+    this.algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
+    ;
   }
 
   @Override

@@ -23,5 +23,4 @@ public class AdminController {
       ctx.status(HttpCode.SERVICE_UNAVAILABLE);
     }
   }
-
 }

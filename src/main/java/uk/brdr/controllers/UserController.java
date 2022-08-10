@@ -1,7 +1,6 @@
 package uk.brdr.controllers;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import io.javalin.http.Context;
 import io.javalin.http.Cookie;
 import io.javalin.http.HttpCode;
@@ -46,8 +45,7 @@ public class UserController {
           .header("Content-Type", "application/json");
     } catch (IllegalArgumentException e) {
       ctx.status(HttpCode.UNAUTHORIZED);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       ctx.status(HttpCode.SERVICE_UNAVAILABLE);
     }
   }

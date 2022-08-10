@@ -6,8 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.brdr.util.GeometryBuilder.createPolygon;
 
-import com.auth0.jwt.algorithms.Algorithm;
-import com.typesafe.config.ConfigFactory;
 import io.javalin.Javalin;
 import io.javalin.testtools.TestUtil;
 import java.sql.Date;
@@ -24,6 +22,7 @@ import uk.brdr.controllers.UserController;
 import uk.brdr.data.dao.GeoLocationsDao;
 import uk.brdr.data.dao.SpeciesDao;
 import uk.brdr.data.dao.SpeciesDaoImpl;
+import uk.brdr.data.dao.UserDao;
 import uk.brdr.managers.JwtTokenManager;
 import uk.brdr.managers.TokenManager;
 import uk.brdr.model.User;
@@ -44,11 +43,12 @@ public class ApplicationTest {
   SpeciesDao speciesDao = mock(SpeciesDaoImpl.class);
   GeoLocationsDao geoLocationsDao = mock(GeoLocationsDao.class);
   UserService userServiceImpl = mock(UserServiceImpl.class);
+  UserDao userDao = mock(UserDao.class);
   MailService mailService = mock(MailService.class);
   TokenManager tokenManager = new JwtTokenManager(jwtProperties);
 
   HealthCheckController healthCheckController = new HealthCheckController();
-  SightingController sightingController = new SightingController(sightingsService);
+  SightingController sightingController = new SightingController(sightingsService, userDao);
   SpeciesController speciesController = new SpeciesController(speciesDao);
   UserController userController = new UserController(userServiceImpl, tokenManager);
   GeosController geosController = new GeosController(geoLocationsDao);
@@ -56,7 +56,13 @@ public class ApplicationTest {
 
   Javalin app =
       new Application(
-              tokenManager, healthCheckController, adminController, sightingController, speciesController, userController, geosController)
+              tokenManager,
+              healthCheckController,
+              adminController,
+              sightingController,
+              speciesController,
+              userController,
+              geosController)
           .javalinApp();
 
   @Test

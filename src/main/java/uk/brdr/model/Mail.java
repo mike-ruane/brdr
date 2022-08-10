@@ -34,8 +34,7 @@ public class Mail {
       return false;
     }
     Mail mail = (Mail) o;
-    return Objects.equals(username, mail.username) && Objects.equals(body,
-        mail.body);
+    return Objects.equals(username, mail.username) && Objects.equals(body, mail.body);
   }
 
   @Override
@@ -45,9 +44,6 @@ public class Mail {
 
   @Override
   public String toString() {
-    return "Mail{" +
-        "username='" + username + '\'' +
-        ", body='" + body + '\'' +
-        '}';
+    return "Mail{" + "username='" + username + '\'' + ", body='" + body + '\'' + '}';
   }
 }

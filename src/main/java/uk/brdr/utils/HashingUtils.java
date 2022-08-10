@@ -20,5 +20,4 @@ public class HashingUtils {
   public boolean validateUser(User dbUser, User user) {
     return ARGON_2.verify(dbUser.getPassword(), user.getPassword().toCharArray());
   }
-
 }
