@@ -53,7 +53,9 @@ public class SpeciesDaoImpl implements SpeciesDao {
               handle
                   .createQuery("SELECT * FROM species WHERE id = :id")
                   .bind("id", speciesId)
-                  .map(speciesRowMapper).findFirst().orElseThrow(() -> new Exception("cannot find species")));
+                  .map(speciesRowMapper)
+                  .findFirst()
+                  .orElseThrow(() -> new Exception("cannot find species")));
     } catch (Exception e) {
       throw new RuntimeException("error fetching species from db");
     }

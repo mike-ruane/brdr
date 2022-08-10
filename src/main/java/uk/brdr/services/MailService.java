@@ -20,12 +20,16 @@ public class MailService {
   private final UserDao userDao;
 
   public MailService(MailServiceProperties mailServiceProperties, UserDao userDao) {
-    this.session = Session.getInstance(mailServiceProperties.getProperties(), new Authenticator() {
-      @Override
-      protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(mailServiceProperties.getUsername(), mailServiceProperties.getPassword());
-      }
-    });
+    this.session =
+        Session.getInstance(
+            mailServiceProperties.getProperties(),
+            new Authenticator() {
+              @Override
+              protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(
+                    mailServiceProperties.getUsername(), mailServiceProperties.getPassword());
+              }
+            });
     this.userDao = userDao;
   }
 
@@ -36,8 +40,7 @@ public class MailService {
     }
     var message = new MimeMessage(session);
     message.setFrom(new InternetAddress(user.get().getEmail()));
-    message.setRecipients(
-        Message.RecipientType.TO, InternetAddress.parse("admin@brdr.uk"));
+    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("admin@brdr.uk"));
     message.setSubject("brdr feedback");
 
     MimeBodyPart mimeBodyPart = new MimeBodyPart();

@@ -2,7 +2,6 @@ package uk.brdr.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -55,7 +54,7 @@ public class UserServiceImplTest {
   @Test
   void userDoesntExist() {
     when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.empty());
-    assertThrows(BadRequestResponse.class, () -> userService.login(user));
+    assertThrows(IllegalArgumentException.class, () -> userService.login(user));
   }
 
   @Test
@@ -64,6 +63,6 @@ public class UserServiceImplTest {
         new User(user.getId(), user.getUsername(), user.getEmail(), "some-other-password");
     when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.of(userDbEntry));
     when(hashingUtils.validateUser(userDbEntry, user)).thenReturn(false);
-    assertThrows(BadRequestResponse.class, () -> userService.login(user));
+    assertThrows(IllegalArgumentException.class, () -> userService.login(user));
   }
 }

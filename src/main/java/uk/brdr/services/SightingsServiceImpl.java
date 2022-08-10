@@ -58,12 +58,12 @@ public class SightingsServiceImpl implements SightingsService {
   }
 
   @Override
-  public Map<String, List<Species>> getSightingsByGenus(int geoId, int userId) {
+  public Map<String, List<Species>> getSightingsByOrder(int geoId, int userId) {
     var sightings = sightingsDao.getSightings(geoId, userId);
     return sightings.stream()
         .map(SightingDetail::getSpecies)
         .distinct()
-        .collect(groupingBy(Species::getGenus));
+        .collect(groupingBy(Species::getFamilyOrder));
   }
 
   private List<SightingsByGeometry> groupSightingsByGeometry(

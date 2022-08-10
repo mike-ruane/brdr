@@ -6,16 +6,21 @@ import io.javalin.http.ConflictResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HttpCode;
 import io.javalin.http.InternalServerErrorResponse;
+import java.util.Optional;
+import uk.brdr.data.dao.UserDao;
 import uk.brdr.handlers.JwtCookieHandler;
+import uk.brdr.model.User;
 import uk.brdr.model.sighting.Sighting;
 import uk.brdr.services.SightingsService;
 
 public class SightingController {
 
   private final SightingsService sightingsService;
+  private final UserDao userDao;
 
-  public SightingController(SightingsService sightingsService) {
+  public SightingController(SightingsService sightingsService, UserDao userDao) {
     this.sightingsService = sightingsService;
+    this.userDao = userDao;
   }
 
   public void addSighting(Context ctx) {
@@ -34,7 +39,10 @@ public class SightingController {
 
   public void getSightingsByGeo(Context ctx) {
     try {
-      var userId = Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer());
+      var userId =
+          Optional.ofNullable(ctx.queryParam("username"))
+              .flatMap(username -> userDao.findByUsername(username).map(User::getId))
+              .orElse(Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer()));
       var sightingsByGeometry = sightingsService.getSightings(userId);
       ctx.json(serializeSightings(sightingsByGeometry));
     } catch (RuntimeException e) {
@@ -46,7 +54,7 @@ public class SightingController {
     try {
       var userId = Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer());
       var geoId = Integer.parseInt(ctx.pathParam("geo"));
-      var sightings = sightingsService.getSightingsByGenus(geoId, userId);
+      var sightings = sightingsService.getSightingsByOrder(geoId, userId);
       ctx.json(sightings);
     } catch (RuntimeException e) {
       throw new InternalServerErrorResponse("");

@@ -36,9 +36,6 @@ public class MailServiceProperties {
     properties.put("mail.smtp.ssl.trust", config.getString("host"));
 
     return new MailServiceProperties(
-        properties,
-        config.getString("username"),
-        config.getString("password")
-    );
+        properties, config.getString("username"), config.getString("password"));
   }
 }
