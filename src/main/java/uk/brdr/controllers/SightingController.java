@@ -52,7 +52,10 @@ public class SightingController {
 
   public void getSightingsForGeo(Context ctx) {
     try {
-      var userId = Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer());
+      var userId =
+          Optional.ofNullable(ctx.queryParam("username"))
+              .flatMap(username -> userDao.findByUsername(username).map(User::getId))
+              .orElse(Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer()));
       var geoId = Integer.parseInt(ctx.pathParam("geo"));
       var sightings = sightingsService.getSightingsByOrder(geoId, userId);
       ctx.json(sightings);
