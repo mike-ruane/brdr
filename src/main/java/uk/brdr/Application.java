@@ -53,7 +53,6 @@ public class Application {
                           post("message", adminController::sendMessage);
                           post("register", userController::register);
                           post("login", userController::login);
-                          get("user/validate", userController::validate);
                         }));
 
     app.before("api/sightings", JwtCookieHandler.createCookieDecodeHandler(tokenManager));

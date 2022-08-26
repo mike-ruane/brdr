@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
   public void save(User user) {
     userDao
-        .findByEmail(user.getEmail())
+        .findByUsername(user.getUsername())
         .ifPresent(
             s -> {
               throw new BadRequestResponse();
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
   }
 
   public User login(User user) {
-    var maybeUser = userDao.findByEmail(user.getEmail());
+    var maybeUser = userDao.findByUsername(user.getUsername());
     if (maybeUser.isEmpty()) {
       throw new IllegalArgumentException();
     }

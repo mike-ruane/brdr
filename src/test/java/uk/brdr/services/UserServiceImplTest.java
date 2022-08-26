@@ -30,7 +30,7 @@ public class UserServiceImplTest {
 
   @Test
   void saveNewUser() {
-    when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.empty());
+    when(userDao.findByUsername(user.getUsername())).thenReturn(Optional.empty());
     when(hashingUtils.hashUserPassword(user)).thenReturn(user);
     userService.save(user);
     verify(userDao).addUser(user);
@@ -38,14 +38,14 @@ public class UserServiceImplTest {
 
   @Test
   void dontSaveUserIfExists() {
-    when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    when(userDao.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
     assertThrows(BadRequestResponse.class, () -> userService.save(user));
     verify(userDao, never()).addUser(user);
   }
 
   @Test
   void successfulLogin() {
-    when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    when(userDao.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
     when(hashingUtils.validateUser(user, user)).thenReturn(true);
     var actual = userService.login(user);
     assertEquals(actual, user);
@@ -53,7 +53,7 @@ public class UserServiceImplTest {
 
   @Test
   void userDoesntExist() {
-    when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.empty());
+    when(userDao.findByUsername(user.getUsername())).thenReturn(Optional.empty());
     assertThrows(IllegalArgumentException.class, () -> userService.login(user));
   }
 
@@ -61,7 +61,7 @@ public class UserServiceImplTest {
   void userIncorrectPassword() {
     var userDbEntry =
         new User(user.getId(), user.getUsername(), user.getEmail(), "some-other-password");
-    when(userDao.findByEmail(user.getEmail())).thenReturn(Optional.of(userDbEntry));
+    when(userDao.findByUsername(user.getUsername())).thenReturn(Optional.of(userDbEntry));
     when(hashingUtils.validateUser(userDbEntry, user)).thenReturn(false);
     assertThrows(IllegalArgumentException.class, () -> userService.login(user));
   }
