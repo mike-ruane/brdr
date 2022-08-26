@@ -1,10 +1,8 @@
 package uk.brdr.controllers;
 
-import com.auth0.jwt.JWT;
 import io.javalin.http.Context;
 import io.javalin.http.Cookie;
 import io.javalin.http.HttpCode;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.brdr.managers.TokenManager;
@@ -47,19 +45,6 @@ public class UserController {
       ctx.status(HttpCode.UNAUTHORIZED);
     } catch (Exception e) {
       ctx.status(HttpCode.SERVICE_UNAVAILABLE);
-    }
-  }
-
-  public void validate(Context ctx) {
-    var token = Optional.ofNullable(ctx.cookie("jwt"));
-    if (token.isPresent()) {
-      var verifier = JWT.require(tokenManager.getAlgorithm()).build();
-      var jwt = verifier.verify(token.get());
-      var userId = Integer.parseInt(jwt.getIssuer());
-      var username = userServiceImpl.getUsername(userId);
-      ctx.json(username).status(HttpCode.OK);
-    } else {
-      ctx.status(HttpCode.UNAUTHORIZED);
     }
   }
 }

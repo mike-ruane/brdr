@@ -7,8 +7,6 @@ public interface UserDao {
 
   void addUser(User user);
 
-  Optional<User> findByEmail(String email);
-
   Optional<User> findByUsername(String username);
 
   Optional<User> findById(int userId);
