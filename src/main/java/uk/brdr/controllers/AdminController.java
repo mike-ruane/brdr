@@ -17,7 +17,7 @@ public class AdminController {
   public void sendMessage(Context ctx) {
     var mail = ctx.bodyAsClass(Mail.class);
     try {
-      mailService.sendMessage(mail.getUsername(), mail.getType(), mail.getBody());
+      mailService.sendMessage(mail);
       ctx.status(HttpCode.OK);
     } catch (MessagingException e) {
       ctx.status(HttpCode.SERVICE_UNAVAILABLE);

@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMultipart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.brdr.data.dao.UserDao;
+import uk.brdr.model.Mail;
 import uk.brdr.properties.MailServiceProperties;
 
 public class MailService {
@@ -36,18 +37,18 @@ public class MailService {
     this.userDao = userDao;
   }
 
-  public void sendMessage(String username, String type, String body) throws MessagingException {
-    var user = userDao.findByUsername(username);
+  public void sendMessage(Mail mail) throws MessagingException {
+    var user = userDao.findByUsername(mail.getUsername());
     if (user.isEmpty()) {
       throw new BadRequestResponse();
     }
     var message = new MimeMessage(session);
-    message.setFrom(new InternetAddress(user.get().getEmail()));
+    message.setFrom(new InternetAddress(mail.getEmail()));
     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("admin@brdr.uk"));
-    message.setSubject(String.format("brdr feedback: %s", type));
+    message.setSubject(String.format("brdr feedback: %s", mail.getType()));
 
     MimeBodyPart mimeBodyPart = new MimeBodyPart();
-    mimeBodyPart.setContent(body, "text/html; charset=utf-8");
+    mimeBodyPart.setContent(mail.getBody(), "text/html; charset=utf-8");
     var multipart = new MimeMultipart();
     multipart.addBodyPart(mimeBodyPart);
     message.setContent(multipart);
