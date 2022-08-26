@@ -39,10 +39,7 @@ public class SightingController {
 
   public void getSightingsByGeo(Context ctx) {
     try {
-      var userId =
-          Optional.ofNullable(ctx.queryParam("username"))
-              .flatMap(username -> userDao.findByUsername(username).map(User::getId))
-              .orElse(Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer()));
+      var userId = getUserFromContext(ctx);
       var sightingsByGeometry = sightingsService.getSightings(userId);
       ctx.json(serializeSightings(sightingsByGeometry));
     } catch (RuntimeException e) {
@@ -52,15 +49,18 @@ public class SightingController {
 
   public void getSightingsForGeo(Context ctx) {
     try {
-      var userId =
-          Optional.ofNullable(ctx.queryParam("username"))
-              .flatMap(username -> userDao.findByUsername(username).map(User::getId))
-              .orElse(Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer()));
+      var userId = getUserFromContext(ctx);
       var geoId = Integer.parseInt(ctx.pathParam("geo"));
       var sightings = sightingsService.getSightingsByOrder(geoId, userId);
       ctx.json(sightings);
     } catch (RuntimeException e) {
       throw new InternalServerErrorResponse("");
     }
+  }
+
+  private Integer getUserFromContext(Context ctx) {
+    return Optional.ofNullable(ctx.queryParam("username"))
+        .flatMap(username -> userDao.findByUsername(username).map(User::getId))
+        .orElse(Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer()));
   }
 }
