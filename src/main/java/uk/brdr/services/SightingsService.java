@@ -12,7 +12,5 @@ public interface SightingsService {
 
   List<SightingsByGeometry> getSightings(int userId);
 
-  Map<String, List<Species>> getSightings(int geoId, int userId);
-
   Map<String, List<Species>> getSightingsByOrder(int geoId, int userId);
 }

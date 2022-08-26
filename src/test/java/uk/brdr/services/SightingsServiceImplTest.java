@@ -23,7 +23,6 @@ import uk.brdr.data.dao.SightingsDaoImpl;
 import uk.brdr.model.Species;
 import uk.brdr.model.location.GeometryLocation;
 import uk.brdr.model.sighting.Sighting;
-import uk.brdr.model.sighting.SightingDetail;
 import uk.brdr.model.sighting.SightingsByGeometry;
 import uk.brdr.model.sighting.UserSighting;
 
@@ -81,28 +80,63 @@ public class SightingsServiceImplTest {
 
   @Test
   void sightingsForUserForGeo() {
-    var species =
+    // Passeriformes
+    var savisWarbler =
         new Species(
             1,
-            "some scientific name",
-            "pref name",
-            "habitat",
-            "genus",
-            "family",
-            "family order",
+            "Locustella luscinioides",
+            "Savi's Warbler",
+            "freshwater",
+            "Locustella",
+            "Locustellidae",
+            "Passeriformes",
             "1000",
             "1500");
-    when(sightingsDao.getSightings(1, 1))
-        .thenReturn(
-            List.of(
-                new SightingDetail(Date.valueOf("2022-05-27"), species),
-                new SightingDetail(Date.valueOf("2022-05-24"), species),
-                new SightingDetail(Date.valueOf("2022-05-24"), species),
-                new SightingDetail(Date.valueOf("2022-05-27"), species)));
+    var grasshopperWarbler =
+        new Species(
+            4,
+            "Locustella naevia",
+            "Grasshopper Warbler",
+            "freshwater",
+            "Locustella",
+            "Locustellidae",
+            "Passeriformes",
+            "1000",
+            "1500");
+    // Galliformes
+    var redGrouse =
+        new Species(
+            270,
+            "Lagopus lagopus",
+            "Red Grouse",
+            "freshwater",
+            "Lagopus",
+            "Phasianidae",
+            "Galliformes",
+            "1000",
+            "1500");
+    var quail =
+        new Species(
+            272,
+            "Coturnix coturnix",
+            "Quail",
+            "freshwater",
+            "Coturnix",
+            "Phasianidae",
+            "Galliformes",
+            "1000",
+            "1500");
 
-    var actual = sightingsService.getSightings(1, 1);
+    when(sightingsDao.getSightings(1, 1))
+        .thenReturn(List.of(savisWarbler, grasshopperWarbler, redGrouse, quail));
+
+    var actual = sightingsService.getSightingsByOrder(1, 1);
     var expected =
-        Map.of("2022-05-27", List.of(species, species), "2022-05-24", List.of(species, species));
+        Map.of(
+            "Passeriformes",
+            List.of(savisWarbler, grasshopperWarbler),
+            "Galliformes",
+            List.of(redGrouse, quail));
     assertEquals(expected, actual);
   }
 
@@ -115,9 +149,10 @@ public class SightingsServiceImplTest {
   }
 
   @Test
-  void dontAddSightingWhenAlreadyExist() {
-    var sighting = new Sighting(0, 1, List.of(1), 1, Date.valueOf("2022-05-25"));
-    when(sightingsDao.getSightings(1)).thenReturn(List.of(new UserSighting(1, 1)));
+  void dontAddSightingWhenAlreadyExistsForDate() {
+    var date = Date.valueOf("2022-05-25");
+    var sighting = new Sighting(0, 1, List.of(1), 1, date);
+    when(sightingsDao.getSightingsByDate(1, date)).thenReturn(List.of(new UserSighting(1, 1)));
     assertThrows(IllegalStateException.class, () -> sightingsService.addSighting(sighting));
     verify(sightingsDao, never()).addSighting(sighting);
   }

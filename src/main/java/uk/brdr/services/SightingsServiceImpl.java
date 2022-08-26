@@ -6,13 +6,11 @@ import static java.util.stream.Collectors.toList;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import uk.brdr.data.dao.GeoLocationsDao;
 import uk.brdr.data.dao.SightingsDao;
 import uk.brdr.model.Species;
 import uk.brdr.model.location.GeometryLocation;
 import uk.brdr.model.sighting.Sighting;
-import uk.brdr.model.sighting.SightingDetail;
 import uk.brdr.model.sighting.SightingsByGeometry;
 import uk.brdr.model.sighting.UserSighting;
 
@@ -48,22 +46,9 @@ public class SightingsServiceImpl implements SightingsService {
   }
 
   @Override
-  public Map<String, List<Species>> getSightings(int geoId, int userId) {
-    var sightings = sightingsDao.getSightings(geoId, userId);
-    return sightings.stream()
-        .collect(
-            groupingBy(
-                sd -> DATE_FORMAT.format(sd.getDate()),
-                Collectors.mapping(SightingDetail::getSpecies, toList())));
-  }
-
-  @Override
   public Map<String, List<Species>> getSightingsByOrder(int geoId, int userId) {
     var sightings = sightingsDao.getSightings(geoId, userId);
-    return sightings.stream()
-        .map(SightingDetail::getSpecies)
-        .distinct()
-        .collect(groupingBy(Species::getFamilyOrder));
+    return sightings.stream().distinct().collect(groupingBy(Species::getFamilyOrder));
   }
 
   private List<SightingsByGeometry> groupSightingsByGeometry(
@@ -75,6 +60,7 @@ public class SightingsServiceImpl implements SightingsService {
                   sightings.stream()
                       .filter(s -> s.getGeoId() == g.getId())
                       .map(UserSighting::getSpeciesId)
+                      .distinct()
                       .collect(toList());
               return new SightingsByGeometry(
                   g.getName(), g.getId(), g.getpGgeometry().getGeometry(), species);
@@ -83,7 +69,7 @@ public class SightingsServiceImpl implements SightingsService {
   }
 
   private boolean sightingExists(Sighting sighting) {
-    var sightings = sightingsDao.getSightings(sighting.userId);
+    var sightings = sightingsDao.getSightingsByDate(sighting.userId, sighting.date);
     var existingSighting =
         sightings.stream()
             .filter(
