@@ -61,6 +61,6 @@ public class SightingController {
   private Integer getUserFromContext(Context ctx) {
     return Optional.ofNullable(ctx.queryParam("username"))
         .flatMap(username -> userDao.findByUsername(username).map(User::getId))
-        .orElse(Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer()));
+        .orElseGet(() -> Integer.parseInt(JwtCookieHandler.getDecodedFromContext(ctx).getIssuer()));
   }
 }

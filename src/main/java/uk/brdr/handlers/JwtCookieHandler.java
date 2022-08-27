@@ -30,6 +30,10 @@ public class JwtCookieHandler {
 
   public static Handler createCookieDecodeHandler(TokenManager tokenManager) {
     return context -> {
+      var isUserView = Optional.ofNullable(context.queryParam("username")).isPresent();
+      if (isUserView) {
+        return;
+      }
       var token = getTokenFromCookie(context).orElseThrow(UnauthorizedResponse::new);
       var decodedJWT = tokenManager.verifyToken(token).orElseThrow(UnauthorizedResponse::new);
       addDecodedToContext(context, decodedJWT);
