@@ -2,37 +2,24 @@ package uk.brdr.handlers;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.javalin.http.Context;
-import io.javalin.http.Handler;
-import io.javalin.http.InternalServerErrorResponse;
 import io.javalin.http.UnauthorizedResponse;
 import java.util.Optional;
 import uk.brdr.managers.TokenManager;
 
 public class JwtCookieHandler {
 
-  public static Optional<String> getTokenFromCookie(Context context) {
-    return Optional.ofNullable(context.cookie("jwt"));
+  private final TokenManager tokenManager;
+
+  public JwtCookieHandler(TokenManager tokenManager) {
+    this.tokenManager = tokenManager;
   }
 
-  public static void addDecodedToContext(Context context, DecodedJWT jwt) {
-    context.attribute("jwt", jwt);
+  public DecodedJWT verifyJwtTokenFromContext(Context ctx) {
+    var token = Optional.ofNullable(ctx.cookie("jwt")).orElseThrow(UnauthorizedResponse::new);
+    return tokenManager.verifyToken(token);
   }
 
-  public static DecodedJWT getDecodedFromContext(Context context) {
-    Object attribute = context.attribute("jwt");
-
-    if (!(attribute instanceof DecodedJWT)) {
-      throw new InternalServerErrorResponse("The context carried invalid object as JavalinJWT");
-    }
-
-    return (DecodedJWT) attribute;
-  }
-
-  public static Handler createCookieDecodeHandler(TokenManager tokenManager) {
-    return context -> {
-      var token = getTokenFromCookie(context).orElseThrow(UnauthorizedResponse::new);
-      var decodedJWT = tokenManager.verifyToken(token).orElseThrow(UnauthorizedResponse::new);
-      addDecodedToContext(context, decodedJWT);
-    };
+  public Integer getUserIdFromJWT(DecodedJWT jwt) {
+    return Integer.parseInt(jwt.getIssuer());
   }
 }

@@ -12,7 +12,6 @@ import uk.brdr.controllers.HealthCheckController;
 import uk.brdr.controllers.SightingController;
 import uk.brdr.controllers.SpeciesController;
 import uk.brdr.controllers.UserController;
-import uk.brdr.handlers.JwtCookieHandler;
 import uk.brdr.managers.TokenManager;
 
 public class Application {
@@ -54,10 +53,6 @@ public class Application {
                           post("register", userController::register);
                           post("login", userController::login);
                         }));
-
-    app.before("api/sightings", JwtCookieHandler.createCookieDecodeHandler(tokenManager));
-    app.before("api/sightings/{geo}", JwtCookieHandler.createCookieDecodeHandler(tokenManager));
-    app.before("api/message", JwtCookieHandler.createCookieDecodeHandler(tokenManager));
   }
 
   public Javalin javalinApp() {
