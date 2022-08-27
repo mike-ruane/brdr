@@ -13,6 +13,7 @@ import uk.brdr.data.dao.GeoLocationsDaoImpl;
 import uk.brdr.data.dao.SightingsDaoImpl;
 import uk.brdr.data.dao.SpeciesDaoImpl;
 import uk.brdr.data.dao.UserDaoImpl;
+import uk.brdr.handlers.JwtCookieHandler;
 import uk.brdr.managers.JwtTokenManager;
 import uk.brdr.properties.ApiProperties;
 import uk.brdr.services.MailService;
@@ -38,6 +39,7 @@ public class Main {
     var userDaoImpl = new UserDaoImpl(datasource);
 
     var tokenManager = new JwtTokenManager(properties.getJwtProperties());
+    var jwtCookieHandler = new JwtCookieHandler(tokenManager);
 
     // services
     var sightingsService = new SightingsServiceImpl(sightingsDaoImpl, geoLocationsDaoImpl);
@@ -46,11 +48,12 @@ public class Main {
 
     // controllers
     var healthCheckController = new HealthCheckController();
-    var sightingsController = new SightingController(sightingsService, userDaoImpl);
+    var sightingsController =
+        new SightingController(sightingsService, userDaoImpl, jwtCookieHandler);
     var speciesController = new SpeciesController(speciesDaoImpl);
     var userController = new UserController(userService, tokenManager);
     var geosController = new GeosController(geoLocationsDaoImpl);
-    var adminController = new AdminController(mailService);
+    var adminController = new AdminController(mailService, jwtCookieHandler);
 
     var app =
         new Application(
